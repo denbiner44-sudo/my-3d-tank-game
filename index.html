@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>3D Tank Game</title>
+<style>
+body { margin: 0; overflow: hidden; }
+</style>
+</head>
+<body>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
+
+<script>
+// сцена
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x87ceeb);
+
+// камера
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+camera.position.set(0, 5, 10);
+
+// рендер
+const renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+// свет
+const light = new THREE.DirectionalLight(0xffffff, 1);
+light.position.set(5, 10, 5);
+scene.add(light);
+
+// земля
+const groundGeo = new THREE.PlaneGeometry(100, 100);
+const groundMat = new THREE.MeshStandardMaterial({ color: 0x228b22 });
+const ground = new THREE.Mesh(groundGeo, groundMat);
+ground.rotation.x = -Math.PI / 2;
+scene.add(ground);
+
+// танк (простая модель)
+const tank = new THREE.Group();
+
+// корпус
+const bodyGeo = new THREE.BoxGeometry(2, 0.5, 3);
+const bodyMat = new THREE.MeshStandardMaterial({ color: 0x555555 });
+const body = new THREE.Mesh(bodyGeo, bodyMat);
+tank.add(body);
+
+// башня
+const turretGeo = new THREE.CylinderGeometry(0.6, 0.6, 0.4, 16);
+const turret = new THREE.Mesh(turretGeo, bodyMat);
+turret.position.y = 0.45;
+tank.add(turret);
+
+// пушка
+const barrelGeo = new THREE.BoxGeometry(0.2, 0.2, 2);
+const barrel = new THREE.Mesh(barrelGeo, bodyMat);
+barrel.position.set(0, 0.45, 1.5);
+tank.add(barrel);
+
+scene.add(tank);
+
+// управление
+const keys = {};
+document.addEventListener("keydown", e => keys[e.key.toLowerCase()] = true);
+document.addEventListener("keyup", e => keys[e.key.toLowerCase()] = false);
+
+function updateTank() {
+  const speed = 0.1;
+  const rotSpeed = 0.04;
+
+  if (keys["w"]) {
+    tank.position.x -= Math.sin(tank.rotation.y) * speed;
+    tank.position.z -= Math.cos(tank.rotation.y) * speed;
+  }
+
+  if (keys["s"]) {
+    tank.position.x += Math.sin(tank.rotation.y) * speed;
+    tank.position.z += Math.cos(tank.rotation.y) * speed;
+  }
+
+  if (keys["a"]) tank.rotation.y += rotSpeed;
+  if (keys["d"]) tank.rotation.y -= rotSpeed;
+
+  // камера следует за танком
+  camera.position.x = tank.position.x + 8 * Math.sin(tank.rotation.y);
+  camera.position.z = tank.position.z + 8 * Math.cos(tank.rotation.y);
+  camera.lookAt(tank.position);
+}
+
+// анимация
+function animate() {
+  requestAnimationFrame(animate);
+  updateTank();
+  renderer.render(scene, camera);
+}
+
+animate();
+
+// адаптация под экран
+window.addEventListener("resize", () => {
+  camera.aspect = window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+
+</body>
+</html>
