@@ -3,235 +3,165 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sharks CRM</title>
+<title>Doodle Jump Premium</title>
 <style>
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background: #f1f1f1;
-}
-
-/* Логин */
-#loginPage {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-.login-box {
-    background: white;
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
-    text-align: center;
-}
-.login-box input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-}
-.login-box button {
-    width: 100%;
-    padding: 10px;
-    background: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-/* CRM */
-#crmPage {
-    display: none;
-}
-
-header {
-    background: #1e90ff;
-    color: white;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-header .logo {
-    font-weight: bold;
-    font-size: 20px;
-}
-
-.container {
-    display: flex;
-    padding: 20px;
-    gap: 20px;
-}
-
-/* Левая панель */
-.sidebar {
-    width: 250px;
-    background: white;
-    padding: 10px;
-    border-radius: 8px;
-}
-.sidebar .manager {
-    text-align: center;
-}
-.sidebar .manager img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: #ccc;
-}
-.sidebar .calendar, .sidebar .top-managers {
-    margin-top: 20px;
-}
-
-/* Основная панель */
-.main {
-    flex: 1;
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-}
-.status-buttons button {
-    margin: 5px;
-    padding: 10px 15px;
-    border: none;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
-}
-.status-buttons .delete { background: #e91e63; }
-.status-buttons .skip30 { background: #ffeb3b; color:black; }
-.status-buttons .call { background: #4caf50; }
-
-/* Правая панель */
-.right-panel {
-    width: 250px;
-    background: white;
-    padding: 10px;
-    border-radius: 8px;
-}
-
-/* Общие стили кнопок звонка */
-.call-buttons button {
-    margin: 5px;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.call-buttons .phone { background: #2196f3; color:white; }
-.call-buttons .whatsapp { background: #25d366; color:white; }
-.call-buttons .telegram { background: #0088cc; color:white; }
-
+    body { margin:0; overflow:hidden; background: linear-gradient(to top, #87CEEB 0%, #ffffff 100%);}
+    canvas { display:block; margin:0 auto; touch-action:none; background: transparent; }
 </style>
 </head>
 <body>
-
-<!-- Логин -->
-<div id="loginPage">
-    <div class="login-box">
-        <img src="" alt="Shark" style="width:40px; margin-bottom:10px;">
-        <h2>Sharks CRM</h2>
-        <input type="text" id="login" placeholder="Логин *">
-        <input type="password" id="password" placeholder="Пароль *">
-        <button onclick="login()">ВХОД</button>
-    </div>
-</div>
-
-<!-- CRM -->
-<div id="crmPage">
-<header>
-    <div class="logo">Sharks</div>
-    <div>
-        <span id="coins">5850</span> 🪙
-        <button onclick="logout()">Выйти</button>
-    </div>
-</header>
-
-<div class="container">
-    <!-- Левая панель -->
-    <div class="sidebar">
-        <div class="manager">
-            <img src="" alt="avatar">
-            <h3>Кевин</h3>
-            <p>(Менеджер)</p>
-        </div>
-        <div class="calendar">
-            <h4>Март 2026</h4>
-            <input type="date" id="datePicker">
-        </div>
-        <div class="top-managers">
-            <h4>Топ менеджеров</h4>
-            <ul id="topManagers">
-                <li>[Спарта] ВискаС - 4 звонка</li>
-                <li>[Спарта] Даркнет - 4 звонка</li>
-            </ul>
-        </div>
-    </div>
-
-    <!-- Основная панель -->
-    <div class="main">
-        <div class="call-buttons">
-            <button class="phone" onclick="call('phone')">📞 Звонок</button>
-            <button class="whatsapp" onclick="call('whatsapp')">WhatsApp</button>
-            <button class="telegram" onclick="call('telegram')">Telegram</button>
-        </div>
-        <div>
-            <label>Звоню от:</label>
-            <select id="callFrom">
-                <option>Выбрать спич</option>
-                <option>Менеджер 1</option>
-            </select>
-        </div>
-        <div>
-            <input type="text" id="phoneInput" placeholder="Телефон">
-        </div>
-        <div class="status-buttons">
-            <button class="delete" onclick="setStatus('Удалить')">УДАЛИТЬ</button>
-            <button class="skip30" onclick="setStatus('СКИП ДО 30')">СКИП ДО 30</button>
-            <button class="call" onclick="setStatus('ПЕРЕЗВОН')">ПЕРЕЗВОН</button>
-        </div>
-    </div>
-
-    <!-- Правая панель -->
-    <div class="right-panel">
-        <h4>Уровень 1</h4>
-        <progress value="222" max="300"></progress>
-        <h4>Передачи холдке</h4>
-        <p>Передач пока нет</p>
-        <h4>Задания</h4>
-        <ul>
-            <li>Войти первым в CRM</li>
-            <li>Передать трубку</li>
-        </ul>
-    </div>
-</div>
-</div>
+<canvas id="gameCanvas" width="400" height="600"></canvas>
 
 <script>
-function login() {
-    const loginVal = document.getElementById('login').value;
-    const passVal = document.getElementById('password').value;
-    if(loginVal && passVal) {
-        document.getElementById('loginPage').style.display = 'none';
-        document.getElementById('crmPage').style.display = 'block';
-    } else {
-        alert('Введите логин и пароль');
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+// Спрайты
+const playerImg = new Image();
+playerImg.src = "https://i.imgur.com/Oj1w6bS.png"; // дудл спрайт
+
+const platformImg = new Image();
+platformImg.src = "https://i.imgur.com/4r7Ff1Q.png"; // платформа
+
+const coinImg = new Image();
+coinImg.src = "https://i.imgur.com/vP6c8cO.png"; // бонус
+
+const enemyImg = new Image();
+enemyImg.src = "https://i.imgur.com/8yLHpUQ.png"; // враг
+
+// Звуки
+const jumpSound = new Audio("https://freesound.org/data/previews/331/331912_3248244-lq.mp3");
+const coinSound = new Audio("https://freesound.org/data/previews/256/256113_4486188-lq.mp3");
+
+const player = { x:200, y:540, width:40, height:40, dy:0, gravity:0.5, jump:-12 };
+let platforms = [], coins = [], enemies = [];
+let score = 0;
+
+// Генерация платформ
+function createPlatforms(){
+    platforms = [];
+    for(let i=0;i<10;i++){
+        platforms.push({x:Math.random()*(canvas.width-60), y:i*60, width:60, height:10, type:"normal"});
     }
 }
 
-function logout() {
-    document.getElementById('crmPage').style.display = 'none';
-    document.getElementById('loginPage').style.display = 'flex';
+// Генерация бонусов
+function createCoins(){
+    coins = [];
+    for(let i=0;i<5;i++){
+        coins.push({x:Math.random()*(canvas.width-20), y:Math.random()*300, width:20, height:20, collected:false});
+    }
 }
 
-function call(type) {
-    alert('Звонок через ' + type);
+// Генерация врагов
+function createEnemies(){
+    enemies = [];
+    for(let i=0;i<3;i++){
+        enemies.push({x:Math.random()*(canvas.width-40), y:Math.random()*200, width:40, height:40});
+    }
 }
 
-function setStatus(status) {
-    alert('Статус изменен на: ' + status);
+// Рисуем платформы
+function drawPlatforms(){
+    platforms.forEach(p=>{
+        if(platformImg.complete) ctx.drawImage(platformImg,p.x,p.y,p.width,p.height);
+        else { ctx.fillStyle="#654321"; ctx.fillRect(p.x,p.y,p.width,p.height); }
+    });
 }
+
+// Рисуем бонусы
+function drawCoins(){
+    coins.forEach(c=>{
+        if(!c.collected){
+            if(coinImg.complete) ctx.drawImage(coinImg,c.x,c.y,c.width,c.height);
+            else { ctx.fillStyle="gold"; ctx.fillRect(c.x,c.y,c.width,c.height); }
+        }
+    });
+}
+
+// Рисуем врагов
+function drawEnemies(){
+    enemies.forEach(e=>{
+        if(enemyImg.complete) ctx.drawImage(enemyImg,e.x,e.y,e.width,e.height);
+        else { ctx.fillStyle="black"; ctx.fillRect(e.x,e.y,e.width,e.height); }
+    });
+}
+
+// Рисуем игрока
+function drawPlayer(){ ctx.drawImage(playerImg,player.x,player.y,player.width,player.height); }
+
+// Обновление позиции игрока
+function updatePlayer(){
+    player.dy+=player.gravity; player.y+=player.dy;
+
+    // Столкновения с платформами
+    platforms.forEach(p=>{
+        if(player.dy>0 && player.x+player.width>p.x && player.x<p.x+p.width &&
+           player.y+player.height>p.y && player.y+player.height<p.y+p.height+player.dy){
+               player.dy=player.jump;
+               jumpSound.play();
+           }
+    });
+
+    // Собираем монеты
+    coins.forEach(c=>{
+        if(!c.collected && player.x+player.width>c.x && player.x<c.x+c.width &&
+           player.y+player.height>c.y && player.y<c.y+c.height){
+               c.collected=true; score+=50; coinSound.play();
+           }
+    });
+
+    // Столкновения с врагами
+    enemies.forEach(e=>{
+        if(player.x+player.width>e.x && player.x<e.x+e.width &&
+           player.y+player.height>e.y && player.y<e.y+e.height){
+               alert("Игра окончена! Ваш счёт: "+Math.floor(score));
+               score=0; player.x=200; player.y=540; player.dy=0;
+               createPlatforms(); createCoins(); createEnemies();
+           }
+    });
+
+    // Движение платформ вниз
+    if(player.y<canvas.height/2){
+        const diff=(canvas.height/2)-player.y; player.y=canvas.height/2;
+        platforms.forEach(p=>p.y+=diff);
+        coins.forEach(c=>c.y+=diff);
+        enemies.forEach(e=>e.y+=diff);
+        score+=Math.floor(diff/2);
+    }
+
+    // Конец игры
+    if(player.y>canvas.height){
+        alert("Игра окончена! Ваш счёт: "+Math.floor(score));
+        score=0; player.x=200; player.y=540; player.dy=0;
+        createPlatforms(); createCoins(); createEnemies();
+    }
+}
+
+// Управление
+let left=false, right=false;
+document.addEventListener('keydown', e=>{ if(e.key==='ArrowLeft') left=true; if(e.key==='ArrowRight') right=true; });
+document.addEventListener('keyup', e=>{ if(e.key==='ArrowLeft') left=false; if(e.key==='ArrowRight') right=false; });
+canvas.addEventListener('touchstart', e=>{ const tx=e.touches[0].clientX; if(tx<canvas.width/2) left=true; else right=true; });
+canvas.addEventListener('touchend', e=>{ left=false; right=false; });
+
+function movePlayer(){
+    if(left) player.x-=5;
+    if(right) player.x+=5;
+    if(player.x<0) player.x=0; if(player.x+player.width>canvas.width) player.x=canvas.width-player.width;
+}
+
+// Главный цикл
+function gameLoop(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    drawPlatforms(); drawCoins(); drawEnemies(); drawPlayer();
+    updatePlayer(); movePlayer();
+    ctx.fillStyle="#000"; ctx.font="20px Arial"; ctx.fillText("Счёт: "+Math.floor(score),10,30);
+    requestAnimationFrame(gameLoop);
+}
+
+// Инициализация
+createPlatforms(); createCoins(); createEnemies(); gameLoop();
 </script>
-
 </body>
 </html>
