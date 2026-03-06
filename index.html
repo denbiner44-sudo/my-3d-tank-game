@@ -3,228 +3,152 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ultimate Visual Slot 5x3</title>
+<title>Статистика звонков</title>
 <style>
 body {
-    margin:0;
     font-family: Arial, sans-serif;
+    background: #f0f2f5;
+    margin: 0;
+    padding: 0;
+}
+header {
     background: #0f172a;
-    color: white;
-    display:flex;
-    flex-direction: column;
-    align-items: center;
+    color: #fff;
+    padding: 10px 20px;
+    text-align: center;
+}
+.container {
     padding: 20px;
 }
-h1 { margin-bottom: 10px; text-align:center; }
-.slot-container {
-    display: grid;
-    grid-template-columns: repeat(5, 80px);
-    grid-template-rows: repeat(3, 80px);
-    gap: 5px;
-    margin-bottom: 20px;
-    position: relative;
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
 }
-.cell {
-    width: 80px;
-    height: 80px;
+th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+th {
     background: #1e293b;
-    border-radius: 8px;
-    overflow:hidden;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    transition: 0.3s;
+    color: #fff;
 }
-.cell img {
-    width: 60px;
-    height: 60px;
-    user-select: none;
-    pointer-events: none;
+.status {
+    font-weight: bold;
 }
-.controls {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 10px;
-    flex-wrap: wrap;
-}
+.status.pending { color: orange; }
+.status.completed { color: green; }
+.status.failed { color: red; }
 button {
-    padding: 8px 15px;
-    border:none;
-    border-radius: 5px;
-    cursor:pointer;
-    font-size:16px;
-    background: #fbbf24;
-    color:#111827;
-    font-weight:bold;
-    transition: 0.2s;
-}
-button:hover { background: #facc15; }
-select, input {
     padding: 5px 10px;
-    border-radius:5px;
-    border:none;
-    font-size:16px;
+    margin: 2px;
+    cursor: pointer;
 }
-.info { margin-top: 10px; text-align:center; font-size:18px; }
-.win-line { box-shadow: 0 0 15px 5px #f59e0b inset; }
-.coin {
-    position: absolute;
-    width: 20px; height: 20px;
-    background: gold;
-    border-radius: 50%;
-    animation: fall 1s linear forwards;
-}
-@keyframes fall {
-    0% {transform: translateY(0);}
-    100% {transform: translateY(120px) rotate(360deg);}
+input, select {
+    padding: 5px;
+    margin: 5px 0;
+    width: 100%;
 }
 </style>
 </head>
 <body>
-
-<h1>🎰 Ultimate Visual Slot 5x3</h1>
-
-<div class="slot-container" id="slot"></div>
-
-<div class="controls">
-    <label>Ставка:
-        <input type="number" id="bet" value="10" min="1">
-    </label>
-    <label>Линий:
-        <select id="lines">
-            <option value="1">1</option>
-            <option value="3" selected>3</option>
-            <option value="5">5</option>
-            <option value="10">10</option>
+<header>
+    <h1>Юрист Комитета Банковского надзора</h1>
+</header>
+<div class="container">
+    <h2>Добавить трубку / звонок</h2>
+    <form id="callForm">
+        <input type="text" id="name" placeholder="ФИО" required>
+        <input type="text" id="phone" placeholder="Номер телефона" required>
+        <select id="status" required>
+            <option value="">Выберите статус</option>
+            <option value="pending"> Срез </option>
+            <option value="completed">В работе</option>
+            <option value="failed">Заказ в банке</option>
         </select>
-    </label>
-    <button id="spin">Вращать</button>
+        <textarea id="notes" placeholder="Дополнительно"></textarea>
+        <button type="submit">Добавить</button>
+    </form>
+
+    <h2>Список Трубок</h2>
+    <input type="text" id="search" placeholder="Поиск по ФИО или телефону">
+    <table>
+        <thead>
+            <tr>
+                <th>ФИО</th>
+                <th>Телефон</th>
+                <th>Статус</th>
+                <th>Примечания</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody id="callTable"></tbody>
+    </table>
 </div>
 
-<div class="info" id="message"></div>
-<div class="info">Баланс: <span id="balance">1000</span></div>
-
-<audio id="spinSound" src="https://actions.google.com/sounds/v1/arcade/spin_loop.ogg"></audio>
-<audio id="winSound" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
-<audio id="bonusSound" src="https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg"></audio>
-
 <script>
-// символы - картинки
-const symbols = [
-    "https://i.ibb.co/yS1fX0R/cherry.png",
-    "https://i.ibb.co/0JKvKdP/lemon.png",
-    "https://i.ibb.co/TL8z4Rp/orange.png",
-    "https://i.ibb.co/9s3Xq3k/watermelon.png",
-    "https://i.ibb.co/1mP0L6c/star.png",
-    "https://i.ibb.co/9p5mNnc/diamond.png",
-    "https://i.ibb.co/Qd0Z3yD/money.png"
-];
-const rows = 3;
-const cols = 5;
-let balance = 1000;
-let freeSpins = 0;
-let multiplier = 1;
+let calls = JSON.parse(localStorage.getItem('calls')) || [];
 
-const slotContainer = document.getElementById("slot");
-const spinSound = document.getElementById("spinSound");
-const winSound = document.getElementById("winSound");
-const bonusSound = document.getElementById("bonusSound");
-
-// создать слот
-function createSlot(){
-    slotContainer.innerHTML='';
-    for(let i=0;i<rows*cols;i++){
-        const cell=document.createElement('div');
-        cell.className='cell';
-        const img = document.createElement('img');
-        img.src=symbols[Math.floor(Math.random()*symbols.length)];
-        cell.appendChild(img);
-        slotContainer.appendChild(cell);
-    }
-}
-createSlot();
-
-// линии
-function getLines(){
-    return [
-        [0,1,2,3,4],
-        [5,6,7,8,9],
-        [10,11,12,13,14],
-        [0,6,12,8,4],
-        [10,6,2,8,14]
-    ];
+function saveCalls() {
+    localStorage.setItem('calls', JSON.stringify(calls));
+    renderTable();
 }
 
-// подсветка
-function highlightLine(indices){
-    const cells = slotContainer.children;
-    indices.forEach(i=>cells[i].classList.add('win-line'));
-    setTimeout(()=>indices.forEach(i=>cells[i].classList.remove('win-line')),1500);
+function renderTable() {
+    const tbody = document.getElementById('callTable');
+    const filter = document.getElementById('search').value.toLowerCase();
+    tbody.innerHTML = '';
+    calls.filter(c => c.name.toLowerCase().includes(filter) || c.phone.includes(filter))
+         .forEach((call, index) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${call.name}</td>
+            <td>${call.phone}</td>
+            <td class="status ${call.status}">${call.status}</td>
+            <td>${call.notes}</td>
+            <td>
+                <button onclick="editCall(${index})">Редактировать</button>
+                <button onclick="deleteCall(${index})">Удалить</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
 }
 
-// падающие монеты
-function dropCoins(amount){
-    for(let i=0;i<amount/10;i++){
-        const coin=document.createElement('div');
-        coin.className='coin';
-        coin.style.left=Math.random()*400+'px';
-        slotContainer.appendChild(coin);
-        setTimeout(()=>coin.remove(),1000);
+document.getElementById('callForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const phone = document.getElementById('phone').value;
+    const status = document.getElementById('status').value;
+    const notes = document.getElementById('notes').value;
+    calls.push({name, phone, status, notes});
+    saveCalls();
+    this.reset();
+});
+
+function editCall(index) {
+    const call = calls[index];
+    const newName = prompt('ФИО', call.name);
+    const newPhone = prompt('Телефон', call.phone);
+    const newStatus = prompt('Статус (pending/completed/failed)', call.status);
+    const newNotes = prompt('Примечания', call.notes);
+    if(newName && newPhone && newStatus) {
+        calls[index] = {name: newName, phone: newPhone, status: newStatus, notes: newNotes};
+        saveCalls();
     }
 }
 
-function spinSlot(){
-    const bet=parseInt(document.getElementById("bet").value);
-    const activeLines=parseInt(document.getElementById("lines").value);
-    if(freeSpins==0 && bet>balance){alert("Недостаточно баланса!");return;}
-    if(freeSpins==0) balance-=bet;
-    document.getElementById("balance").textContent=balance;
-
-    spinSound.currentTime=0; spinSound.play();
-
-    const cells = slotContainer.children;
-    for(let c=0;c<cols;c++){
-        for(let r=0;r<rows;r++){
-            const cellIndex=r*cols+c;
-            const img=cells[cellIndex].querySelector('img');
-            for(let t=0;t<10;t++){
-                setTimeout(()=>{
-                    img.src=symbols[Math.floor(Math.random()*symbols.length)];
-                }, t*50 + c*100);
-            }
-        }
+function deleteCall(index) {
+    if(confirm('Удалить этот звонок?')) {
+        calls.splice(index,1);
+        saveCalls();
     }
-
-    setTimeout(()=>{
-        spinSound.pause(); spinSound.currentTime=0;
-        let win=0;
-        const linesArr=getLines().slice(0,activeLines);
-        linesArr.forEach(line=>{
-            const lineSymbols=line.map(i=>cells[i].querySelector('img').src);
-            if(lineSymbols.every(s=>s===lineSymbols[0])){
-                const lineWin = bet*5*multiplier;
-                win+=lineWin;
-                highlightLine(line);
-            }
-        });
-
-        // бонусы
-        const rand=Math.random();
-        if(rand<0.05){ freeSpins+=3; multiplier=1; document.getElementById("message").innerHTML=`🎁 3 бесплатных спина!`; bonusSound.play(); }
-        else if(rand<0.15){ multiplier=2; document.getElementById("message").innerHTML=`🔥 Множитель x2!`; bonusSound.play(); }
-        else if(win>0){ document.getElementById("message").textContent=`Выигрыш: ${win}`; winSound.play(); dropCoins(win); }
-        else{ document.getElementById("message").textContent="Попробуйте ещё!"; }
-
-        balance+=win;
-        document.getElementById("balance").textContent=balance;
-
-        if(freeSpins>0) freeSpins--; else multiplier=1;
-    },1200);
 }
 
-document.getElementById("spin").addEventListener('click',spinSlot);
+document.getElementById('search').addEventListener('input', renderTable);
+
+renderTable();
 </script>
-
 </body>
 </html>
-
