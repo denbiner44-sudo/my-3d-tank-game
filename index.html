@@ -3,134 +3,199 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Информация по моим трубкам</title>
+<title>Клиенты и трубки с прозвоном</title>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
 
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #f0f2f5;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-  }
+body {
+  font-family: Arial, sans-serif;
+  background: #f0f2f5;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
 
-  .container {
-    width: 800px;
-    background: #fff;
-    padding: 20px 30px;
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.1);
-  }
+.container {
+  width: 950px;
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
 
-  h1 { text-align: center; margin-bottom: 20px; }
-  form { display: grid; gap: 10px; }
-  input, textarea, button {
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  button {
-    background: #4CAF50;
-    color: white;
-    cursor: pointer;
-    border: none;
-    transition: background 0.3s;
-  }
-  button:hover { background: #45a049; }
-  ul { list-style: none; padding: 0; margin-top: 20px; }
-  li { padding: 10px; margin-bottom: 5px; border-radius: 5px; background: #f9f9f9; font-size: 15px; }
+h1, h2 { text-align: center; margin-bottom: 20px; }
+
+form { display: grid; gap: 10px; margin-bottom: 30px; }
+input, textarea, button, select {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+button {
+  background: #4CAF50;
+  color: white;
+  cursor: pointer;
+  border: none;
+  transition: 0.3s;
+}
+button:hover { background: #45a049; }
+
+ul { list-style: none; padding: 0; }
+li { padding: 10px; margin-bottom: 5px; border-radius: 5px; background: #f9f9f9; font-size: 15px; }
+a.callLink { padding: 5px 10px; background: #2196F3; color: white; border-radius: 4px; text-decoration: none; margin-top: 5px; display: inline-block; }
+a.callLink:hover { background: #0b7dda; }
+
+.section { margin-bottom: 40px; }
 </style>
 </head>
 <body>
 
 <div class="container">
-  <h1>Добавить клиента</h1>
 
-  <form id="clientForm">
-    <input type="text" id="clientFIO" placeholder="ФИО" required>
-    <input type="text" id="clientDOB" placeholder="Дата рождения" required>
-    <input type="text" id="clientAge" placeholder="Возраст" required>
-    <input type="text" id="clientPassport" placeholder="Паспорт" required>
-    <input type="text" id="clientHomePhone" placeholder="Домашний телефон">
-    <input type="text" id="clientMobile" placeholder="Сотовый">
-    <input type="text" id="clientAddress" placeholder="Адрес">
-    <input type="text" id="clientKnowCall" placeholder="Кто знает о звонке">
-    <input type="text" id="clientAfterCall" placeholder="Куда обращался после звонка">
-    <input type="text" id="clientLivesWith" placeholder="С кем проживает">
-    <textarea id="clientOtherPeople" placeholder="3-тие лица"></textarea>
-    <textarea id="clientHealth" placeholder="Здоровье"></textarea>
-    <textarea id="clientExtraInfo" placeholder="Дополнительная информация"></textarea>
-    <textarea id="clientBank" placeholder="Банк"></textarea>
-    <textarea id="clientHouseMoney" placeholder="Дома / Лаве"></textarea>
-    <button type="submit">Добавить клиента</button>
-  </form>
+<h1>Клиенты и трубки с прозвоном</h1>
 
-  <ul id="clientList"></ul>
+<!-- Клиенты -->
+<div class="section">
+<h2>Добавить клиента (Адольф+Амиксол+Кевин)</h2>
+<form id="clientForm">
+  <input type="text" id="clientFIO" placeholder="ФИО" required>
+  <input type="text" id="clientDOB" placeholder="Дата рождения" required>
+  <input type="text" id="clientAge" placeholder="Возраст" required>
+  <input type="text" id="clientPassport" placeholder="Паспорт" required>
+  <input type="text" id="clientHomePhone" placeholder="Домашний телефон">
+  <input type="text" id="clientMobile" placeholder="Сотовый">
+  <input type="text" id="clientAddress" placeholder="Адрес">
+  <input type="text" id="clientKnowCall" placeholder="Кто знает о звонке">
+  <input type="text" id="clientAfterCall" placeholder="Куда обращался после звонка">
+  <input type="text" id="clientLivesWith" placeholder="С кем проживает">
+  <textarea id="clientOtherPeople" placeholder="3-тие лица"></textarea>
+  <textarea id="clientHealth" placeholder="Здоровье"></textarea>
+  <textarea id="clientExtraInfo" placeholder="Дополнительная информация"></textarea>
+  <textarea id="clientBank" placeholder="Банк"></textarea>
+  <textarea id="clientHouseMoney" placeholder="Дома / Лаве"></textarea>
+  <button type="submit">Добавить клиента</button>
+</form>
+
+<ul id="clientList"></ul>
+</div>
+
+<!-- Трубки -->
+<div class="section">
+<h2>Трубки</h2>
+<form id="tubeForm">
+  <input type="text" id="tubeName" placeholder="ФИО" required>
+  <input type="text" id="tubeNumber" placeholder="Номер трубки" required>
+  <input type="text" id="tubeLocation" placeholder="Местоположение">
+  <select id="tubeStatus" required>
+    <option value="В работе">В работе</option>
+    <option value="Перенос">Перенос</option>
+    <option value="Заказ">Заказ</option>
+    <option value="Срез">Срез</option>
+  </select>
+  <textarea id="tubeNotes" placeholder="Примечания"></textarea>
+  <button type="submit">Добавить трубку</button>
+</form>
+
+<ul id="tubeList"></ul>
+</div>
+
 </div>
 
 <script>
-  // Firebase конфиг
-  const firebaseConfig = {
-    apiKey: "AIzaSyAUFGVs7Q2bH3W8hDGRKSvxjRmR_JmUmXQ",
-    authDomain: "nadzor128.firebaseapp.com",
-    projectId: "nadzor128",
-    storageBucket: "nadzor128.firebasestorage.app",
-    messagingSenderId: "53162427347",
-    appId: "1:53162427347:web:15f58616d4056aeadb2526",
-    measurementId: "G-76B6KZQLKE"
+const firebaseConfig = {
+  apiKey: "AIzaSyAUFGVs7Q2bH3W8hDGRKSvxjRmR_JmUmXQ",
+  authDomain: "nadzor128.firebaseapp.com",
+  projectId: "nadzor128",
+  storageBucket: "nadzor128.firebasestorage.app",
+  messagingSenderId: "53162427347",
+  appId: "1:53162427347:web:15f58616d4056aeadb2526",
+  measurementId: "G-76B6KZQLKE"
+};
+
+const app = firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// --- Клиенты ---
+const clientForm = document.getElementById('clientForm');
+const clientList = document.getElementById('clientList');
+
+clientForm.addEventListener('submit', e => {
+  e.preventDefault();
+  const clientData = {
+    fio: document.getElementById('clientFIO').value,
+    dob: document.getElementById('clientDOB').value,
+    age: document.getElementById('clientAge').value,
+    passport: document.getElementById('clientPassport').value,
+    homePhone: document.getElementById('clientHomePhone').value,
+    mobile: document.getElementById('clientMobile').value,
+    address: document.getElementById('clientAddress').value,
+    knowCall: document.getElementById('clientKnowCall').value,
+    afterCall: document.getElementById('clientAfterCall').value,
+    livesWith: document.getElementById('clientLivesWith').value,
+    otherPeople: document.getElementById('clientOtherPeople').value,
+    health: document.getElementById('clientHealth').value,
+    extraInfo: document.getElementById('clientExtraInfo').value,
+    bank: document.getElementById('clientBank').value,
+    houseMoney: document.getElementById('clientHouseMoney').value
   };
+  db.collection('clients').add(clientData).then(() => clientForm.reset());
+});
 
-  const app = firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-
-  const clientForm = document.getElementById('clientForm');
-  const clientList = document.getElementById('clientList');
-
-  clientForm.addEventListener('submit', e => {
-    e.preventDefault();
-    const clientData = {
-      fio: document.getElementById('clientFIO').value,
-      dob: document.getElementById('clientDOB').value,
-      age: document.getElementById('clientAge').value,
-      passport: document.getElementById('clientPassport').value,
-      homePhone: document.getElementById('clientHomePhone').value,
-      mobile: document.getElementById('clientMobile').value,
-      address: document.getElementById('clientAddress').value,
-      knowCall: document.getElementById('clientKnowCall').value,
-      afterCall: document.getElementById('clientAfterCall').value,
-      livesWith: document.getElementById('clientLivesWith').value,
-      otherPeople: document.getElementById('clientOtherPeople').value,
-      health: document.getElementById('clientHealth').value,
-      extraInfo: document.getElementById('clientExtraInfo').value,
-      bank: document.getElementById('clientBank').value,
-      houseMoney: document.getElementById('clientHouseMoney').value
-    };
-
-    db.collection('clients').add(clientData)
-      .then(() => clientForm.reset());
+db.collection('clients').onSnapshot(snapshot => {
+  clientList.innerHTML = '';
+  snapshot.forEach(doc => {
+    const data = doc.data();
+    clientList.innerHTML += `<li>
+      <b>${data.fio}</b>, ${data.dob}, ${data.age} лет, Паспорт: ${data.passport}<br>
+      Дом: ${data.homePhone}, Моб: ${data.mobile}, Адрес: ${data.address}<br>
+      Кто знает о звонке: ${data.knowCall}, После звонка: ${data.afterCall}<br>
+      Проживает: ${data.livesWith}, 3-тие лица: ${data.otherPeople}<br>
+      Здоровье: ${data.health}<br>
+      Дополнительно: ${data.extraInfo}<br>
+      Банк: ${data.bank}<br>
+      Дома/Лаве: ${data.houseMoney}
+    </li>`;
   });
+});
 
-  db.collection('clients').onSnapshot(snapshot => {
-    clientList.innerHTML = '';
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      clientList.innerHTML += `<li>
-        <b>${data.fio}</b>, ${data.dob}, ${data.age} лет, Паспорт: ${data.passport}<br>
-        Дом: ${data.homePhone}, Моб: ${data.mobile}, Адрес: ${data.address}<br>
-        Кто знает о звонке: ${data.knowCall}, После звонка: ${data.afterCall}<br>
-        Проживает: ${data.livesWith}, 3-тие лица: ${data.otherPeople}<br>
-        Здоровье: ${data.health}<br>
-        Дополнительно: ${data.extraInfo}<br>
-        Банк: ${data.bank}<br>
-        Дома/Лаве: ${data.houseMoney}
-      </li>`;
-    });
+// --- Трубки ---
+const tubeForm = document.getElementById('tubeForm');
+const tubeList = document.getElementById('tubeList');
+
+tubeForm.addEventListener('submit', e => {
+  e.preventDefault();
+  const tubeData = {
+    name: document.getElementById('tubeName').value,
+    number: document.getElementById('tubeNumber').value,
+    location: document.getElementById('tubeLocation').value,
+    status: document.getElementById('tubeStatus').value,
+    notes: document.getElementById('tubeNotes').value
+  };
+  db.collection('tubes').add(tubeData).then(() => tubeForm.reset());
+});
+
+db.collection('tubes').onSnapshot(snapshot => {
+  tubeList.innerHTML = '';
+  snapshot.forEach(doc => {
+    const data = doc.data();
+    let color;
+    switch(data.status){
+      case 'В работе': color = 'orange'; break;
+      case 'Перенос': color = 'blue'; break;
+      case 'Заказ': color = 'green'; break;
+      case 'Срез': color = 'red'; break;
+      default: color = 'black';
+    }
+    tubeList.innerHTML += `<li style="color:${color}">
+      <b>${data.name}</b> - ${data.number} - ${data.status} - ${data.location}<br>
+      <a class="callLink" href="sip:${data.number}@sip.example.com">Позвонить</a>
+    </li>`;
   });
+});
 </script>
 
 </body>
