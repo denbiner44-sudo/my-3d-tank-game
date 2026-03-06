@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>MEGA TYCOON CLICKER</title>
-
+<title>Магнат 2.0 PRO</title>
 <style>
 :root{
 --bg:#1e1e2f;
@@ -13,11 +12,12 @@
 --green:#4caf50;
 --red:#ff5252;
 --blue:#42a5f5;
+--gold:#fddb3a;
 }
 body{
 margin:0;
-background:linear-gradient(180deg,#1e1e2f,#25253b);
 font-family:Arial;
+background:linear-gradient(180deg,#1e1e2f,#25253b);
 color:white;
 }
 .topbar{
@@ -55,8 +55,9 @@ padding:10px;
 margin:8px 0;
 border-radius:10px;
 box-shadow:0 4px 10px rgba(0,0,0,0.4);
+position:relative;
 }
-button{
+.card button{
 width:100%;
 padding:8px;
 margin-top:6px;
@@ -73,6 +74,18 @@ height:60px;
 font-size:18px;
 background:linear-gradient(180deg,#ffb703,#fb8500);
 }
+.notification{
+position:fixed;
+top:10px;
+right:10px;
+padding:10px;
+border-radius:8px;
+background:var(--gold);
+color:black;
+font-weight:bold;
+display:none;
+z-index:100;
+}
 </style>
 </head>
 <body>
@@ -82,6 +95,7 @@ background:linear-gradient(180deg,#ffb703,#fb8500);
 <div>🏦 $<span id="bank">0</span></div>
 <div>⭐ <span id="level">1</span></div>
 <div>⚡ x<span id="mult">1</span></div>
+<div>🍔 <span id="hunger">100</span>%</div>
 </div>
 
 <div class="tabs">
@@ -108,56 +122,58 @@ background:linear-gradient(180deg,#ffb703,#fb8500);
 <button class="danger" onclick="withdraw()">Снять</button>
 </div>
 
+<div class="notification" id="notif"></div>
+
 <script>
+// --- ИГРОВАЯ ЛОГИКА ---
 let g={
-money:1000,
+money:500,
 bank:0,
 level:1,
 xp:0,
 mult:1,
-
+hunger:100,
 markets:[
-{name:"Фруктовая лавка",cost:500,inc:5,owned:0},
-{name:"Мясной магазин",cost:2000,inc:25,owned:0},
-{name:"Супермаркет",cost:8000,inc:100,owned:0},
-{name:"Торговый центр",cost:30000,inc:450,owned:0},
-{name:"Оптовый склад",cost:90000,inc:1200,owned:0},
-{name:"Международная сеть",cost:250000,inc:3500,owned:0}
+{name:"Фруктовая лавка",cost:500,inc:5,owned:0,mngr:false},
+{name:"Супермаркет",cost:3000,inc:25,owned:0,mngr:false},
+{name:"Торговый центр",cost:12000,inc:120,owned:0,mngr:false},
+{name:"Оптовый склад",cost:40000,inc:400,owned:0,mngr:false},
+{name:"Сеть супермаркетов",cost:120000,inc:1200,owned:0,mngr:false},
+{name:"Международная сеть",cost:350000,inc:3500,owned:0,mngr:false}
 ],
-
 auto:[
-{name:"Гараж",cost:1500,inc:15,owned:0},
-{name:"Автомойка",cost:5000,inc:60,owned:0},
-{name:"СТО",cost:15000,inc:200,owned:0},
-{name:"Дилерский центр",cost:60000,inc:800,owned:0},
-{name:"Автозавод",cost:200000,inc:2500,owned:0},
-{name:"Автоимперия",cost:700000,inc:7000,owned:0}
+{name:"Гараж",cost:2000,inc:20,owned:0,mngr:false},
+{name:"Автомойка",cost:10000,inc:100,owned:0,mngr:false},
+{name:"СТО",cost:50000,inc:500,owned:0,mngr:false},
+{name:"Дилерский центр",cost:200000,inc:2000,owned:0,mngr:false},
+{name:"Автозавод",cost:600000,inc:6000,owned:0,mngr:false},
+{name:"Автоимперия",cost:2000000,inc:20000,owned:0,mngr:false}
 ],
-
 oil:[
-{name:"Малая скважина",cost:10000,inc:120,owned:0},
-{name:"Нефтяная вышка",cost:40000,inc:500,owned:0},
-{name:"НПЗ",cost:120000,inc:1600,owned:0},
-{name:"Нефтяное поле",cost:400000,inc:4500,owned:0},
-{name:"Экспортная компания",cost:1200000,inc:12000,owned:0},
-{name:"Нефтяная корпорация",cost:5000000,inc:35000,owned:0}
+{name:"Малая скважина",cost:10000,inc:120,owned:0,mngr:false},
+{name:"Нефтяная вышка",cost:40000,inc:500,owned:0,mngr:false},
+{name:"НПЗ",cost:150000,inc:1500,owned:0,mngr:false},
+{name:"Нефтяное поле",cost:500000,inc:4500,owned:0,mngr:false},
+{name:"Экспортная компания",cost:1500000,inc:12000,owned:0,mngr:false},
+{name:"Нефтяная корпорация",cost:5000000,inc:35000,owned:0,mngr:false}
 ],
-
 crypto:[
-{name:"GPU ферма",cost:8000,inc:90,owned:0},
-{name:"ASIC ферма",cost:30000,inc:400,owned:0},
-{name:"Криптобиржа",cost:100000,inc:1500,owned:0},
-{name:"DeFi платформа",cost:300000,inc:4200,owned:0},
-{name:"Международная биржа",cost:1000000,inc:11000,owned:0},
-{name:"Блокчейн корпорация",cost:4000000,inc:30000,owned:0}
+{name:"GPU ферма",cost:8000,inc:90,owned:0,mngr:false},
+{name:"ASIC ферма",cost:30000,inc:400,owned:0,mngr:false},
+{name:"Криптобиржа",cost:120000,inc:1500,owned:0,mngr:false},
+{name:"DeFi платформа",cost:400000,inc:4500,owned:0,mngr:false},
+{name:"Международная биржа",cost:1200000,inc:11000,owned:0,mngr:false},
+{name:"Блокчейн корпорация",cost:4000000,inc:30000,owned:0,mngr:false}
 ]
 };
 
+// --- UI ---
 function updateTop(){
-money.innerText=g.money.toFixed(1);
-bank.innerText=g.bank.toFixed(1);
+money.innerText=g.money.toFixed(0);
+bank.innerText=g.bank.toFixed(0);
 level.innerText=g.level;
 mult.innerText=g.mult.toFixed(2);
+hunger.innerText=Math.floor(g.hunger);
 }
 
 function openTab(i){
@@ -176,39 +192,49 @@ html+=`
 <button class="buy" onclick="buy('${container}',${i})">
 Купить ($${Math.floor(b.cost)})
 </button>
+<button class="blue" onclick="hire('${container}',${i})">
+${b.mngr?"Менеджер активен":"Нанять менеджера ($"+Math.floor(b.cost*3)+")"}
+</button>
 </div>`;
 });
 document.getElementById(container).innerHTML=html;
 }
 
 function buy(cat,i){
-let b=g[cat][i];
+let arr=g[cat];
+let b=arr[i];
 if(g.money>=b.cost){
 g.money-=b.cost;
 b.owned++;
 b.cost*=1.5;
+notify(`Куплен ${b.name}`);
+}
+}
+
+function hire(cat,i){
+let b=g[cat][i];
+if(!b.mngr && g.money>=b.cost*3){
+g.money-=b.cost*3;
+b.mngr=true;
+notify(`Менеджер для ${b.name} нанят`);
 }
 }
 
 function deposit(){
 let v=parseFloat(bankInput.value);
-if(v>0 && g.money>=v){
-g.money-=v;
-g.bank+=v;
-}
+if(v>0 && g.money>=v){g.money-=v;g.bank+=v;notify(`Внесено $${v}`);}
 }
 
 function withdraw(){
 let v=parseFloat(bankInput.value);
-if(v>0 && g.bank>=v){
-g.bank-=v;
-g.money+=v;
-}
+if(v>0 && g.bank>=v){g.bank-=v;g.money+=v;notify(`Снято $${v}`);}
 }
 
 clickBtn.onclick=()=>{
+if(g.hunger<=0){notify("Вы голодны! Покупайте еду");return;}
 g.money+=1*g.mult;
 g.xp++;
+g.hunger-=0.5;
 };
 
 function levelCheck(){
@@ -216,21 +242,37 @@ if(g.xp>=100*g.level){
 g.xp=0;
 g.level++;
 g.mult+=0.2;
+notify(`Уровень ${g.level} достигнут!`);
 }
 }
 
+// --- Авто доход, голод и события ---
 setInterval(()=>{
-let total=0;
 ["markets","auto","oil","crypto"].forEach(cat=>{
 g[cat].forEach(b=>{
-total+=b.owned*b.inc;
+if(b.mngr) g.money+=b.owned*b.inc*0.1*g.mult;
 });
 });
-g.money+=total*0.1*g.mult;
-g.bank+=g.bank*0.002;
+g.money+=0.1*g.mult; // пассивный доход
+g.bank+=g.bank*0.001;
+g.hunger=Math.max(0,g.hunger-0.05);
 levelCheck();
 updateTop();
-},100);
+},1000);
+
+setInterval(()=>{
+// случайные события
+if(Math.random()<0.03){
+let bonus=Math.floor(100+Math.random()*1000);
+g.money+=bonus;
+notify(`🎉 Бонус! +$${bonus}`);
+}
+if(Math.random()<0.02 && g.money>0){
+let loss=Math.floor(50+Math.random()*500);
+g.money=Math.max(0,g.money-loss);
+notify(`⚠️ Потери: -$${loss}`);
+}
+},5000);
 
 function renderAll(){
 renderCategory(g.markets,"tab1");
@@ -240,7 +282,14 @@ renderCategory(g.crypto,"tab4");
 updateTop();
 }
 renderAll();
-</script>
 
+// --- Уведомления ---
+function notify(txt){
+const n=document.getElementById("notif");
+n.innerText=txt;
+n.style.display="block";
+setTimeout(()=>n.style.display="none",3000);
+}
+</script>
 </body>
 </html>
