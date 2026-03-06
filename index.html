@@ -2,166 +2,245 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Doodle Jump Premium</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MEGA TYCOON CLICKER</title>
+
 <style>
-    body { margin:0; overflow:hidden; background: linear-gradient(to top, #87CEEB 0%, #ffffff 100%);}
-    canvas { display:block; margin:0 auto; touch-action:none; background: transparent; }
+:root{
+--bg:#1e1e2f;
+--panel:#2a2a40;
+--accent:#ffb703;
+--green:#4caf50;
+--red:#ff5252;
+--blue:#42a5f5;
+}
+body{
+margin:0;
+background:linear-gradient(180deg,#1e1e2f,#25253b);
+font-family:Arial;
+color:white;
+}
+.topbar{
+display:flex;
+justify-content:space-around;
+padding:10px;
+background:#111827;
+font-weight:bold;
+}
+.tabs{
+display:flex;
+overflow:auto;
+background:#181825;
+}
+.tab{
+flex:1;
+padding:10px;
+text-align:center;
+cursor:pointer;
+background:#222;
+}
+.tab.active{
+background:var(--accent);
+color:black;
+font-weight:bold;
+}
+.panel{
+padding:15px;
+display:none;
+}
+.panel.active{display:block;}
+.card{
+background:var(--panel);
+padding:10px;
+margin:8px 0;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,0.4);
+}
+button{
+width:100%;
+padding:8px;
+margin-top:6px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-weight:bold;
+}
+.buy{background:var(--green);}
+.danger{background:var(--red);}
+.blue{background:var(--blue);}
+#clickBtn{
+height:60px;
+font-size:18px;
+background:linear-gradient(180deg,#ffb703,#fb8500);
+}
 </style>
 </head>
 <body>
-<canvas id="gameCanvas" width="400" height="600"></canvas>
+
+<div class="topbar">
+<div>💰 $<span id="money">0</span></div>
+<div>🏦 $<span id="bank">0</span></div>
+<div>⭐ <span id="level">1</span></div>
+<div>⚡ x<span id="mult">1</span></div>
+</div>
+
+<div class="tabs">
+<div class="tab active" onclick="openTab(0)">💼 Работа</div>
+<div class="tab" onclick="openTab(1)">🏪 Рынки</div>
+<div class="tab" onclick="openTab(2)">🚗 Авто</div>
+<div class="tab" onclick="openTab(3)">🛢 Нефть</div>
+<div class="tab" onclick="openTab(4)">💻 Крипта</div>
+<div class="tab" onclick="openTab(5)">🏦 Банк</div>
+</div>
+
+<div class="panel active" id="tab0">
+<button id="clickBtn">РАБОТАТЬ 💸</button>
+</div>
+
+<div class="panel" id="tab1"></div>
+<div class="panel" id="tab2"></div>
+<div class="panel" id="tab3"></div>
+<div class="panel" id="tab4"></div>
+
+<div class="panel" id="tab5">
+<input type="number" id="bankInput" placeholder="Сумма">
+<button class="buy" onclick="deposit()">Внести</button>
+<button class="danger" onclick="withdraw()">Снять</button>
+</div>
 
 <script>
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
+let g={
+money:1000,
+bank:0,
+level:1,
+xp:0,
+mult:1,
 
-// Спрайты
-const playerImg = new Image();
-playerImg.src = "https://i.imgur.com/Oj1w6bS.png"; // дудл спрайт
+markets:[
+{name:"Фруктовая лавка",cost:500,inc:5,owned:0},
+{name:"Мясной магазин",cost:2000,inc:25,owned:0},
+{name:"Супермаркет",cost:8000,inc:100,owned:0},
+{name:"Торговый центр",cost:30000,inc:450,owned:0},
+{name:"Оптовый склад",cost:90000,inc:1200,owned:0},
+{name:"Международная сеть",cost:250000,inc:3500,owned:0}
+],
 
-const platformImg = new Image();
-platformImg.src = "https://i.imgur.com/4r7Ff1Q.png"; // платформа
+auto:[
+{name:"Гараж",cost:1500,inc:15,owned:0},
+{name:"Автомойка",cost:5000,inc:60,owned:0},
+{name:"СТО",cost:15000,inc:200,owned:0},
+{name:"Дилерский центр",cost:60000,inc:800,owned:0},
+{name:"Автозавод",cost:200000,inc:2500,owned:0},
+{name:"Автоимперия",cost:700000,inc:7000,owned:0}
+],
 
-const coinImg = new Image();
-coinImg.src = "https://i.imgur.com/vP6c8cO.png"; // бонус
+oil:[
+{name:"Малая скважина",cost:10000,inc:120,owned:0},
+{name:"Нефтяная вышка",cost:40000,inc:500,owned:0},
+{name:"НПЗ",cost:120000,inc:1600,owned:0},
+{name:"Нефтяное поле",cost:400000,inc:4500,owned:0},
+{name:"Экспортная компания",cost:1200000,inc:12000,owned:0},
+{name:"Нефтяная корпорация",cost:5000000,inc:35000,owned:0}
+],
 
-const enemyImg = new Image();
-enemyImg.src = "https://i.imgur.com/8yLHpUQ.png"; // враг
+crypto:[
+{name:"GPU ферма",cost:8000,inc:90,owned:0},
+{name:"ASIC ферма",cost:30000,inc:400,owned:0},
+{name:"Криптобиржа",cost:100000,inc:1500,owned:0},
+{name:"DeFi платформа",cost:300000,inc:4200,owned:0},
+{name:"Международная биржа",cost:1000000,inc:11000,owned:0},
+{name:"Блокчейн корпорация",cost:4000000,inc:30000,owned:0}
+]
+};
 
-// Звуки
-const jumpSound = new Audio("https://freesound.org/data/previews/331/331912_3248244-lq.mp3");
-const coinSound = new Audio("https://freesound.org/data/previews/256/256113_4486188-lq.mp3");
-
-const player = { x:200, y:540, width:40, height:40, dy:0, gravity:0.5, jump:-12 };
-let platforms = [], coins = [], enemies = [];
-let score = 0;
-
-// Генерация платформ
-function createPlatforms(){
-    platforms = [];
-    for(let i=0;i<10;i++){
-        platforms.push({x:Math.random()*(canvas.width-60), y:i*60, width:60, height:10, type:"normal"});
-    }
+function updateTop(){
+money.innerText=g.money.toFixed(1);
+bank.innerText=g.bank.toFixed(1);
+level.innerText=g.level;
+mult.innerText=g.mult.toFixed(2);
 }
 
-// Генерация бонусов
-function createCoins(){
-    coins = [];
-    for(let i=0;i<5;i++){
-        coins.push({x:Math.random()*(canvas.width-20), y:Math.random()*300, width:20, height:20, collected:false});
-    }
+function openTab(i){
+document.querySelectorAll(".tab").forEach((t,idx)=>t.classList.toggle("active",idx==i));
+document.querySelectorAll(".panel").forEach((p,idx)=>p.classList.toggle("active",idx==i));
 }
 
-// Генерация врагов
-function createEnemies(){
-    enemies = [];
-    for(let i=0;i<3;i++){
-        enemies.push({x:Math.random()*(canvas.width-40), y:Math.random()*200, width:40, height:40});
-    }
+function renderCategory(arr,container){
+let html="";
+arr.forEach((b,i)=>{
+html+=`
+<div class="card">
+<b>${b.name}</b><br>
+Владение: ${b.owned}<br>
+Доход: $${b.inc}/с<br>
+<button class="buy" onclick="buy('${container}',${i})">
+Купить ($${Math.floor(b.cost)})
+</button>
+</div>`;
+});
+document.getElementById(container).innerHTML=html;
 }
 
-// Рисуем платформы
-function drawPlatforms(){
-    platforms.forEach(p=>{
-        if(platformImg.complete) ctx.drawImage(platformImg,p.x,p.y,p.width,p.height);
-        else { ctx.fillStyle="#654321"; ctx.fillRect(p.x,p.y,p.width,p.height); }
-    });
+function buy(cat,i){
+let b=g[cat][i];
+if(g.money>=b.cost){
+g.money-=b.cost;
+b.owned++;
+b.cost*=1.5;
+}
 }
 
-// Рисуем бонусы
-function drawCoins(){
-    coins.forEach(c=>{
-        if(!c.collected){
-            if(coinImg.complete) ctx.drawImage(coinImg,c.x,c.y,c.width,c.height);
-            else { ctx.fillStyle="gold"; ctx.fillRect(c.x,c.y,c.width,c.height); }
-        }
-    });
+function deposit(){
+let v=parseFloat(bankInput.value);
+if(v>0 && g.money>=v){
+g.money-=v;
+g.bank+=v;
+}
 }
 
-// Рисуем врагов
-function drawEnemies(){
-    enemies.forEach(e=>{
-        if(enemyImg.complete) ctx.drawImage(enemyImg,e.x,e.y,e.width,e.height);
-        else { ctx.fillStyle="black"; ctx.fillRect(e.x,e.y,e.width,e.height); }
-    });
+function withdraw(){
+let v=parseFloat(bankInput.value);
+if(v>0 && g.bank>=v){
+g.bank-=v;
+g.money+=v;
+}
 }
 
-// Рисуем игрока
-function drawPlayer(){ ctx.drawImage(playerImg,player.x,player.y,player.width,player.height); }
+clickBtn.onclick=()=>{
+g.money+=1*g.mult;
+g.xp++;
+};
 
-// Обновление позиции игрока
-function updatePlayer(){
-    player.dy+=player.gravity; player.y+=player.dy;
-
-    // Столкновения с платформами
-    platforms.forEach(p=>{
-        if(player.dy>0 && player.x+player.width>p.x && player.x<p.x+p.width &&
-           player.y+player.height>p.y && player.y+player.height<p.y+p.height+player.dy){
-               player.dy=player.jump;
-               jumpSound.play();
-           }
-    });
-
-    // Собираем монеты
-    coins.forEach(c=>{
-        if(!c.collected && player.x+player.width>c.x && player.x<c.x+c.width &&
-           player.y+player.height>c.y && player.y<c.y+c.height){
-               c.collected=true; score+=50; coinSound.play();
-           }
-    });
-
-    // Столкновения с врагами
-    enemies.forEach(e=>{
-        if(player.x+player.width>e.x && player.x<e.x+e.width &&
-           player.y+player.height>e.y && player.y<e.y+e.height){
-               alert("Игра окончена! Ваш счёт: "+Math.floor(score));
-               score=0; player.x=200; player.y=540; player.dy=0;
-               createPlatforms(); createCoins(); createEnemies();
-           }
-    });
-
-    // Движение платформ вниз
-    if(player.y<canvas.height/2){
-        const diff=(canvas.height/2)-player.y; player.y=canvas.height/2;
-        platforms.forEach(p=>p.y+=diff);
-        coins.forEach(c=>c.y+=diff);
-        enemies.forEach(e=>e.y+=diff);
-        score+=Math.floor(diff/2);
-    }
-
-    // Конец игры
-    if(player.y>canvas.height){
-        alert("Игра окончена! Ваш счёт: "+Math.floor(score));
-        score=0; player.x=200; player.y=540; player.dy=0;
-        createPlatforms(); createCoins(); createEnemies();
-    }
+function levelCheck(){
+if(g.xp>=100*g.level){
+g.xp=0;
+g.level++;
+g.mult+=0.2;
+}
 }
 
-// Управление
-let left=false, right=false;
-document.addEventListener('keydown', e=>{ if(e.key==='ArrowLeft') left=true; if(e.key==='ArrowRight') right=true; });
-document.addEventListener('keyup', e=>{ if(e.key==='ArrowLeft') left=false; if(e.key==='ArrowRight') right=false; });
-canvas.addEventListener('touchstart', e=>{ const tx=e.touches[0].clientX; if(tx<canvas.width/2) left=true; else right=true; });
-canvas.addEventListener('touchend', e=>{ left=false; right=false; });
+setInterval(()=>{
+let total=0;
+["markets","auto","oil","crypto"].forEach(cat=>{
+g[cat].forEach(b=>{
+total+=b.owned*b.inc;
+});
+});
+g.money+=total*0.1*g.mult;
+g.bank+=g.bank*0.002;
+levelCheck();
+updateTop();
+},100);
 
-function movePlayer(){
-    if(left) player.x-=5;
-    if(right) player.x+=5;
-    if(player.x<0) player.x=0; if(player.x+player.width>canvas.width) player.x=canvas.width-player.width;
+function renderAll(){
+renderCategory(g.markets,"tab1");
+renderCategory(g.auto,"tab2");
+renderCategory(g.oil,"tab3");
+renderCategory(g.crypto,"tab4");
+updateTop();
 }
-
-// Главный цикл
-function gameLoop(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    drawPlatforms(); drawCoins(); drawEnemies(); drawPlayer();
-    updatePlayer(); movePlayer();
-    ctx.fillStyle="#000"; ctx.font="20px Arial"; ctx.fillText("Счёт: "+Math.floor(score),10,30);
-    requestAnimationFrame(gameLoop);
-}
-
-// Инициализация
-createPlatforms(); createCoins(); createEnemies(); gameLoop();
+renderAll();
 </script>
+
 </body>
 </html>
