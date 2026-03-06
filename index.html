@@ -3,64 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Клиенты и трубки с прозвоном</title>
+<title>CRM Клиентов и Трубок</title>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
 
 <style>
-body {
-  font-family: Arial, sans-serif;
-  background: #f0f2f5;
-  padding: 20px;
-  display: flex;
-  justify-content: center;
-}
-
-.container {
-  width: 950px;
-  background: #fff;
-  padding: 20px 30px;
-  border-radius: 8px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.1);
-}
-
-h1, h2 { text-align: center; margin-bottom: 20px; }
-
-form { display: grid; gap: 10px; margin-bottom: 30px; }
-input, textarea, button, select {
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-button {
-  background: #4CAF50;
-  color: white;
-  cursor: pointer;
-  border: none;
-  transition: 0.3s;
-}
-button:hover { background: #45a049; }
-
-ul { list-style: none; padding: 0; }
-li { padding: 10px; margin-bottom: 5px; border-radius: 5px; background: #f9f9f9; font-size: 15px; }
-a.callLink { padding: 5px 10px; background: #2196F3; color: white; border-radius: 4px; text-decoration: none; margin-top: 5px; display: inline-block; }
-a.callLink:hover { background: #0b7dda; }
-
-.section { margin-bottom: 40px; }
+body { font-family: Arial; background:#f0f2f5; padding:20px; display:flex; justify-content:center; }
+.container { width: 1000px; background:#fff; padding:20px 30px; border-radius:8px; box-shadow:0 0 15px rgba(0,0,0,0.1); }
+h1,h2{text-align:center; margin-bottom:20px;}
+form { display:grid; gap:10px; margin-bottom:30px; }
+input,textarea,button,select { padding:10px; font-size:16px; border-radius:5px; border:1px solid #ccc; }
+button { background:#4CAF50; color:white; border:none; cursor:pointer; transition:0.3s; }
+button:hover { background:#45a049; }
+ul { list-style:none; padding:0; margin-top:10px; }
+li { padding:10px; margin-bottom:5px; border-radius:5px; background:#f9f9f9; font-size:15px; }
+a.callLink { padding:5px 10px; background:#2196F3; color:white; border-radius:4px; text-decoration:none; margin-top:5px; display:inline-block; }
+a.callLink:hover { background:#0b7dda; }
+.editBtn, .deleteBtn { padding:5px 8px; margin-left:5px; border:none; border-radius:4px; cursor:pointer; color:white; }
+.editBtn { background:orange; }
+.deleteBtn { background:red; }
+.section { margin-bottom:40px; }
+.filters { display:flex; gap:10px; margin-bottom:10px; }
+.filters select, .filters input { padding:8px; font-size:14px; }
 </style>
 </head>
 <body>
 
 <div class="container">
 
-<h1>Клиенты и трубки с прозвоном</h1>
+<h1>CRM Клиентов и Трубок</h1>
 
 <!-- Клиенты -->
 <div class="section">
-<h2>Добавить клиента</h2>
+<h2>Добавить / Управление клиентами</h2>
 <form id="clientForm">
   <input type="text" id="clientFIO" placeholder="ФИО" required>
   <input type="text" id="clientDOB" placeholder="Дата рождения" required>
@@ -80,12 +57,16 @@ a.callLink:hover { background: #0b7dda; }
   <button type="submit">Добавить клиента</button>
 </form>
 
+<div class="filters">
+  <input type="text" id="clientSearch" placeholder="Поиск по ФИО">
+</div>
+
 <ul id="clientList"></ul>
 </div>
 
 <!-- Трубки -->
 <div class="section">
-<h2>Трубки</h2>
+<h2>Добавить / Управление трубками</h2>
 <form id="tubeForm">
   <input type="text" id="tubeName" placeholder="ФИО" required>
   <input type="text" id="tubeNumber" placeholder="Номер трубки" required>
@@ -99,6 +80,17 @@ a.callLink:hover { background: #0b7dda; }
   <textarea id="tubeNotes" placeholder="Примечания"></textarea>
   <button type="submit">Добавить трубку</button>
 </form>
+
+<div class="filters">
+  <input type="text" id="tubeSearch" placeholder="Поиск по ФИО">
+  <select id="tubeFilterStatus">
+    <option value="">Все статусы</option>
+    <option value="В работе">В работе</option>
+    <option value="Перенос">Перенос</option>
+    <option value="Заказ">Заказ</option>
+    <option value="Срез">Срез</option>
+  </select>
+</div>
 
 <ul id="tubeList"></ul>
 </div>
@@ -115,15 +107,17 @@ const firebaseConfig = {
   appId: "1:53162427347:web:15f58616d4056aeadb2526",
   measurementId: "G-76B6KZQLKE"
 };
-
 const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 // --- Клиенты ---
 const clientForm = document.getElementById('clientForm');
 const clientList = document.getElementById('clientList');
+const clientSearch = document.getElementById('clientSearch');
 
-clientForm.addEventListener('submit', e => {
+let editClientId = null;
+
+clientForm.addEventListener('submit', e=>{
   e.preventDefault();
   const clientData = {
     fio: document.getElementById('clientFIO').value,
@@ -142,61 +136,129 @@ clientForm.addEventListener('submit', e => {
     bank: document.getElementById('clientBank').value,
     houseMoney: document.getElementById('clientHouseMoney').value
   };
-  db.collection('clients').add(clientData).then(() => clientForm.reset());
+  if(editClientId){
+    db.collection('clients').doc(editClientId).set(clientData).then(()=>{
+      clientForm.reset(); editClientId=null; clientForm.querySelector('button').textContent='Добавить клиента';
+    });
+  } else {
+    db.collection('clients').add(clientData).then(()=> clientForm.reset());
+  }
 });
 
-db.collection('clients').onSnapshot(snapshot => {
-  clientList.innerHTML = '';
-  snapshot.forEach(doc => {
-    const data = doc.data();
-    clientList.innerHTML += `<li>
-      <b>${data.fio}</b>, ${data.dob}, ${data.age} лет, Паспорт: ${data.passport}<br>
-      Дом: ${data.homePhone}, Моб: ${data.mobile}, Адрес: ${data.address}<br>
-      Кто знает о звонке: ${data.knowCall}, После звонка: ${data.afterCall}<br>
-      Проживает: ${data.livesWith}, 3-тие лица: ${data.otherPeople}<br>
-      Здоровье: ${data.health}<br>
-      Дополнительно: ${data.extraInfo}<br>
-      Банк: ${data.bank}<br>
-      Дома/Лаве: ${data.houseMoney}
-    </li>`;
-  });
+clientSearch.addEventListener('input', ()=>{
+  renderClients(); // фильтр по ФИО
 });
+
+function renderClients(filter=''){
+  db.collection('clients').onSnapshot(snapshot=>{
+    clientList.innerHTML='';
+    snapshot.forEach(doc=>{
+      const data=doc.data();
+      const id = doc.id;
+      if(data.fio.toLowerCase().includes(clientSearch.value.toLowerCase())){
+        clientList.innerHTML+=`<li>
+          <b>${data.fio}</b>, ${data.dob}, ${data.age} лет, Паспорт: ${data.passport}<br>
+          Дом: ${data.homePhone}, Моб: ${data.mobile}, Адрес: ${data.address}<br>
+          Кто знает о звонке: ${data.knowCall}, После звонка: ${data.afterCall}<br>
+          Проживает: ${data.livesWith}, 3-тие лица: ${data.otherPeople}<br>
+          Здоровье: ${data.health}<br>
+          Дополнительно: ${data.extraInfo}<br>
+          Банк: ${data.bank}<br>
+          Дома/Лаве: ${data.houseMoney}<br>
+          <button class="editBtn" onclick="editClient('${id}')">Редактировать</button>
+          <button class="deleteBtn" onclick="deleteClient('${id}')">Удалить</button>
+        </li>`;
+      }
+    });
+  });
+}
+function editClient(id){
+  db.collection('clients').doc(id).get().then(doc=>{
+    const data=doc.data();
+    document.getElementById('clientFIO').value=data.fio;
+    document.getElementById('clientDOB').value=data.dob;
+    document.getElementById('clientAge').value=data.age;
+    document.getElementById('clientPassport').value=data.passport;
+    document.getElementById('clientHomePhone').value=data.homePhone;
+    document.getElementById('clientMobile').value=data.mobile;
+    document.getElementById('clientAddress').value=data.address;
+    document.getElementById('clientKnowCall').value=data.knowCall;
+    document.getElementById('clientAfterCall').value=data.afterCall;
+    document.getElementById('clientLivesWith').value=data.livesWith;
+    document.getElementById('clientOtherPeople').value=data.otherPeople;
+    document.getElementById('clientHealth').value=data.health;
+    document.getElementById('clientExtraInfo').value=data.extraInfo;
+    document.getElementById('clientBank').value=data.bank;
+    document.getElementById('clientHouseMoney').value=data.houseMoney;
+    editClientId=id;
+    clientForm.querySelector('button').textContent='Сохранить изменения';
+  });
+}
+function deleteClient(id){ db.collection('clients').doc(id).delete(); }
+renderClients();
 
 // --- Трубки ---
 const tubeForm = document.getElementById('tubeForm');
 const tubeList = document.getElementById('tubeList');
+const tubeSearch = document.getElementById('tubeSearch');
+const tubeFilterStatus = document.getElementById('tubeFilterStatus');
 
-tubeForm.addEventListener('submit', e => {
+let editTubeId=null;
+
+tubeForm.addEventListener('submit', e=>{
   e.preventDefault();
-  const tubeData = {
-    name: document.getElementById('tubeName').value,
-    number: document.getElementById('tubeNumber').value,
-    location: document.getElementById('tubeLocation').value,
-    status: document.getElementById('tubeStatus').value,
-    notes: document.getElementById('tubeNotes').value
+  const tubeData={
+    name:document.getElementById('tubeName').value,
+    number:document.getElementById('tubeNumber').value,
+    location:document.getElementById('tubeLocation').value,
+    status:document.getElementById('tubeStatus').value,
+    notes:document.getElementById('tubeNotes').value
   };
-  db.collection('tubes').add(tubeData).then(() => tubeForm.reset());
+  if(editTubeId){
+    db.collection('tubes').doc(editTubeId).set(tubeData).then(()=>{
+      tubeForm.reset(); editTubeId=null; tubeForm.querySelector('button').textContent='Добавить трубку';
+    });
+  } else {
+    db.collection('tubes').add(tubeData).then(()=> tubeForm.reset());
+  }
 });
 
-db.collection('tubes').onSnapshot(snapshot => {
-  tubeList.innerHTML = '';
-  snapshot.forEach(doc => {
-    const data = doc.data();
-    let color;
-    switch(data.status){
-      case 'В работе': color = 'orange'; break;
-      case 'Перенос': color = 'blue'; break;
-      case 'Заказ': color = 'green'; break;
-      case 'Срез': color = 'red'; break;
-      default: color = 'black';
-    }
-    tubeList.innerHTML += `<li style="color:${color}">
-      <b>${data.name}</b> - ${data.number} - ${data.status} - ${data.location}<br>
-      <a class="callLink" href="sip:${data.number}@sip.example.com">Позвонить</a>
-    </li>`;
+tubeSearch.addEventListener('input', renderTubes);
+tubeFilterStatus.addEventListener('change', renderTubes);
+
+function renderTubes(){
+  db.collection('tubes').onSnapshot(snapshot=>{
+    tubeList.innerHTML='';
+    snapshot.forEach(doc=>{
+      const data=doc.data(); const id=doc.id;
+      if(data.name.toLowerCase().includes(tubeSearch.value.toLowerCase()) &&
+        (tubeFilterStatus.value==='' || data.status===tubeFilterStatus.value)){
+        let color;
+        switch(data.status){ case 'В работе': color='orange'; break; case 'Перенос': color='blue'; break; case 'Заказ': color='green'; break; case 'Срез': color='red'; break; default: color='black'; }
+        tubeList.innerHTML+=`<li style="color:${color}">
+          <b>${data.name}</b> - ${data.number} - ${data.status} - ${data.location}<br>
+          <a class="callLink" href="sip:${data.number}@sip.example.com">Позвонить</a>
+          <button class="editBtn" onclick="editTube('${id}')">Редактировать</button>
+          <button class="deleteBtn" onclick="deleteTube('${id}')">Удалить</button>
+        </li>`;
+      }
+    });
   });
-});
-</script>
+}
+function editTube(id){
+  db.collection('tubes').doc(id).get().then(doc=>{
+    const data=doc.data();
+    document.getElementById('tubeName').value=data.name;
+    document.getElementById('tubeNumber').value=data.number;
+    document.getElementById('tubeLocation').value=data.location;
+    document.getElementById('tubeStatus').value=data.status;
+    document.getElementById('tubeNotes').value=data.notes;
+    editTubeId=id; tubeForm.querySelector('button').textContent='Сохранить изменения';
+  });
+}
+function deleteTube(id){ db.collection('tubes').doc(id).delete(); }
+renderTubes();
 
+</script>
 </body>
 </html>
