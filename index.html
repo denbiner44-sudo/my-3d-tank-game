@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2048 с уровнями и рекордами</title>
+<title>2048 с уровнями и рекордами (жесты)</title>
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -19,6 +19,8 @@
         padding: 20px;
         border-radius: 10px;
         position: relative;
+        user-select: none;
+        touch-action: none;
     }
     .scoreboard {
         display: flex;
@@ -66,7 +68,7 @@
 </style>
 </head>
 <body>
-<div class="game-container">
+<div class="game-container" id="gameContainer">
     <div class="scoreboard">
         <div>Счет: <span id="score">0</span></div>
         <div>Рекорд: <span id="best">0</span></div>
@@ -175,14 +177,44 @@ function isGameOver() {
     return true;
 }
 
-document.addEventListener('keydown', (e) => {
-    switch(e.key) {
-        case 'ArrowUp': move(0); break;
-        case 'ArrowRight': move(1); break;
-        case 'ArrowDown': move(2); break;
-        case 'ArrowLeft': move(3); break;
-    }
+// === Управление жестами ===
+let startX = 0, startY = 0;
+
+const container = document.getElementById('gameContainer');
+
+container.addEventListener('mousedown', (e) => {
+    startX = e.clientX;
+    startY = e.clientY;
 });
+
+container.addEventListener('mouseup', (e) => {
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+    handleSwipe(dx, dy);
+});
+
+container.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+});
+
+container.addEventListener('touchend', (e) => {
+    const endX = e.changedTouches[0].clientX;
+    const endY = e.changedTouches[0].clientY;
+    const dx = endX - startX;
+    const dy = endY - startY;
+    handleSwipe(dx, dy);
+});
+
+function handleSwipe(dx, dy) {
+    if (Math.abs(dx) > Math.abs(dy)) {
+        if (dx > 20) move(1); // вправо
+        else if (dx < -20) move(3); // влево
+    } else {
+        if (dy > 20) move(2); // вниз
+        else if (dy < -20) move(0); // вверх
+    }
+}
 
 initGrid();
 </script>
