@@ -4,151 +4,80 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Статистика звонков</title>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+
 <style>
-body {
-    font-family: Arial, sans-serif;
-    background: #f0f2f5;
-    margin: 0;
-    padding: 0;
-}
-header {
-    background: #0f172a;
-    color: #fff;
-    padding: 10px 20px;
-    text-align: center;
-}
-.container {
-    padding: 20px;
-}
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-th, td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: left;
-}
-th {
-    background: #1e293b;
-    color: #fff;
-}
-.status {
-    font-weight: bold;
-}
-.status.pending { color: orange; }
-.status.completed { color: green; }
-.status.failed { color: red; }
-button {
-    padding: 5px 10px;
-    margin: 2px;
-    cursor: pointer;
-}
-input, select {
-    padding: 5px;
-    margin: 5px 0;
-    width: 100%;
-}
+  body { font-family: Arial, sans-serif; background: #f0f0f0; padding: 20px; }
+  h1 { text-align: center; }
+  form { margin-bottom: 20px; }
+  input, select, textarea, button { display: block; width: 100%; margin: 5px 0; padding: 8px; }
+  ul { list-style: none; padding: 0; }
+  li { padding: 5px; margin-bottom: 3px; background: #fff; border-radius: 4px; }
 </style>
 </head>
 <body>
-<header>
-    <h1>Юрист Комитета Банковского надзора</h1>
-</header>
-<div class="container">
-    <h2>Добавить трубку / звонок</h2>
-    <form id="callForm">
-        <input type="text" id="name" placeholder="ФИО" required>
-        <input type="text" id="phone" placeholder="Номер телефона" required>
-        <select id="status" required>
-            <option value="">Выберите статус</option>
-            <option value="Срез"> Срез </option>
-            <option value="В работе">В работе</option>
-            <option value="Заказ в банке">Заказ в банке</option>
-        </select>
-        <textarea id="notes" placeholder="Дополнительно"></textarea>
-        <button type="submit">Добавить</button>
-    </form>
 
-    <h2>Список Трубок</h2>
-    <input type="text" id="search" placeholder="Поиск по ФИО или телефону">
-    <table>
-        <thead>
-            <tr>
-                <th>ФИО</th>
-                <th>Телефон</th>
-                <th>Статус</th>
-                <th>Примечания</th>
-                <th>Действия</th>
-            </tr>
-        </thead>
-        <tbody id="callTable"></tbody>
-    </table>
-</div>
+<h1>Статистика звонков</h1>
+
+<form id="callForm">
+  <input type="text" id="name" placeholder="ФИО" required>
+  <input type="text" id="phone" placeholder="Телефон" required>
+  <select id="status" required>
+    <option value="pending">Не обработан</option>
+    <option value="completed">Обработан</option>
+    <option value="failed">Не удалось</option>
+  </select>
+  <textarea id="notes" placeholder="Примечания"></textarea>
+  <button type="submit">Добавить</button>
+</form>
+
+<ul id="callList"></ul>
 
 <script>
-let calls = JSON.parse(localStorage.getItem('calls')) || [];
+  // Firebase конфиг
+  const firebaseConfig = {
+    apiKey: "AIzaSyAUFGVs7Q2bH3W8hDGRKSvxjRmR_JmUmXQ",
+    authDomain: "nadzor128.firebaseapp.com",
+    projectId: "nadzor128",
+    storageBucket: "nadzor128.firebasestorage.app",
+    messagingSenderId: "53162427347",
+    appId: "1:53162427347:web:15f58616d4056aeadb2526",
+    measurementId: "G-76B6KZQLKE"
+  };
 
-function saveCalls() {
-    localStorage.setItem('calls', JSON.stringify(calls));
-    renderTable();
-}
+  // Инициализация Firebase
+  const app = firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
 
-function renderTable() {
-    const tbody = document.getElementById('callTable');
-    const filter = document.getElementById('search').value.toLowerCase();
-    tbody.innerHTML = '';
-    calls.filter(c => c.name.toLowerCase().includes(filter) || c.phone.includes(filter))
-         .forEach((call, index) => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${call.name}</td>
-            <td>${call.phone}</td>
-            <td class="status ${call.status}">${call.status}</td>
-            <td>${call.notes}</td>
-            <td>
-                <button onclick="editCall(${index})">Редактировать</button>
-                <button onclick="deleteCall(${index})">Удалить</button>
-            </td>
-        `;
-        tbody.appendChild(tr);
-    });
-}
+  const form = document.getElementById('callForm');
+  const callList = document.getElementById('callList');
 
-document.getElementById('callForm').addEventListener('submit', function(e){
+  // Добавление звонка в Firestore
+  form.addEventListener('submit', e => {
     e.preventDefault();
     const name = document.getElementById('name').value;
     const phone = document.getElementById('phone').value;
     const status = document.getElementById('status').value;
     const notes = document.getElementById('notes').value;
-    calls.push({name, phone, status, notes});
-    saveCalls();
-    this.reset();
-});
 
-function editCall(index) {
-    const call = calls[index];
-    const newName = prompt('ФИО', call.name);
-    const newPhone = prompt('Телефон', call.phone);
-    const newStatus = prompt('Статус (pending/completed/failed)', call.status);
-    const newNotes = prompt('Примечания', call.notes);
-    if(newName && newPhone && newStatus) {
-        calls[index] = {name: newName, phone: newPhone, status: newStatus, notes: newNotes};
-        saveCalls();
-    }
-}
+    db.collection('calls').add({ name, phone, status, notes })
+      .then(() => form.reset());
+  });
 
-function deleteCall(index) {
-    if(confirm('Удалить этот звонок?')) {
-        calls.splice(index,1);
-        saveCalls();
-    }
-}
-
-document.getElementById('search').addEventListener('input', renderTable);
-
-renderTable();
+  // Отображение звонков в реальном времени
+  db.collection('calls').onSnapshot(snapshot => {
+    callList.innerHTML = '';
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      let color = data.status === 'completed' ? 'green' :
+                  data.status === 'failed' ? 'red' : 'orange';
+      callList.innerHTML += `<li style="color:${color}">${data.name} - ${data.phone} - ${data.status} - ${data.notes}</li>`;
+    });
+  });
 </script>
+
 </body>
 </html>
