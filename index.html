@@ -3,274 +3,219 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Комитет банковского надзора</title>
+<title>Статистика звонков и клиентов</title>
 <style>
-  :root {
-    --bg: #f4f6f8;
-    --header: #0a3d62;
-    --menu-bg: #1e90ff;
-    --menu-hover: #4682b4;
-    --accent: #f39c12;
-    --text: #333;
-  }
-
   body {
-    margin: 0;
     font-family: Arial, sans-serif;
-    background: var(--bg);
-    color: var(--text);
+    margin: 0;
+    background: #f0f2f5;
+    color: #333;
   }
-
   header {
-    background: var(--header);
+    background: #1e3a8a;
     color: white;
     padding: 15px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    text-align: center;
   }
-
-  header h1 {
-    margin: 0;
-    font-size: 24px;
-  }
-
-  nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-  }
-
-  nav li {
-    position: relative;
-  }
-
-  nav > ul > li {
-    margin-left: 20px;
-  }
-
-  nav a {
-    color: white;
-    text-decoration: none;
-    padding: 10px 15px;
-    display: block;
-  }
-
-  nav li:hover > a {
-    background: var(--menu-hover);
-  }
-
-  nav ul ul {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: var(--menu-bg);
-    display: none;
-    min-width: 200px;
-    z-index: 10;
-  }
-
-  nav ul li:hover > ul {
-    display: block;
-  }
-
-  nav ul ul li {
-    margin: 0;
-  }
-
   main {
     padding: 20px;
+    max-width: 1400px;
+    margin: auto;
   }
-
-  section {
-    margin-bottom: 40px;
-  }
-
   h2 {
-    color: var(--header);
-    margin-bottom: 15px;
+    color: #1e3a8a;
   }
-
+  input, select, textarea, button {
+    padding: 5px 10px;
+    margin: 5px 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
   table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 15px;
   }
-
-  table, th, td {
-    border: 1px solid #ccc;
-  }
-
   th, td {
-    padding: 10px;
+    border: 1px solid #ccc;
+    padding: 8px;
     text-align: left;
+    vertical-align: top;
   }
-
   th {
-    background: var(--menu-bg);
+    background: #3b82f6;
     color: white;
   }
-
-  footer {
-    background: var(--header);
-    color: white;
-    text-align: center;
-    padding: 15px 20px;
+  section {
+    margin-bottom: 30px;
   }
-
-  /* Responsive */
-  @media (max-width: 768px) {
-    nav ul {
-      flex-direction: column;
-    }
-    nav ul ul {
-      position: relative;
-    }
+  textarea {
+    resize: vertical;
   }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Комитет банковского надзора</h1>
-  <nav>
-    <ul>
-      <li><a href="#home">Главная</a></li>
-      <li>
-        <a href="#about">О комитете</a>
-        <ul>
-          <li><a href="#history">История</a></li>
-          <li><a href="#structure">Структура</a></li>
-          <li><a href="#laws">Законодательная база</a></li>
-        </ul>
-      </li>
-      <li>
-        <a href="#supervision">Надзор</a>
-        <ul>
-          <li><a href="#policy">Политика надзора</a></li>
-          <li><a href="#guides">Руководства и инструкции</a></li>
-          <li><a href="#reports">Отчеты и проверки</a></li>
-        </ul>
-      </li>
-      <li>
-        <a href="#banks">Банкам</a>
-        <ul>
-          <li><a href="#licensing">Лицензирование</a></li>
-          <li><a href="#reporting">Регистрация и отчетность</a></li>
-          <li><a href="#faq">Вопросы и ответы</a></li>
-        </ul>
-      </li>
-      <li><a href="#citizens">Для граждан</a></li>
-      <li><a href="#news">Новости</a></li>
-      <li><a href="#documents">Документы</a></li>
-      <li><a href="#contacts">Контакты</a></li>
-    </ul>
-  </nav>
+  <h1>Статистика звонков и клиентов</h1>
 </header>
 
 <main>
-  <section id="home">
-    <h2>Главная</h2>
-    <p>Добро пожаловать на сайт Комитета банковского надзора. Здесь вы найдете актуальные новости, документы и информацию для банков и граждан.</p>
+  <section>
+    <h2>Добавить запись</h2>
+    <form id="clientForm">
+      <label>Участники (через +):</label>
+      <input type="text" id="participants" placeholder="Адольф+Амиксол+Кевин">
+
+      <label>Клиент (ФИО):</label>
+      <input type="text" id="clientName" placeholder="КАЗАКОВА ЛАРИСА МОДЕСТОВНА">
+
+      <label>Дата рождения:</label>
+      <input type="text" id="birthDate" placeholder="09.09.1946">
+
+      <label>Возраст:</label>
+      <input type="text" id="age" placeholder="79">
+
+      <label>Документ (Паспорт):</label>
+      <input type="text" id="document" placeholder="2503825933">
+
+      <label>Домашний:</label>
+      <input type="text" id="homePhone" placeholder="73955562958">
+
+      <label>Сотовый:</label>
+      <input type="text" id="cellPhone" placeholder="нет">
+
+      <label>Адрес:</label>
+      <input type="text" id="address" placeholder="Иркутская область, г.Ангарск, проспект Ангарский Д.92 КВ.56">
+
+      <label>Кто знает о звонке:</label>
+      <input type="text" id="knowsCall" placeholder="Никому">
+
+      <label>Куда обращался после звонка:</label>
+      <input type="text" id="afterCall" placeholder="Никуда">
+
+      <label>С кем проживает:</label>
+      <input type="text" id="livesWith" placeholder="Сама">
+
+      <label>3-тие лица:</label>
+      <input type="text" id="thirdPersons" placeholder="Никого">
+
+      <label>Звонили ли ранее мошенники:</label>
+      <input type="text" id="scamBefore" placeholder="Впервые">
+
+      <label>Здоровье:</label>
+      <input type="text" id="health" placeholder="Ходит, Видит, Слышит">
+
+      <label>Дополнительная информация:</label>
+      <textarea id="additionalInfo" rows="4" placeholder="Приходит соседка, посещала банк..."></textarea>
+
+      <h3>Банк</h3>
+      <label>Банк:</label>
+      <input type="text" id="bank" placeholder="Сбербанк">
+
+      <label>Адрес банка:</label>
+      <input type="text" id="bankAddress" placeholder="Ангарск, 76-й квартал, 1">
+
+      <label>Посещала:</label>
+      <input type="text" id="visited" placeholder="Сегодня">
+
+      <label>Доверенность:</label>
+      <input type="text" id="powerOfAttorney" placeholder="Нет">
+
+      <label>Книга:</label>
+      <input type="text" id="book" placeholder="300к, 150к">
+
+      <h3>Дома</h3>
+      <label>Лаве дома:</label>
+      <input type="text" id="homeMoney" placeholder="70к">
+
+      <button type="button" onclick="addRecord()">Добавить запись</button>
+    </form>
   </section>
 
-  <section id="about">
-    <h2>О комитете</h2>
-    <section id="history">
-      <h3>История</h3>
-      <p>Краткая информация о создании и миссии комитета.</p>
-    </section>
-    <section id="structure">
-      <h3>Структура</h3>
-      <p>Руководство и организационная структура.</p>
-    </section>
-    <section id="laws">
-      <h3>Законодательная база</h3>
-      <p>Основные законы и нормативные акты.</p>
-    </section>
-  </section>
-
-  <section id="supervision">
-    <h2>Надзор</h2>
-    <section id="policy">
-      <h3>Политика надзора</h3>
-      <p>Методы надзора за банками и финансовыми организациями.</p>
-    </section>
-    <section id="guides">
-      <h3>Руководства и инструкции</h3>
-      <p>Публикации и инструкции для банков.</p>
-    </section>
-    <section id="reports">
-      <h3>Отчеты и проверки</h3>
-      <table>
+  <section>
+    <h2>Таблица записей</h2>
+    <table>
+      <thead>
         <tr>
-          <th>Год</th>
-          <th>Отчет</th>
-          <th>Ссылка</th>
+          <th>#</th>
+          <th>Участники</th>
+          <th>Клиент</th>
+          <th>Дата рождения / Возраст</th>
+          <th>Документ</th>
+          <th>Телефоны</th>
+          <th>Адрес</th>
+          <th>Доп. инфо</th>
+          <th>Банк</th>
+          <th>Дома</th>
+          <th>Действие</th>
         </tr>
-        <tr>
-          <td>2025</td>
-          <td>Аудит банков</td>
-          <td><a href="#">Скачать PDF</a></td>
-        </tr>
-        <tr>
-          <td>2024</td>
-          <td>Финансовые проверки</td>
-          <td><a href="#">Скачать PDF</a></td>
-        </tr>
-      </table>
-    </section>
-  </section>
-
-  <section id="banks">
-    <h2>Банкам и фин. организациям</h2>
-    <section id="licensing">
-      <h3>Лицензирование</h3>
-      <p>Процедуры получения и продления лицензий.</p>
-    </section>
-    <section id="reporting">
-      <h3>Регистрация и отчетность</h3>
-      <p>Инструкции по подаче отчетов и документов.</p>
-    </section>
-    <section id="faq">
-      <h3>Вопросы и ответы</h3>
-      <p>Часто задаваемые вопросы для банков.</p>
-    </section>
-  </section>
-
-  <section id="citizens">
-    <h2>Для граждан</h2>
-    <p>Форма подачи жалоб, рекомендации по безопасному использованию банковских услуг.</p>
-  </section>
-
-  <section id="news">
-    <h2>Новости и события</h2>
-    <ul>
-      <li>Новости комитета и отрасли</li>
-      <li>Конференции и семинары</li>
-    </ul>
-  </section>
-
-  <section id="documents">
-    <h2>Документы</h2>
-    <ul>
-      <li>Законы и нормативные акты</li>
-      <li>Методические материалы</li>
-    </ul>
-  </section>
-
-  <section id="contacts">
-    <h2>Контакты</h2>
-    <p>Адрес: ул. Примерная, 1, г. Москва</p>
-    <p>Телефон: +7 (495) 123-45-67</p>
-    <p>Email: info@banksupervision.ru</p>
+      </thead>
+      <tbody id="recordsTable"></tbody>
+    </table>
   </section>
 </main>
 
-<footer>
-  &copy; 2026 Комитет банковского надзора
-</footer>
+<script>
+  let records = [];
+
+  function addRecord() {
+    const record = {
+      participants: document.getElementById('participants').value,
+      clientName: document.getElementById('clientName').value,
+      birthDate: document.getElementById('birthDate').value,
+      age: document.getElementById('age').value,
+      document: document.getElementById('document').value,
+      homePhone: document.getElementById('homePhone').value,
+      cellPhone: document.getElementById('cellPhone').value,
+      address: document.getElementById('address').value,
+      knowsCall: document.getElementById('knowsCall').value,
+      afterCall: document.getElementById('afterCall').value,
+      livesWith: document.getElementById('livesWith').value,
+      thirdPersons: document.getElementById('thirdPersons').value,
+      scamBefore: document.getElementById('scamBefore').value,
+      health: document.getElementById('health').value,
+      additionalInfo: document.getElementById('additionalInfo').value,
+      bank: document.getElementById('bank').value,
+      bankAddress: document.getElementById('bankAddress').value,
+      visited: document.getElementById('visited').value,
+      powerOfAttorney: document.getElementById('powerOfAttorney').value,
+      book: document.getElementById('book').value,
+      homeMoney: document.getElementById('homeMoney').value
+    };
+
+    records.push(record);
+    document.getElementById('clientForm').reset();
+    renderTable();
+  }
+
+  function deleteRecord(index) {
+    records.splice(index, 1);
+    renderTable();
+  }
+
+  function renderTable() {
+    const tbody = document.getElementById('recordsTable');
+    tbody.innerHTML = '';
+    records.forEach((r, i) => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${i+1}</td>
+        <td>${r.participants}</td>
+        <td>${r.clientName}</td>
+        <td>${r.birthDate} / ${r.age}</td>
+        <td>${r.document}</td>
+        <td>Дом: ${r.homePhone}<br>Сот: ${r.cellPhone}</td>
+        <td>${r.address}</td>
+        <td>${r.additionalInfo}</td>
+        <td>${r.bank}<br>${r.bankAddress}<br>Посещала: ${r.visited}<br>Доверенность: ${r.powerOfAttorney}<br>Книга: ${r.book}</td>
+        <td>${r.homeMoney}</td>
+        <td><button onclick="deleteRecord(${i})">Удалить</button></td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+</script>
 
 </body>
 </html>
