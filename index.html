@@ -3,221 +3,193 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Статистика звонков и клиентов</title>
+<title>Слот 5x3 PRO</title>
 <style>
-  body {
+body {
+    margin:0;
     font-family: Arial, sans-serif;
-    margin: 0;
-    background: #f0f2f5;
-    color: #333;
-  }
-  header {
-    background: #1e3a8a;
+    background: #0f172a;
     color: white;
-    padding: 15px 20px;
-    text-align: center;
-  }
-  main {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height:100vh;
     padding: 20px;
-    max-width: 1400px;
-    margin: auto;
-  }
-  h2 {
-    color: #1e3a8a;
-  }
-  input, select, textarea, button {
+}
+h1 { margin-bottom: 10px; text-align:center; }
+.slot-container {
+    display: grid;
+    grid-template-columns: repeat(5, 80px);
+    grid-template-rows: repeat(3, 80px);
+    gap: 5px;
+    margin-bottom: 20px;
+}
+.cell {
+    width: 80px;
+    height: 80px;
+    background: #1e293b;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size: 32px;
+    border-radius: 8px;
+    transition: 0.2s;
+}
+.controls {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+button {
+    padding: 8px 15px;
+    border:none;
+    border-radius: 5px;
+    cursor:pointer;
+    font-size:16px;
+    background: #fbbf24;
+    color:#111827;
+    font-weight:bold;
+    transition: 0.2s;
+}
+button:hover { background: #facc15; }
+select, input {
     padding: 5px 10px;
-    margin: 5px 0;
-    width: 100%;
-    box-sizing: border-box;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-  }
-  th, td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: left;
-    vertical-align: top;
-  }
-  th {
-    background: #3b82f6;
-    color: white;
-  }
-  section {
-    margin-bottom: 30px;
-  }
-  textarea {
-    resize: vertical;
-  }
+    border-radius:5px;
+    border:none;
+    font-size:16px;
+}
+.info { margin-top: 10px; text-align:center; font-size:18px; }
+.bonus { color:#22c55e; font-weight:bold; }
 </style>
 </head>
 <body>
 
-<header>
-  <h1>Статистика звонков и клиентов</h1>
-</header>
+<h1>🎰 Слот 5x3 PRO</h1>
 
-<main>
-  <section>
-    <h2>Добавить запись</h2>
-    <form id="clientForm">
-      <label>Участники (через +):</label>
-      <input type="text" id="participants" placeholder="Адольф+Амиксол+Кевин">
+<div class="slot-container" id="slot">
+    <!-- Ячейки слота -->
+</div>
 
-      <label>Клиент (ФИО):</label>
-      <input type="text" id="clientName" placeholder="КАЗАКОВА ЛАРИСА МОДЕСТОВНА">
+<div class="controls">
+    <label>Ставка:
+        <input type="number" id="bet" value="10" min="1">
+    </label>
+    <label>Линий:
+        <select id="lines">
+            <option value="1">1</option>
+            <option value="3" selected>3</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+        </select>
+    </label>
+    <button id="spin">Вращать</button>
+</div>
 
-      <label>Дата рождения:</label>
-      <input type="text" id="birthDate" placeholder="09.09.1946">
-
-      <label>Возраст:</label>
-      <input type="text" id="age" placeholder="79">
-
-      <label>Документ (Паспорт):</label>
-      <input type="text" id="document" placeholder="2503825933">
-
-      <label>Домашний:</label>
-      <input type="text" id="homePhone" placeholder="73955562958">
-
-      <label>Сотовый:</label>
-      <input type="text" id="cellPhone" placeholder="нет">
-
-      <label>Адрес:</label>
-      <input type="text" id="address" placeholder="Иркутская область, г.Ангарск, проспект Ангарский Д.92 КВ.56">
-
-      <label>Кто знает о звонке:</label>
-      <input type="text" id="knowsCall" placeholder="Никому">
-
-      <label>Куда обращался после звонка:</label>
-      <input type="text" id="afterCall" placeholder="Никуда">
-
-      <label>С кем проживает:</label>
-      <input type="text" id="livesWith" placeholder="Сама">
-
-      <label>3-тие лица:</label>
-      <input type="text" id="thirdPersons" placeholder="Никого">
-
-      <label>Звонили ли ранее мошенники:</label>
-      <input type="text" id="scamBefore" placeholder="Впервые">
-
-      <label>Здоровье:</label>
-      <input type="text" id="health" placeholder="Ходит, Видит, Слышит">
-
-      <label>Дополнительная информация:</label>
-      <textarea id="additionalInfo" rows="4" placeholder="Приходит соседка, посещала банк..."></textarea>
-
-      <h3>Банк</h3>
-      <label>Банк:</label>
-      <input type="text" id="bank" placeholder="Сбербанк">
-
-      <label>Адрес банка:</label>
-      <input type="text" id="bankAddress" placeholder="Ангарск, 76-й квартал, 1">
-
-      <label>Посещала:</label>
-      <input type="text" id="visited" placeholder="Сегодня">
-
-      <label>Доверенность:</label>
-      <input type="text" id="powerOfAttorney" placeholder="Нет">
-
-      <label>Книга:</label>
-      <input type="text" id="book" placeholder="300к, 150к">
-
-      <h3>Дома</h3>
-      <label>Лаве дома:</label>
-      <input type="text" id="homeMoney" placeholder="70к">
-
-      <button type="button" onclick="addRecord()">Добавить запись</button>
-    </form>
-  </section>
-
-  <section>
-    <h2>Таблица записей</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Участники</th>
-          <th>Клиент</th>
-          <th>Дата рождения / Возраст</th>
-          <th>Документ</th>
-          <th>Телефоны</th>
-          <th>Адрес</th>
-          <th>Доп. инфо</th>
-          <th>Банк</th>
-          <th>Дома</th>
-          <th>Действие</th>
-        </tr>
-      </thead>
-      <tbody id="recordsTable"></tbody>
-    </table>
-  </section>
-</main>
+<div class="info" id="message"></div>
+<div class="info">Баланс: <span id="balance">1000</span></div>
 
 <script>
-  let records = [];
+const symbols = ["🍒","🍋","🍊","🍉","⭐","💎","🤑"]; // символы
+const rows = 3;
+const cols = 5;
+let balance = 1000;
+let freeSpins = 0;
+let multiplier = 1;
 
-  function addRecord() {
-    const record = {
-      participants: document.getElementById('participants').value,
-      clientName: document.getElementById('clientName').value,
-      birthDate: document.getElementById('birthDate').value,
-      age: document.getElementById('age').value,
-      document: document.getElementById('document').value,
-      homePhone: document.getElementById('homePhone').value,
-      cellPhone: document.getElementById('cellPhone').value,
-      address: document.getElementById('address').value,
-      knowsCall: document.getElementById('knowsCall').value,
-      afterCall: document.getElementById('afterCall').value,
-      livesWith: document.getElementById('livesWith').value,
-      thirdPersons: document.getElementById('thirdPersons').value,
-      scamBefore: document.getElementById('scamBefore').value,
-      health: document.getElementById('health').value,
-      additionalInfo: document.getElementById('additionalInfo').value,
-      bank: document.getElementById('bank').value,
-      bankAddress: document.getElementById('bankAddress').value,
-      visited: document.getElementById('visited').value,
-      powerOfAttorney: document.getElementById('powerOfAttorney').value,
-      book: document.getElementById('book').value,
-      homeMoney: document.getElementById('homeMoney').value
-    };
+// Создаем слот
+const slotContainer = document.getElementById("slot");
+function createSlot() {
+    slotContainer.innerHTML = '';
+    for(let i=0;i<rows*cols;i++){
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.textContent = symbols[Math.floor(Math.random()*symbols.length)];
+        slotContainer.appendChild(cell);
+    }
+}
+createSlot();
 
-    records.push(record);
-    document.getElementById('clientForm').reset();
-    renderTable();
-  }
+// Анимация вращения барабана
+function spinSlot() {
+    const bet = parseInt(document.getElementById("bet").value);
+    const lines = parseInt(document.getElementById("lines").value);
 
-  function deleteRecord(index) {
-    records.splice(index, 1);
-    renderTable();
-  }
+    if(freeSpins>0){
+        document.getElementById("message").textContent = `🎁 Бесплатный спин!`;
+    } else {
+        if(bet>balance){
+            alert("Недостаточно баланса!");
+            return;
+        }
+        balance -= bet;
+        document.getElementById("balance").textContent = balance;
+    }
 
-  function renderTable() {
-    const tbody = document.getElementById('recordsTable');
-    tbody.innerHTML = '';
-    records.forEach((r, i) => {
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td>${i+1}</td>
-        <td>${r.participants}</td>
-        <td>${r.clientName}</td>
-        <td>${r.birthDate} / ${r.age}</td>
-        <td>${r.document}</td>
-        <td>Дом: ${r.homePhone}<br>Сот: ${r.cellPhone}</td>
-        <td>${r.address}</td>
-        <td>${r.additionalInfo}</td>
-        <td>${r.bank}<br>${r.bankAddress}<br>Посещала: ${r.visited}<br>Доверенность: ${r.powerOfAttorney}<br>Книга: ${r.book}</td>
-        <td>${r.homeMoney}</td>
-        <td><button onclick="deleteRecord(${i})">Удалить</button></td>
-      `;
-      tbody.appendChild(row);
-    });
-  }
+    const cells = slotContainer.children;
+    // Анимация вращения
+    for(let c=0;c<cols;c++){
+        for(let r=0;r<rows;r++){
+            const cellIndex = r*cols + c;
+            for(let t=0;t<10;t++){
+                setTimeout(()=>{
+                    cells[cellIndex].textContent = symbols[Math.floor(Math.random()*symbols.length)];
+                }, t*50 + c*100);
+            }
+        }
+    }
+
+    // Проверка выигрыша после анимации
+    setTimeout(()=>{
+        let win = 0;
+        for(let r=0;r<lines;r++){
+            const lineSymbols = [];
+            for(let c=0;c<cols;c++){
+                lineSymbols.push(cells[r*cols+c].textContent);
+            }
+            if(lineSymbols.every(s=>s===lineSymbols[0])){
+                const lineWin = bet*5*multiplier;
+                win += lineWin;
+                for(let c=0;c<cols;c++){
+                    cells[r*cols+c].style.background = '#22c55e';
+                }
+                setTimeout(()=> {
+                    for(let c=0;c<cols;c++){
+                        cells[r*cols+c].style.background = '#1e293b';
+                    }
+                }, 1000);
+            }
+        }
+
+        // Случайные бонусы
+        const rand = Math.random();
+        if(rand<0.05){ // 5% шанс фриспинов
+            freeSpins += 3;
+            document.getElementById("message").innerHTML = `<span class="bonus">🎉 3 бесплатных спина!</span>`;
+        } else if(rand<0.15){ // 10% шанс множителя
+            multiplier = 2;
+            document.getElementById("message").innerHTML = `<span class="bonus">🔥 Множитель x2 активирован!</span>`;
+        } else if(win>0){
+            document.getElementById("message").textContent = `Выигрыш: ${win}`;
+        } else {
+            document.getElementById("message").textContent = "Попробуйте ещё!";
+        }
+
+        balance += win;
+        document.getElementById("balance").textContent = balance;
+
+        if(freeSpins>0){
+            freeSpins--;
+        } else {
+            multiplier = 1;
+        }
+    }, 1000);
+}
+
+document.getElementById("spin").addEventListener('click', spinSlot);
 </script>
 
 </body>
 </html>
-
 
