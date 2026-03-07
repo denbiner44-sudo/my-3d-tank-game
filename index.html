@@ -1,295 +1,256 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Магнат 2.0 PRO</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ростелеком — Личный кабинет</title>
+
 <style>
-:root{
---bg:#1e1e2f;
---panel:#2a2a40;
---accent:#ffb703;
---green:#4caf50;
---red:#ff5252;
---blue:#42a5f5;
---gold:#fddb3a;
-}
+
 body{
-margin:0;
 font-family:Arial;
-background:linear-gradient(180deg,#1e1e2f,#25253b);
+margin:0;
+background:#f2f4f8;
+}
+
+header{
+background:#0d47a1;
 color:white;
-}
-.topbar{
-display:flex;
-justify-content:space-around;
-padding:10px;
-background:#111827;
-font-weight:bold;
-}
-.tabs{
-display:flex;
-overflow:auto;
-background:#181825;
-}
-.tab{
-flex:1;
-padding:10px;
-text-align:center;
-cursor:pointer;
-background:#222;
-}
-.tab.active{
-background:var(--accent);
-color:black;
-font-weight:bold;
-}
-.panel{
 padding:15px;
-display:none;
+font-size:20px;
 }
-.panel.active{display:block;}
+
+.container{
+max-width:900px;
+margin:auto;
+padding:20px;
+}
+
 .card{
-background:var(--panel);
-padding:10px;
-margin:8px 0;
+background:white;
+padding:20px;
 border-radius:10px;
-box-shadow:0 4px 10px rgba(0,0,0,0.4);
-position:relative;
+margin-bottom:20px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
-.card button{
+
+input{
 width:100%;
-padding:8px;
-margin-top:6px;
-border:none;
-border-radius:8px;
-cursor:pointer;
-font-weight:bold;
-}
-.buy{background:var(--green);}
-.danger{background:var(--red);}
-.blue{background:var(--blue);}
-#clickBtn{
-height:60px;
-font-size:18px;
-background:linear-gradient(180deg,#ffb703,#fb8500);
-}
-.notification{
-position:fixed;
-top:10px;
-right:10px;
 padding:10px;
-border-radius:8px;
-background:var(--gold);
-color:black;
-font-weight:bold;
-display:none;
-z-index:100;
+margin-top:10px;
+border-radius:5px;
+border:1px solid #ccc;
 }
+
+button{
+margin-top:10px;
+padding:10px;
+border:none;
+background:#0d47a1;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
+
+button:hover{
+background:#1565c0;
+}
+
+.balance{
+font-size:28px;
+color:#0d47a1;
+}
+
+.menu{
+display:flex;
+gap:10px;
+margin-bottom:15px;
+}
+
+.menu button{
+flex:1;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+td,th{
+padding:10px;
+border-bottom:1px solid #ddd;
+}
+
+.hidden{
+display:none;
+}
+
 </style>
 </head>
+
 <body>
 
-<div class="topbar">
-<div>💰 $<span id="money">0</span></div>
-<div>🏦 $<span id="bank">0</span></div>
-<div>⭐ <span id="level">1</span></div>
-<div>⚡ x<span id="mult">1</span></div>
-<div>🍔 <span id="hunger">100</span>%</div>
+<header>
+NetLine — Личный кабинет
+</header>
+
+<div class="container">
+
+<!-- LOGIN -->
+
+<div id="login" class="card">
+
+<h3>Вход по номеру</h3>
+
+<input id="phone" placeholder="Введите номер телефона">
+
+<button onclick="sendSMS()">Получить код</button>
+
+<div id="smsBlock" class="hidden">
+
+<input id="code" placeholder="Введите код">
+
+<button onclick="login()">Войти</button>
+
 </div>
 
-<div class="tabs">
-<div class="tab active" onclick="openTab(0)">💼 Работа</div>
-<div class="tab" onclick="openTab(1)">🏪 Рынки</div>
-<div class="tab" onclick="openTab(2)">🚗 Авто</div>
-<div class="tab" onclick="openTab(3)">🛢 Нефть</div>
-<div class="tab" onclick="openTab(4)">💻 Крипта</div>
-<div class="tab" onclick="openTab(5)">🏦 Банк</div>
 </div>
 
-<div class="panel active" id="tab0">
-<button id="clickBtn">РАБОТАТЬ 💸</button>
+
+<!-- CABINET -->
+
+<div id="cabinet" class="hidden">
+
+<div class="card">
+
+<h3>Баланс</h3>
+<div class="balance" id="balance">120 грн</div>
+
+<button onclick="pay()">Пополнить</button>
+
 </div>
 
-<div class="panel" id="tab1"></div>
-<div class="panel" id="tab2"></div>
-<div class="panel" id="tab3"></div>
-<div class="panel" id="tab4"></div>
+<div class="menu">
 
-<div class="panel" id="tab5">
-<input type="number" id="bankInput" placeholder="Сумма">
-<button class="buy" onclick="deposit()">Внести</button>
-<button class="danger" onclick="withdraw()">Снять</button>
+<button onclick="showTab('services')">Услуги</button>
+<button onclick="showTab('history')">История</button>
+<button onclick="logout()">Выход</button>
+
 </div>
 
-<div class="notification" id="notif"></div>
+<div id="services" class="card">
+
+<h3>Подключенные услуги</h3>
+
+<ul>
+<li>Домашний интернет 100 Мбит</li>
+<li>IP телевидение</li>
+<li>Статический IP</li>
+</ul>
+
+</div>
+
+<div id="history" class="card hidden">
+
+<h3>История операций</h3>
+
+<table>
+
+<tr>
+<th>Дата</th>
+<th>Операция</th>
+<th>Сумма</th>
+</tr>
+
+<tr>
+<td>01.03</td>
+<td>Пополнение</td>
+<td>+200 грн</td>
+</tr>
+
+<tr>
+<td>05.03</td>
+<td>Списание</td>
+<td>-80 грн</td>
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
 
 <script>
-// --- ИГРОВАЯ ЛОГИКА ---
-let g={
-money:500,
-bank:0,
-level:1,
-xp:0,
-mult:1,
-hunger:100,
-markets:[
-{name:"Фруктовая лавка",cost:500,inc:5,owned:0,mngr:false},
-{name:"Супермаркет",cost:3000,inc:25,owned:0,mngr:false},
-{name:"Торговый центр",cost:12000,inc:120,owned:0,mngr:false},
-{name:"Оптовый склад",cost:40000,inc:400,owned:0,mngr:false},
-{name:"Сеть супермаркетов",cost:120000,inc:1200,owned:0,mngr:false},
-{name:"Международная сеть",cost:350000,inc:3500,owned:0,mngr:false}
-],
-auto:[
-{name:"Гараж",cost:2000,inc:20,owned:0,mngr:false},
-{name:"Автомойка",cost:10000,inc:100,owned:0,mngr:false},
-{name:"СТО",cost:50000,inc:500,owned:0,mngr:false},
-{name:"Дилерский центр",cost:200000,inc:2000,owned:0,mngr:false},
-{name:"Автозавод",cost:600000,inc:6000,owned:0,mngr:false},
-{name:"Автоимперия",cost:2000000,inc:20000,owned:0,mngr:false}
-],
-oil:[
-{name:"Малая скважина",cost:10000,inc:120,owned:0,mngr:false},
-{name:"Нефтяная вышка",cost:40000,inc:500,owned:0,mngr:false},
-{name:"НПЗ",cost:150000,inc:1500,owned:0,mngr:false},
-{name:"Нефтяное поле",cost:500000,inc:4500,owned:0,mngr:false},
-{name:"Экспортная компания",cost:1500000,inc:12000,owned:0,mngr:false},
-{name:"Нефтяная корпорация",cost:5000000,inc:35000,owned:0,mngr:false}
-],
-crypto:[
-{name:"GPU ферма",cost:8000,inc:90,owned:0,mngr:false},
-{name:"ASIC ферма",cost:30000,inc:400,owned:0,mngr:false},
-{name:"Криптобиржа",cost:120000,inc:1500,owned:0,mngr:false},
-{name:"DeFi платформа",cost:400000,inc:4500,owned:0,mngr:false},
-{name:"Международная биржа",cost:1200000,inc:11000,owned:0,mngr:false},
-{name:"Блокчейн корпорация",cost:4000000,inc:30000,owned:0,mngr:false}
-]
-};
 
-// --- UI ---
-function updateTop(){
-money.innerText=g.money.toFixed(0);
-bank.innerText=g.bank.toFixed(0);
-level.innerText=g.level;
-mult.innerText=g.mult.toFixed(2);
-hunger.innerText=Math.floor(g.hunger);
+let smsCode="";
+
+function sendSMS(){
+
+let phone=document.getElementById("phone").value;
+
+if(phone.length<5){
+alert("Введите номер");
+return;
 }
 
-function openTab(i){
-document.querySelectorAll(".tab").forEach((t,idx)=>t.classList.toggle("active",idx==i));
-document.querySelectorAll(".panel").forEach((p,idx)=>p.classList.toggle("active",idx==i));
+smsCode=Math.floor(1000+Math.random()*9000);
+
+alert("Тестовый SMS код: "+smsCode);
+
+document.getElementById("smsBlock").classList.remove("hidden");
+
 }
 
-function renderCategory(arr,container){
-let html="";
-arr.forEach((b,i)=>{
-html+=`
-<div class="card">
-<b>${b.name}</b><br>
-Владение: ${b.owned}<br>
-Доход: $${b.inc}/с<br>
-<button class="buy" onclick="buy('${container}',${i})">
-Купить ($${Math.floor(b.cost)})
-</button>
-<button class="blue" onclick="hire('${container}',${i})">
-${b.mngr?"Менеджер активен":"Нанять менеджера ($"+Math.floor(b.cost*3)+")"}
-</button>
-</div>`;
-});
-document.getElementById(container).innerHTML=html;
+function login(){
+
+let code=document.getElementById("code").value;
+
+if(code==smsCode){
+
+document.getElementById("login").style.display="none";
+document.getElementById("cabinet").classList.remove("hidden");
+
+}else{
+
+alert("Неверный код");
+
 }
 
-function buy(cat,i){
-let arr=g[cat];
-let b=arr[i];
-if(g.money>=b.cost){
-g.money-=b.cost;
-b.owned++;
-b.cost*=1.5;
-notify(`Куплен ${b.name}`);
-}
 }
 
-function hire(cat,i){
-let b=g[cat][i];
-if(!b.mngr && g.money>=b.cost*3){
-g.money-=b.cost*3;
-b.mngr=true;
-notify(`Менеджер для ${b.name} нанят`);
-}
+function showTab(tab){
+
+document.getElementById("services").classList.add("hidden");
+document.getElementById("history").classList.add("hidden");
+
+document.getElementById(tab).classList.remove("hidden");
+
 }
 
-function deposit(){
-let v=parseFloat(bankInput.value);
-if(v>0 && g.money>=v){g.money-=v;g.bank+=v;notify(`Внесено $${v}`);}
+function pay(){
+
+let balance=document.getElementById("balance");
+
+let current=parseInt(balance.innerText);
+
+current+=100;
+
+balance.innerText=current+" грн";
+
+alert("Баланс пополнен на 100");
+
 }
 
-function withdraw(){
-let v=parseFloat(bankInput.value);
-if(v>0 && g.bank>=v){g.bank-=v;g.money+=v;notify(`Снято $${v}`);}
+function logout(){
+
+location.reload();
+
 }
 
-clickBtn.onclick=()=>{
-if(g.hunger<=0){notify("Вы голодны! Покупайте еду");return;}
-g.money+=1*g.mult;
-g.xp++;
-g.hunger-=0.5;
-};
-
-function levelCheck(){
-if(g.xp>=100*g.level){
-g.xp=0;
-g.level++;
-g.mult+=0.2;
-notify(`Уровень ${g.level} достигнут!`);
-}
-}
-
-// --- Авто доход, голод и события ---
-setInterval(()=>{
-["markets","auto","oil","crypto"].forEach(cat=>{
-g[cat].forEach(b=>{
-if(b.mngr) g.money+=b.owned*b.inc*0.1*g.mult;
-});
-});
-g.money+=0.1*g.mult; // пассивный доход
-g.bank+=g.bank*0.001;
-g.hunger=Math.max(0,g.hunger-0.05);
-levelCheck();
-updateTop();
-},1000);
-
-setInterval(()=>{
-// случайные события
-if(Math.random()<0.03){
-let bonus=Math.floor(100+Math.random()*1000);
-g.money+=bonus;
-notify(`🎉 Бонус! +$${bonus}`);
-}
-if(Math.random()<0.02 && g.money>0){
-let loss=Math.floor(50+Math.random()*500);
-g.money=Math.max(0,g.money-loss);
-notify(`⚠️ Потери: -$${loss}`);
-}
-},5000);
-
-function renderAll(){
-renderCategory(g.markets,"tab1");
-renderCategory(g.auto,"tab2");
-renderCategory(g.oil,"tab3");
-renderCategory(g.crypto,"tab4");
-updateTop();
-}
-renderAll();
-
-// --- Уведомления ---
-function notify(txt){
-const n=document.getElementById("notif");
-n.innerText=txt;
-n.style.display="block";
-setTimeout(()=>n.style.display="none",3000);
-}
 </script>
+
 </body>
 </html>
