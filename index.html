@@ -2,116 +2,301 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>Minecraft Clicker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Crypto Miner v2.0</title>
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
+        :root {
+            --primary: #4eff4e;
+            --secondary: #00d4ff;
+            --bg-dark: #0f172a;
+            --panel: rgba(30, 41, 59, 0.7);
+            --gold: #facc15;
+        }
+
         body {
-            background: #2c3e50;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
             color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Roboto', sans-serif;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             height: 100vh;
             margin: 0;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+
+        #game-container {
+            background: var(--panel);
+            backdrop-filter: blur(15px);
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.05);
+            text-align: center;
+            width: 380px;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(78, 255, 78, 0.3);
+        }
+
+        .balance-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        #money {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--gold);
+            text-shadow: 0 0 15px rgba(250, 204, 21, 0.5);
+        }
+
+        #block-wrapper {
+            position: relative;
+            margin: 20px 0;
+            display: inline-block;
+        }
+
+        #block {
+            width: 160px;
+            height: 160px;
+            cursor: pointer;
+            transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            filter: drop-shadow(0 0 25px rgba(78, 255, 78, 0.2));
             user-select: none;
         }
-        #game-container {
-            background: #34495e;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            text-align: center;
-            width: 350px;
+
+        #block:active {
+            transform: scale(0.9) rotate(2deg);
         }
-        #block {
-            width: 150px;
-            cursor: pointer;
-            transition: transform 0.1s;
-            margin: 20px auto;
-            image-rendering: pixelated;
+
+        .click-particle {
+            position: absolute;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.5rem;
+            pointer-events: none;
+            animation: floatUp 0.8s ease-out forwards;
+            z-index: 100;
+            text-shadow: 0 0 5px black;
         }
-        #block:active { transform: scale(0.9); }
-        .stat { font-size: 1.5rem; margin: 10px 0; color: #2ecc71; font-weight: bold; }
-        .upgrade-btn {
-            background: #e67e22;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            margin: 5px;
-            border-radius: 5px;
+
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-100px) scale(1.5); }
+        }
+
+        .upgrades-scroll {
+            max-height: 220px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-right: 5px;
+            margin-top: 20px;
+        }
+
+        /* Стиль скроллбару */
+        .upgrades-scroll::-webkit-scrollbar { width: 4px; }
+        .upgrades-scroll::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 10px; }
+
+        .upgrade-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 18px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .upgrade-card:hover:not(.disabled) {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+            border-color: var(--secondary);
+        }
+
+        .upgrade-card.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            filter: grayscale(1);
+        }
+
+        .upg-info { text-align: left; }
+        .upg-name { font-weight: bold; font-size: 0.9rem; display: block; color: #fff; }
+        .upg-desc { font-size: 0.7rem; color: #94a3b8; }
+        .upg-price { color: var(--gold); font-weight: bold; }
+
+        .lvl-container { margin-bottom: 10px; font-size: 0.8rem; }
+        #exp-bar {
             width: 100%;
-            font-size: 1rem;
+            height: 6px;
+            background: #334155;
+            border-radius: 10px;
+            overflow: hidden;
         }
-        .upgrade-btn:disabled { background: #7f8c8d; cursor: not-allowed; }
-        .upgrade-btn:hover:not(:disabled) { background: #d35400; }
+        #exp-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), #a3ff33);
+            box-shadow: 0 0 10px var(--primary);
+            transition: width 0.3s;
+        }
     </style>
 </head>
 <body>
 
     <div id="game-container">
-        <h1>Mine Clicker</h1>
-        <div class="stat">💎 Гроші: <span id="money">0</span></div>
-        <div id="per-click">За клік: 1</div>
-        
-        <!-- Клікабельний блок (SVG замість картинки для автономності) -->
-        <svg id="block" viewBox="0 0 100 100" onclick="clickBlock()">
-            <rect width="100" height="100" fill="#795548"/>
-            <rect width="100" height="20" fill="#4CAF50"/>
-        </svg>
+        <h1>CRYPTO MINER v2.0</h1>
 
-        <div class="upgrades">
-            <button class="upgrade-btn" id="upg1" onclick="buyUpgrade('click')">
-                🪓 Кам'яна кирка (+1) - 50$
-            </button>
-            <button class="upgrade-btn" id="upg2" onclick="buyUpgrade('auto')">
-                🤖 Авто-шахтар (+2/сек) - 200$
-            </button>
+        <div class="lvl-container">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                <span id="lvl-text">LEVEL 1</span>
+                <span id="income-text">0.0 / sec</span>
+            </div>
+            <div id="exp-bar"><div id="exp-fill"></div></div>
+        </div>
+
+        <div class="balance-box">
+            <span id="money">0</span> <small style="color:var(--gold)">$</small>
+        </div>
+
+        <div id="block-wrapper">
+            <svg id="block" viewBox="0 0 100 100" onclick="handleMine(event)">
+                <rect x="5" y="5" width="90" height="90" rx="8" fill="#5d4037" />
+                <path d="M5 25 Q 50 10, 95 25 L 95 5 Q 50 5, 5 5 Z" fill="#4caf50" />
+                <rect x="20" y="40" width="10" height="10" fill="rgba(255,255,255,0.1)" />
+                <rect x="65" y="60" width="15" height="15" fill="rgba(0,0,0,0.2)" />
+            </svg>
+        </div>
+
+        <div class="upgrades-scroll" id="shop">
+            <!-- Магазин генерується через JS -->
         </div>
     </div>
 
     <script>
-        let money = 0;
-        let clickValue = 1;
-        let autoValue = 0;
-        let prices = { click: 50, auto: 200 };
+        let state = {
+            money: 0,
+            clickPower: 1,
+            autoPower: 0,
+            lvl: 1,
+            exp: 0,
+            shop: [
+                { name: 'Залізна кирка', desc: '+2 за клік', price: 50, inc: 2, type: 'click' },
+                { name: 'Майнер-стажер', desc: '+5/сек прибутку', price: 250, inc: 5, type: 'auto' },
+                { name: 'Лазерний бур', desc: '+25/сек прибутку', price: 1200, inc: 25, type: 'auto' },
+                { name: 'Серверна ферма', desc: '+100/сек прибутку', price: 5000, inc: 100, type: 'auto' },
+                { name: 'Космічна база', desc: '+500/сек прибутку', price: 25000, inc: 500, type: 'auto' }
+            ]
+        };
+
+        function handleMine(e) {
+            state.money += state.clickPower;
+            state.exp += 10;
+            
+            createParticle(e.clientX, e.clientY, `+${state.clickPower}`);
+            checkLevel();
+            updateUI();
+        }
+
+        function createParticle(x, y, text) {
+            const p = document.createElement('div');
+            p.className = 'click-particle';
+            p.innerText = text;
+            p.style.left = (x || window.innerWidth/2) + 'px';
+            p.style.top = (y || window.innerHeight/2) + 'px';
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 800);
+        }
+
+        function checkLevel() {
+            const nextLvlExp = state.lvl * 200;
+            if (state.exp >= nextLvlExp) {
+                state.exp -= nextLvlExp;
+                state.lvl++;
+                state.money += state.lvl * 100;
+                
+                const container = document.getElementById('game-container');
+                container.style.boxShadow = '0 0 100px var(--primary)';
+                setTimeout(() => container.style.boxShadow = '0 0 50px rgba(0,0,0,0.5)', 500);
+            }
+        }
+
+        function initShop() {
+            const shopEl = document.getElementById('shop');
+            shopEl.innerHTML = '';
+            state.shop.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'upgrade-card';
+                card.id = `upg-${index}`;
+                card.onclick = () => buyUpgrade(index);
+                card.innerHTML = `
+                    <div class="upg-info">
+                        <span class="upg-name">${item.name}</span>
+                        <span class="upg-desc">${item.desc}</span>
+                    </div>
+                    <div class="upg-price">${item.price}$</div>
+                `;
+                shopEl.appendChild(card);
+            });
+        }
+
+        function buyUpgrade(index) {
+            const item = state.shop[index];
+            if (state.money >= item.price) {
+                state.money -= item.price;
+                if (item.type === 'click') state.clickPower += item.inc;
+                else state.autoPower += item.inc;
+                
+                item.price = Math.floor(item.price * 1.6); // Збільшення ціни
+                updateUI();
+            }
+        }
 
         function updateUI() {
-            document.getElementById('money').innerText = Math.floor(money);
-            document.getElementById('per-click').innerText = `Клік: ${clickValue} | Авто: ${autoValue}/с`;
+            document.getElementById('money').innerText = Math.floor(state.money);
+            document.getElementById('lvl-text').innerText = `LEVEL ${state.lvl}`;
+            document.getElementById('income-text').innerText = `${state.autoPower.toFixed(1)} / sec`;
             
-            document.getElementById('upg1').disabled = money < prices.click;
-            document.getElementById('upg2').disabled = money < prices.auto;
+            const nextLvlExp = state.lvl * 200;
+            document.getElementById('exp-fill').style.width = `${(state.exp / nextLvlExp) * 100}%`;
+
+            state.shop.forEach((item, index) => {
+                const card = document.getElementById(`upg-${index}`);
+                if (card) {
+                    card.className = `upgrade-card ${state.money < item.price ? 'disabled' : ''}`;
+                    card.querySelector('.upg-price').innerText = `${item.price}$`;
+                }
+            });
         }
 
-        function clickBlock() {
-            money += clickValue;
-            updateUI();
-        }
-
-        function buyUpgrade(type) {
-            if (type === 'click' && money >= prices.click) {
-                money -= prices.click;
-                clickValue += 2;
-                prices.click = Math.floor(prices.click * 1.5);
-                document.getElementById('upg1').innerText = `🪓 Покращити кирку (+2) - ${prices.click}$`;
-            } else if (type === 'auto' && money >= prices.auto) {
-                money -= prices.auto;
-                autoValue += 5;
-                prices.auto = Math.floor(prices.auto * 1.6);
-                document.getElementById('upg2').innerText = `🤖 Авто-шахтар (+5/с) - ${prices.auto}$`;
-            }
-            updateUI();
-        }
-
-        // Автоклік кожну секунду
+        // Авто-майнінг
         setInterval(() => {
-            if (autoValue > 0) {
-                money += autoValue / 10;
+            if (state.autoPower > 0) {
+                state.money += state.autoPower / 10;
                 updateUI();
             }
         }, 100);
+
+        // Старт
+        initShop();
+        updateUI();
     </script>
 </body>
 </html>
