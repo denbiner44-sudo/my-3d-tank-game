@@ -2,116 +2,239 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>Minecraft Clicker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mega Mine Clicker</title>
     <style>
+        :root {
+            --bg: #1a1a1a;
+            --panel: #2d2d2d;
+            --accent: #4caf50;
+            --text: #ecf0f1;
+        }
+
         body {
-            background: #2c3e50;
-            color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', sans-serif;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             height: 100vh;
             margin: 0;
-            user-select: none;
+            /* Анти-зум на рівні браузера */
+            touch-action: manipulation;
+            overflow: hidden;
         }
+
         #game-container {
-            background: #34495e;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background: var(--panel);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.7);
             text-align: center;
-            width: 350px;
+            width: 90%;
+            max-width: 450px;
+            border: 2px solid #444;
         }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: rgba(0,0,0,0.2);
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        #money { font-size: 1.8rem; color: #f1c40f; display: block; }
+
+        /* Клік-зона */
+        #block-container {
+            position: relative;
+            margin: 30px 0;
+        }
+
         #block {
-            width: 150px;
+            width: 160px;
+            height: 160px;
             cursor: pointer;
-            transition: transform 0.1s;
-            margin: 20px auto;
+            transition: transform 0.05s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             image-rendering: pixelated;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
-        #block:active { transform: scale(0.9); }
-        .stat { font-size: 1.5rem; margin: 10px 0; color: #2ecc71; font-weight: bold; }
+
+        /* Ефект при кліку (замість зуму сторінки) */
+        #block:active {
+            transform: scale(0.92);
+        }
+
+        .upgrades-list {
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
         .upgrade-btn {
-            background: #e67e22;
-            border: none;
+            background: #34495e;
+            border: 1px solid #555;
             color: white;
-            padding: 10px 20px;
-            margin: 5px;
-            border-radius: 5px;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
             cursor: pointer;
             width: 100%;
-            font-size: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.2s;
         }
-        .upgrade-btn:disabled { background: #7f8c8d; cursor: not-allowed; }
-        .upgrade-btn:hover:not(:disabled) { background: #d35400; }
+
+        .upgrade-btn:hover:not(:disabled) { background: #3e5871; border-color: var(--accent); }
+        .upgrade-btn:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
+        
+        .price { color: #2ecc71; font-weight: bold; }
+        
+        /* Смуга досвіду */
+        #exp-bar-bg {
+            width: 100%;
+            height: 10px;
+            background: #111;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        #exp-bar-fill {
+            width: 0%;
+            height: 100%;
+            background: var(--accent);
+            border-radius: 5px;
+            transition: width 0.3s;
+        }
     </style>
 </head>
 <body>
 
     <div id="game-container">
-        <h1>Mine Clicker</h1>
-        <div class="stat">💎 Гроші: <span id="money">0</span></div>
-        <div id="per-click">За клік: 1</div>
+        <h2>⛏️ Mine Tycoon <span id="level-tag">Lvl. 1</span></h2>
         
-        <!-- Клікабельний блок (SVG замість картинки для автономності) -->
-        <svg id="block" viewBox="0 0 100 100" onclick="clickBlock()">
-            <rect width="100" height="100" fill="#795548"/>
-            <rect width="100" height="20" fill="#4CAF50"/>
-        </svg>
+        <div id="exp-bar-bg"><div id="exp-bar-fill"></div></div>
 
-        <div class="upgrades">
-            <button class="upgrade-btn" id="upg1" onclick="buyUpgrade('click')">
-                🪓 Кам'яна кирка (+1) - 50$
+        <div class="stats-grid">
+            <div class="stat-card">💎 Баланс: <span id="money">0</span></div>
+            <div class="stat-card">⚡ Прибуток: <br><small id="income-info">Клік: 1 | Авто: 0</small></div>
+        </div>
+
+        <div id="block-container">
+            <svg id="block" viewBox="0 0 100 100" onclick="mine()">
+                <rect width="100" height="100" fill="#4d3319"/>
+                <rect width="100" height="25" fill="#2d933c"/>
+                <rect x="20" y="40" width="15" height="15" fill="#888"/>
+                <rect x="60" y="60" width="15" height="15" fill="#888"/>
+            </svg>
+        </div>
+
+        <div class="upgrades-list">
+            <button class="upgrade-btn" id="btn-click" onclick="buy('click')">
+                <span>🦾 Сила кліку (+1)</span>
+                <span class="price" id="p-click">20</span>
             </button>
-            <button class="upgrade-btn" id="upg2" onclick="buyUpgrade('auto')">
-                🤖 Авто-шахтар (+2/сек) - 200$
+            <button class="upgrade-btn" id="btn-slave" onclick="buy('slave')">
+                <span>👷 Найняти нуба (+2/с)</span>
+                <span class="price" id="p-slave">100</span>
+            </button>
+            <button class="upgrade-btn" id="btn-drill" onclick="buy('drill')">
+                <span>🚜 Бурова машина (+15/с)</span>
+                <span class="price" id="p-drill">800</span>
+            </button>
+            <button class="upgrade-btn" id="btn-tnt" onclick="buy('tnt')">
+                <span>🧨 Динаміт (+50/с)</span>
+                <span class="price" id="p-tnt">3000</span>
+            </button>
+            <button class="upgrade-btn" id="btn-quarry" onclick="buy('quarry')">
+                <span>🏰 Кар'єр (+200/с)</span>
+                <span class="price" id="p-quarry">15000</span>
             </button>
         </div>
     </div>
 
     <script>
-        let money = 0;
-        let clickValue = 1;
-        let autoValue = 0;
-        let prices = { click: 50, auto: 200 };
+        let state = {
+            money: 0,
+            clickVal: 1,
+            autoVal: 0,
+            lvl: 1,
+            exp: 0,
+            upgrades: {
+                click: { price: 20, inc: 1, mult: 1.4 },
+                slave: { price: 100, inc: 2, mult: 1.5 },
+                drill: { price: 800, inc: 15, mult: 1.6 },
+                tnt: { price: 3000, inc: 50, mult: 1.7 },
+                quarry: { price: 15000, inc: 200, mult: 1.8 }
+            }
+        };
+
+        function mine() {
+            state.money += state.clickVal;
+            state.exp += 1;
+            checkLevel();
+            updateUI();
+        }
+
+        function checkLevel() {
+            let nextLvl = state.lvl * 100;
+            if (state.exp >= nextLvl) {
+                state.exp = 0;
+                state.lvl++;
+                state.money += state.lvl * 50; // Бонус за рівень
+                alert("Новий рівень: " + state.lvl + "! Отримано бонус 💎");
+            }
+            document.getElementById('exp-bar-fill').style.width = (state.exp / nextLvl * 100) + "%";
+        }
+
+        function buy(id) {
+            let upg = state.upgrades[id];
+            if (state.money >= upg.price) {
+                state.money -= upg.price;
+                if (id === 'click') {
+                    state.clickVal += upg.inc;
+                } else {
+                    state.autoVal += upg.inc;
+                }
+                upg.price = Math.floor(upg.price * upg.mult);
+                updateUI();
+            }
+        }
 
         function updateUI() {
-            document.getElementById('money').innerText = Math.floor(money);
-            document.getElementById('per-click').innerText = `Клік: ${clickValue} | Авто: ${autoValue}/с`;
+            document.getElementById('money').innerText = Math.floor(state.money);
+            document.getElementById('level-tag').innerText = `Lvl. ${state.lvl}`;
+            document.getElementById('income-info').innerText = `Клік: ${state.clickVal} | Авто: ${state.autoVal}/с`;
             
-            document.getElementById('upg1').disabled = money < prices.click;
-            document.getElementById('upg2').disabled = money < prices.auto;
-        }
-
-        function clickBlock() {
-            money += clickValue;
-            updateUI();
-        }
-
-        function buyUpgrade(type) {
-            if (type === 'click' && money >= prices.click) {
-                money -= prices.click;
-                clickValue += 2;
-                prices.click = Math.floor(prices.click * 1.5);
-                document.getElementById('upg1').innerText = `🪓 Покращити кирку (+2) - ${prices.click}$`;
-            } else if (type === 'auto' && money >= prices.auto) {
-                money -= prices.auto;
-                autoValue += 5;
-                prices.auto = Math.floor(prices.auto * 1.6);
-                document.getElementById('upg2').innerText = `🤖 Авто-шахтар (+5/с) - ${prices.auto}$`;
+            for (let key in state.upgrades) {
+                let btn = document.getElementById('btn-' + key);
+                let priceLabel = document.getElementById('p-' + key);
+                priceLabel.innerText = state.upgrades[key].price;
+                btn.disabled = state.money < state.upgrades[key].price;
             }
-            updateUI();
         }
 
-        // Автоклік кожну секунду
+        // Авто-видобуток
         setInterval(() => {
-            if (autoValue > 0) {
-                money += autoValue / 10;
+            if (state.autoVal > 0) {
+                state.money += state.autoVal / 10;
                 updateUI();
             }
         }, 100);
+
+        // Блокування подвійного кліку (зуму) на смартфонах
+        document.addEventListener('dblclick', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+
     </script>
 </body>
 </html>
