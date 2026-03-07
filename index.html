@@ -3,83 +3,68 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ростелеком — Личный кабинет</title>
+<title>DigitalNet Кабинет</title>
 
 <style>
 
 body{
-font-family:Arial;
 margin:0;
-background:#f2f4f8;
+font-family:Arial;
+background:#f4f5f7;
 }
 
 header{
-background:#0d47a1;
-color:white;
-padding:15px;
-font-size:20px;
+background:white;
+padding:15px 40px;
+box-shadow:0 2px 6px rgba(0,0,0,0.1);
 }
 
 .container{
-max-width:900px;
-margin:auto;
-padding:20px;
+display:flex;
+height:90vh;
+}
+
+.left{
+flex:1;
+display:flex;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+}
+
+.right{
+width:420px;
+display:flex;
+align-items:center;
+justify-content:center;
 }
 
 .card{
 background:white;
-padding:20px;
-border-radius:10px;
-margin-bottom:20px;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
+padding:30px;
+border-radius:12px;
+width:100%;
+box-shadow:0 10px 30px rgba(0,0,0,0.15);
 }
 
 input{
 width:100%;
-padding:10px;
+padding:12px;
 margin-top:10px;
-border-radius:5px;
+border-radius:8px;
 border:1px solid #ccc;
 }
 
 button{
-margin-top:10px;
-padding:10px;
-border:none;
-background:#0d47a1;
-color:white;
-border-radius:6px;
-cursor:pointer;
-}
-
-button:hover{
-background:#1565c0;
-}
-
-.balance{
-font-size:28px;
-color:#0d47a1;
-}
-
-.menu{
-display:flex;
-gap:10px;
-margin-bottom:15px;
-}
-
-.menu button{
-flex:1;
-}
-
-table{
 width:100%;
-border-collapse:collapse;
-}
-
-td,th{
-padding:10px;
-border-bottom:1px solid #ddd;
+padding:12px;
+margin-top:15px;
+border:none;
+border-radius:8px;
+background:#ff4d00;
+color:white;
+font-size:16px;
+cursor:pointer;
 }
 
 .hidden{
@@ -87,95 +72,41 @@ display:none;
 }
 
 </style>
+
 </head>
 
 <body>
 
 <header>
-NetLine — Личный кабинет
+DigitalNet
 </header>
 
 <div class="container">
 
-<!-- LOGIN -->
+<div class="left">
 
-<div id="login" class="card">
+<h1>Личный кабинет</h1>
+<p>Управление услугами</p>
 
-<h3>Вход по номеру</h3>
+</div>
 
-<input id="phone" placeholder="Введите номер телефона">
+<div class="right">
 
-<button onclick="sendSMS()">Получить код</button>
+<div class="card">
 
-<div id="smsBlock" class="hidden">
+<h2>Вход по SMS</h2>
 
-<input id="code" placeholder="Введите код">
+<input id="phone" placeholder="Телефон">
+
+<button onclick="sendCode()">Получить код</button>
+
+<div id="codeBlock" class="hidden">
+
+<input id="code" placeholder="Код">
 
 <button onclick="login()">Войти</button>
 
 </div>
-
-</div>
-
-
-<!-- CABINET -->
-
-<div id="cabinet" class="hidden">
-
-<div class="card">
-
-<h3>Баланс</h3>
-<div class="balance" id="balance">120 грн</div>
-
-<button onclick="pay()">Пополнить</button>
-
-</div>
-
-<div class="menu">
-
-<button onclick="showTab('services')">Услуги</button>
-<button onclick="showTab('history')">История</button>
-<button onclick="logout()">Выход</button>
-
-</div>
-
-<div id="services" class="card">
-
-<h3>Подключенные услуги</h3>
-
-<ul>
-<li>Домашний интернет 100 Мбит</li>
-<li>IP телевидение</li>
-<li>Статический IP</li>
-</ul>
-
-</div>
-
-<div id="history" class="card hidden">
-
-<h3>История операций</h3>
-
-<table>
-
-<tr>
-<th>Дата</th>
-<th>Операция</th>
-<th>Сумма</th>
-</tr>
-
-<tr>
-<td>01.03</td>
-<td>Пополнение</td>
-<td>+200 грн</td>
-</tr>
-
-<tr>
-<td>05.03</td>
-<td>Списание</td>
-<td>-80 грн</td>
-</tr>
-
-</table>
 
 </div>
 
@@ -185,68 +116,57 @@ NetLine — Личный кабинет
 
 <script>
 
-let smsCode="";
+function sendCode(){
 
-function sendSMS(){
+let phone=document.getElementById("phone").value
 
-let phone=document.getElementById("phone").value;
+fetch("http://localhost:3000/send-code",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({phone:phone})
+})
+.then(r=>r.json())
+.then(data=>{
 
-if(phone.length<5){
-alert("Введите номер");
-return;
-}
+alert("Тестовый код: "+data.code)
 
-smsCode=Math.floor(1000+Math.random()*9000);
+document.getElementById("codeBlock").classList.remove("hidden")
 
-alert("Тестовый SMS код: "+smsCode);
-
-document.getElementById("smsBlock").classList.remove("hidden");
+})
 
 }
 
 function login(){
 
-let code=document.getElementById("code").value;
+let phone=document.getElementById("phone").value
+let code=document.getElementById("code").value
 
-if(code==smsCode){
+fetch("http://localhost:3000/login",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+phone:phone,
+code:code
+})
+})
+.then(r=>r.json())
+.then(data=>{
 
-document.getElementById("login").style.display="none";
-document.getElementById("cabinet").classList.remove("hidden");
+if(data.status=="success"){
+
+alert("Вход выполнен")
 
 }else{
 
-alert("Неверный код");
+alert("Неверный код")
 
 }
 
-}
-
-function showTab(tab){
-
-document.getElementById("services").classList.add("hidden");
-document.getElementById("history").classList.add("hidden");
-
-document.getElementById(tab).classList.remove("hidden");
-
-}
-
-function pay(){
-
-let balance=document.getElementById("balance");
-
-let current=parseInt(balance.innerText);
-
-current+=100;
-
-balance.innerText=current+" грн";
-
-alert("Баланс пополнен на 100");
-
-}
-
-function logout(){
-
-location.reload();
+})
 
 }
 
