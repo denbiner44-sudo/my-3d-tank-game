@@ -1,176 +1,117 @@
-
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 <head>
-<meta charset="UTF-8">
-<title>Ростелеком  Кабинет</title>
-
-<style>
-
-body{
-margin:0;
-font-family:Arial;
-background:#f4f5f7;
-}
-
-header{
-background:white;
-padding:15px 40px;
-box-shadow:0 2px 6px rgba(0,0,0,0.1);
-}
-
-.container{
-display:flex;
-height:90vh;
-}
-
-.left{
-flex:1;
-display:flex;
-align-items:center;
-justify-content:center;
-flex-direction:column;
-}
-
-.right{
-width:420px;
-display:flex;
-align-items:center;
-justify-content:center;
-}
-
-.card{
-background:white;
-padding:30px;
-border-radius:12px;
-width:100%;
-box-shadow:0 10px 30px rgba(0,0,0,0.15);
-}
-
-input{
-width:100%;
-padding:12px;
-margin-top:10px;
-border-radius:8px;
-border:1px solid #ccc;
-}
-
-button{
-width:100%;
-padding:12px;
-margin-top:15px;
-border:none;
-border-radius:8px;
-background:#ff4d00;
-color:white;
-font-size:16px;
-cursor:pointer;
-}
-
-.hidden{
-display:none;
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <title>Minecraft Clicker</title>
+    <style>
+        body {
+            background: #2c3e50;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            user-select: none;
+        }
+        #game-container {
+            background: #34495e;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: center;
+            width: 350px;
+        }
+        #block {
+            width: 150px;
+            cursor: pointer;
+            transition: transform 0.1s;
+            margin: 20px auto;
+            image-rendering: pixelated;
+        }
+        #block:active { transform: scale(0.9); }
+        .stat { font-size: 1.5rem; margin: 10px 0; color: #2ecc71; font-weight: bold; }
+        .upgrade-btn {
+            background: #e67e22;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+        }
+        .upgrade-btn:disabled { background: #7f8c8d; cursor: not-allowed; }
+        .upgrade-btn:hover:not(:disabled) { background: #d35400; }
+    </style>
 </head>
-
 <body>
 
-<header>
-Ростелеком
-</header>
+    <div id="game-container">
+        <h1>Mine Clicker</h1>
+        <div class="stat">💎 Гроші: <span id="money">0</span></div>
+        <div id="per-click">За клік: 1</div>
+        
+        <!-- Клікабельний блок (SVG замість картинки для автономності) -->
+        <svg id="block" viewBox="0 0 100 100" onclick="clickBlock()">
+            <rect width="100" height="100" fill="#795548"/>
+            <rect width="100" height="20" fill="#4CAF50"/>
+        </svg>
 
-<div class="container">
+        <div class="upgrades">
+            <button class="upgrade-btn" id="upg1" onclick="buyUpgrade('click')">
+                🪓 Кам'яна кирка (+1) - 50$
+            </button>
+            <button class="upgrade-btn" id="upg2" onclick="buyUpgrade('auto')">
+                🤖 Авто-шахтар (+2/сек) - 200$
+            </button>
+        </div>
+    </div>
 
-<div class="left">
+    <script>
+        let money = 0;
+        let clickValue = 1;
+        let autoValue = 0;
+        let prices = { click: 50, auto: 200 };
 
-<h1>Личный кабинет</h1>
-<p>Управление услугами</p>
+        function updateUI() {
+            document.getElementById('money').innerText = Math.floor(money);
+            document.getElementById('per-click').innerText = `Клік: ${clickValue} | Авто: ${autoValue}/с`;
+            
+            document.getElementById('upg1').disabled = money < prices.click;
+            document.getElementById('upg2').disabled = money < prices.auto;
+        }
 
-</div>
+        function clickBlock() {
+            money += clickValue;
+            updateUI();
+        }
 
-<div class="right">
+        function buyUpgrade(type) {
+            if (type === 'click' && money >= prices.click) {
+                money -= prices.click;
+                clickValue += 2;
+                prices.click = Math.floor(prices.click * 1.5);
+                document.getElementById('upg1').innerText = `🪓 Покращити кирку (+2) - ${prices.click}$`;
+            } else if (type === 'auto' && money >= prices.auto) {
+                money -= prices.auto;
+                autoValue += 5;
+                prices.auto = Math.floor(prices.auto * 1.6);
+                document.getElementById('upg2').innerText = `🤖 Авто-шахтар (+5/с) - ${prices.auto}$`;
+            }
+            updateUI();
+        }
 
-<div class="card">
-
-<h2>Вход по SMS</h2>
-
-<input id="phone" placeholder="Телефон">
-
-<button onclick="sendCode()">Получить код</button>
-
-<div id="codeBlock" class="hidden">
-
-<input id="code" placeholder="Код">
-
-<button onclick="login()">Войти</button>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<script>
-
-function sendCode(){
-
-let phone=document.getElementById("phone").value
-
-fetch("http://localhost:3000/send-code",{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({phone:phone})
-})
-.then(r=>r.json())
-.then(data=>{
-
-alert("Тестовый код: "+data.code)
-
-document.getElementById("codeBlock").classList.remove("hidden")
-
-})
-
-}
-
-function login(){
-
-let phone=document.getElementById("phone").value
-let code=document.getElementById("code").value
-
-fetch("http://localhost:3000/login",{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-phone:phone,
-code:code
-})
-})
-.then(r=>r.json())
-.then(data=>{
-
-if(data.status=="success"){
-
-alert("Вход выполнен")
-
-}else{
-
-alert("Неверный код")
-
-}
-
-})
-
-}
-
-</script>
-
+        // Автоклік кожну секунду
+        setInterval(() => {
+            if (autoValue > 0) {
+                money += autoValue / 10;
+                updateUI();
+            }
+        }, 100);
+    </script>
 </body>
 </html>
