@@ -13,11 +13,52 @@ background:#020617;
 color:#00ff9c;
 }
 
+/* LOGIN */
+
+#loginPage{
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.loginBox{
+border:1px solid #00ff9c;
+padding:30px;
+background:#010409;
+width:300px;
+text-align:center;
+}
+
+input{
+width:100%;
+padding:10px;
+margin:10px 0;
+background:black;
+border:1px solid #00ff9c;
+color:#00ff9c;
+}
+
+button{
+width:100%;
+padding:10px;
+background:#001b14;
+border:1px solid #00ff9c;
+color:#00ff9c;
+cursor:pointer;
+}
+
+/* PANEL */
+
+#panel{
+display:none;
+}
+
 header{
 background:#020617;
 padding:15px;
 text-align:center;
-font-size:24px;
+font-size:22px;
 border-bottom:1px solid #00ff9c;
 }
 
@@ -34,17 +75,7 @@ padding:15px;
 }
 
 .sidebar button{
-width:100%;
 margin-bottom:10px;
-padding:10px;
-background:#001b14;
-border:1px solid #00ff9c;
-color:#00ff9c;
-cursor:pointer;
-}
-
-.sidebar button:hover{
-background:#003b2c;
 }
 
 .main{
@@ -76,22 +107,33 @@ color:#00ff9c;
 margin-top:10px;
 }
 
-canvas{
-background:black;
-width:100%;
-height:300px;
-border:1px solid #00ff9c;
-}
-
-.stat{
-font-size:18px;
-margin:5px 0;
-}
-
 </style>
 </head>
 
 <body>
+
+<!-- LOGIN -->
+
+<div id="loginPage">
+
+<div class="loginBox">
+
+<h2>Cyber Security Login</h2>
+
+<input id="login" placeholder="Login">
+<input id="password" type="password" placeholder="Password">
+
+<button onclick="login()">Enter</button>
+
+<p id="error"></p>
+
+</div>
+
+</div>
+
+<!-- PANEL -->
+
+<div id="panel">
 
 <header>
 CYBER SECURITY CENTER
@@ -101,11 +143,10 @@ CYBER SECURITY CENTER
 
 <div class="sidebar">
 
-<button onclick="scanPorts()">Скан портов</button>
-<button onclick="checkPassword()">Проверить пароль</button>
-<button onclick="simulateAttack()">Симуляция атак</button>
-<button onclick="systemCheck()">Проверка системы</button>
-<button onclick="clearTerminal()">Очистить терминал</button>
+<button onclick="scanPorts()">Scan Ports</button>
+<button onclick="simulateAttack()">Simulate Attack</button>
+<button onclick="systemCheck()">System Check</button>
+<button onclick="clearTerminal()">Clear Terminal</button>
 
 </div>
 
@@ -113,29 +154,23 @@ CYBER SECURITY CENTER
 
 <div class="card">
 
-<h3>Мониторинг системы</h3>
+<h3>System Status</h3>
 
-<div class="stat">Firewall: <span id="fw">ACTIVE</span></div>
-<div class="stat">Threats blocked: <span id="threats">0</span></div>
-<div class="stat">System status: <span id="status">Secure</span></div>
+<div>Firewall: ACTIVE</div>
+<div>Threats blocked: <span id="threats">0</span></div>
+<div>Status: SECURE</div>
 
 </div>
 
 <div class="card">
 
-<h3>Терминал безопасности</h3>
+<h3>Security Terminal</h3>
 
 <div id="terminal"></div>
 
 <input id="cmd" placeholder="Введите команду">
 
 </div>
-
-<div class="card">
-
-<h3>Карта атак (симуляция)</h3>
-
-<canvas id="map"></canvas>
 
 </div>
 
@@ -145,6 +180,30 @@ CYBER SECURITY CENTER
 
 <script>
 
+/* LOGIN */
+
+function login(){
+
+let l=document.getElementById("login").value
+let p=document.getElementById("password").value
+
+if(l==="admin" && p==="cyber123"){
+
+document.getElementById("loginPage").style.display="none"
+document.getElementById("panel").style.display="block"
+
+}
+
+else{
+
+document.getElementById("error").innerText="Неверный логин или пароль"
+
+}
+
+}
+
+/* TERMINAL */
+
 let terminal=document.getElementById("terminal")
 
 function log(text){
@@ -152,9 +211,12 @@ function log(text){
 let div=document.createElement("div")
 div.innerText=text
 terminal.appendChild(div)
+
 terminal.scrollTop=terminal.scrollHeight
 
 }
+
+/* FUNCTIONS */
 
 function scanPorts(){
 
@@ -164,43 +226,18 @@ setTimeout(()=>log("21 FTP CLOSED"),500)
 setTimeout(()=>log("22 SSH OPEN"),1000)
 setTimeout(()=>log("80 HTTP OPEN"),1500)
 setTimeout(()=>log("443 HTTPS OPEN"),2000)
-setTimeout(()=>log("Scan complete"),2500)
-
-}
-
-function checkPassword(){
-
-let pass=prompt("Введите пароль")
-
-if(!pass) return
-
-let score=0
-
-if(pass.length>8) score++
-if(/[A-Z]/.test(pass)) score++
-if(/[0-9]/.test(pass)) score++
-if(/[^A-Za-z0-9]/.test(pass)) score++
-
-if(score<=1) log("Weak password ❌")
-else if(score==2) log("Medium password ⚠️")
-else log("Strong password ✅")
 
 }
 
 function systemCheck(){
 
-log("Checking firewall...")
-setTimeout(()=>log("Firewall active"),1000)
-
-setTimeout(()=>log("Antivirus active"),1500)
-
-setTimeout(()=>log("No threats detected"),2000)
+log("Firewall: ACTIVE")
+log("Antivirus: ACTIVE")
+log("System secure")
 
 }
 
 function simulateAttack(){
-
-log("Simulating cyber attack...")
 
 let threats=document.getElementById("threats")
 
@@ -211,11 +248,11 @@ let interval=setInterval(()=>{
 count++
 threats.innerText=count
 
-log("Attack blocked from IP: 185."+Math.floor(Math.random()*255)+"."+Math.floor(Math.random()*255)+"."+Math.floor(Math.random()*255))
+log("Blocked attack from IP: 185."+Math.floor(Math.random()*255)+"."+Math.floor(Math.random()*255)+"."+Math.floor(Math.random()*255))
 
 if(count>10) clearInterval(interval)
 
-},700)
+},600)
 
 }
 
@@ -223,59 +260,40 @@ function clearTerminal(){
 terminal.innerHTML=""
 }
 
-document.getElementById("cmd").addEventListener("keydown",function(e){
+/* COMMANDS */
 
-if(e.key==="Enter"){
+document.addEventListener("keydown",function(e){
 
-let cmd=this.value
+let cmdInput=document.getElementById("cmd")
+
+if(e.key==="Enter" && document.activeElement===cmdInput){
+
+let cmd=cmdInput.value
 
 log("> "+cmd)
 
-if(cmd==="help"){
-
-log("Commands:")
-log("scan - scan ports")
-log("status - system status")
-log("attack - simulate attack")
-
-}
-
-else if(cmd==="scan") scanPorts()
+if(cmd==="scan") scanPorts()
 
 else if(cmd==="status") systemCheck()
 
 else if(cmd==="attack") simulateAttack()
 
+else if(cmd==="help"){
+
+log("Commands:")
+log("scan")
+log("status")
+log("attack")
+
+}
+
 else log("Unknown command")
 
-this.value=""
+cmdInput.value=""
 
 }
 
 })
-
-log("Cyber Security Console started")
-log("Type help")
-
-let canvas=document.getElementById("map")
-let ctx=canvas.getContext("2d")
-
-canvas.width=canvas.offsetWidth
-canvas.height=300
-
-function drawAttack(){
-
-let x=Math.random()*canvas.width
-let y=Math.random()*canvas.height
-
-ctx.fillStyle="red"
-ctx.beginPath()
-ctx.arc(x,y,3,0,Math.PI*2)
-ctx.fill()
-
-}
-
-setInterval(drawAttack,300)
 
 </script>
 
