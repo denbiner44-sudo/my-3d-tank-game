@@ -1,240 +1,239 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mega Mine Clicker</title>
-    <style>
-        :root {
-            --bg: #1a1a1a;
-            --panel: #2d2d2d;
-            --accent: #4caf50;
-            --text: #ecf0f1;
-        }
+<meta charset="UTF-8">
+<title>Hamster GameDev</title>
 
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Segoe UI', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            /* Анти-зум на рівні браузера */
-            touch-action: manipulation;
-            overflow: hidden;
-        }
+<style>
 
-        #game-container {
-            background: var(--panel);
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.7);
-            text-align: center;
-            width: 90%;
-            max-width: 450px;
-            border: 2px solid #444;
-        }
+body{
+margin:0;
+font-family:Arial;
+background:linear-gradient(135deg,#1e1b4b,#312e81);
+color:white;
+text-align:center;
+}
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
+header{
+background:#111827;
+padding:15px;
+font-size:26px;
+font-weight:bold;
+}
 
-        .stat-card {
-            background: rgba(0,0,0,0.2);
-            padding: 10px;
-            border-radius: 10px;
-        }
+.container{
+padding:20px;
+}
 
-        #money { font-size: 1.8rem; color: #f1c40f; display: block; }
+.hamster{
+font-size:90px;
+cursor:pointer;
+transition:0.1s;
+}
 
-        /* Клік-зона */
-        #block-container {
-            position: relative;
-            margin: 30px 0;
-        }
+.hamster:active{
+transform:scale(0.9);
+}
 
-        #block {
-            width: 160px;
-            height: 160px;
-            cursor: pointer;
-            transition: transform 0.05s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            image-rendering: pixelated;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
+.money{
+font-size:28px;
+margin:10px;
+}
 
-        /* Ефект при кліку (замість зуму сторінки) */
-        #block:active {
-            transform: scale(0.92);
-        }
+.panel{
+background:#1f2937;
+padding:15px;
+margin:10px auto;
+width:320px;
+border-radius:10px;
+}
 
-        .upgrades-list {
-            max-height: 300px;
-            overflow-y: auto;
-            padding-right: 10px;
-        }
+button{
+padding:10px 15px;
+border:none;
+border-radius:8px;
+background:#22c55e;
+color:white;
+font-size:16px;
+cursor:pointer;
+}
 
-        .upgrade-btn {
-            background: #34495e;
-            border: 1px solid #555;
-            color: white;
-            padding: 12px;
-            margin: 8px 0;
-            border-radius: 8px;
-            cursor: pointer;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: 0.2s;
-        }
+button:hover{
+background:#16a34a;
+}
 
-        .upgrade-btn:hover:not(:disabled) { background: #3e5871; border-color: var(--accent); }
-        .upgrade-btn:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
-        
-        .price { color: #2ecc71; font-weight: bold; }
-        
-        /* Смуга досвіду */
-        #exp-bar-bg {
-            width: 100%;
-            height: 10px;
-            background: #111;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
-        #exp-bar-fill {
-            width: 0%;
-            height: 100%;
-            background: var(--accent);
-            border-radius: 5px;
-            transition: width 0.3s;
-        }
-    </style>
+.shop button{
+margin-top:10px;
+width:100%;
+}
+
+</style>
 </head>
+
 <body>
 
-    <div id="game-container">
-        <h2>⛏️ Mine Tycoon <span id="level-tag">Lvl. 1</span></h2>
-        
-        <div id="exp-bar-bg"><div id="exp-bar-fill"></div></div>
+<header>
+🐹 Hamster GameDev
+</header>
 
-        <div class="stats-grid">
-            <div class="stat-card">💎 Баланс: <span id="money">0</span></div>
-            <div class="stat-card">⚡ Прибуток: <br><small id="income-info">Клік: 1 | Авто: 0</small></div>
-        </div>
+<div class="container">
 
-        <div id="block-container">
-            <svg id="block" viewBox="0 0 100 100" onclick="mine()">
-                <rect width="100" height="100" fill="#4d3319"/>
-                <rect width="100" height="25" fill="#2d933c"/>
-                <rect x="20" y="40" width="15" height="15" fill="#888"/>
-                <rect x="60" y="60" width="15" height="15" fill="#888"/>
-            </svg>
-        </div>
+<div class="money">
+💰 Деньги: <span id="money">0</span>
+</div>
 
-        <div class="upgrades-list">
-            <button class="upgrade-btn" id="btn-click" onclick="buy('click')">
-                <span>🦾 Сила кліку (+1)</span>
-                <span class="price" id="p-click">20</span>
-            </button>
-            <button class="upgrade-btn" id="btn-slave" onclick="buy('slave')">
-                <span>👷 Найняти нуба (+2/с)</span>
-                <span class="price" id="p-slave">100</span>
-            </button>
-            <button class="upgrade-btn" id="btn-drill" onclick="buy('drill')">
-                <span>🚜 Бурова машина (+15/с)</span>
-                <span class="price" id="p-drill">800</span>
-            </button>
-            <button class="upgrade-btn" id="btn-tnt" onclick="buy('tnt')">
-                <span>🧨 Динаміт (+50/с)</span>
-                <span class="price" id="p-tnt">3000</span>
-            </button>
-            <button class="upgrade-btn" id="btn-quarry" onclick="buy('quarry')">
-                <span>🏰 Кар'єр (+200/с)</span>
-                <span class="price" id="p-quarry">15000</span>
-            </button>
-        </div>
-    </div>
+<div class="hamster" onclick="clickHamster()">
+🐹
+</div>
 
-    <script>
-        let state = {
-            money: 0,
-            clickVal: 1,
-            autoVal: 0,
-            lvl: 1,
-            exp: 0,
-            upgrades: {
-                click: { price: 20, inc: 1, mult: 1.4 },
-                slave: { price: 100, inc: 2, mult: 1.5 },
-                drill: { price: 800, inc: 15, mult: 1.6 },
-                tnt: { price: 3000, inc: 50, mult: 1.7 },
-                quarry: { price: 15000, inc: 200, mult: 1.8 }
-            }
-        };
+<div>
+Кликай чтобы писать код
+</div>
 
-        function mine() {
-            state.money += state.clickVal;
-            state.exp += 1;
-            checkLevel();
-            updateUI();
-        }
+<div class="panel">
+<h3>🎮 Разработка игр</h3>
 
-        function checkLevel() {
-            let nextLvl = state.lvl * 100;
-            if (state.exp >= nextLvl) {
-                state.exp = 0;
-                state.lvl++;
-                state.money += state.lvl * 50; // Бонус за рівень
-                alert("Новий рівень: " + state.lvl + "! Отримано бонус 💎");
-            }
-            document.getElementById('exp-bar-fill').style.width = (state.exp / nextLvl * 100) + "%";
-        }
+<button onclick="createGame()">
+Создать игру ($50)
+</button>
 
-        function buy(id) {
-            let upg = state.upgrades[id];
-            if (state.money >= upg.price) {
-                state.money -= upg.price;
-                if (id === 'click') {
-                    state.clickVal += upg.inc;
-                } else {
-                    state.autoVal += upg.inc;
-                }
-                upg.price = Math.floor(upg.price * upg.mult);
-                updateUI();
-            }
-        }
+<p>Прибыль: <span id="income">0</span> / сек</p>
+</div>
 
-        function updateUI() {
-            document.getElementById('money').innerText = Math.floor(state.money);
-            document.getElementById('level-tag').innerText = `Lvl. ${state.lvl}`;
-            document.getElementById('income-info').innerText = `Клік: ${state.clickVal} | Авто: ${state.autoVal}/с`;
-            
-            for (let key in state.upgrades) {
-                let btn = document.getElementById('btn-' + key);
-                let priceLabel = document.getElementById('p-' + key);
-                priceLabel.innerText = state.upgrades[key].price;
-                btn.disabled = state.money < state.upgrades[key].price;
-            }
-        }
+<div class="panel shop">
 
-        // Авто-видобуток
-        setInterval(() => {
-            if (state.autoVal > 0) {
-                state.money += state.autoVal / 10;
-                updateUI();
-            }
-        }, 100);
+<h3>🏢 Апгрейды студии</h3>
 
-        // Блокування подвійного кліку (зуму) на смартфонах
-        document.addEventListener('dblclick', function(e) {
-            e.preventDefault();
-        }, { passive: false });
+<button onclick="buyDev()">
+👨‍💻 Нанять разработчика ($200)
+</button>
 
-    </script>
+<button onclick="buyMarketing()">
+📢 Маркетинг ($500)
+</button>
+
+<button onclick="buyStudio()">
+🏢 Новая студия ($1500)
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+let money = 0
+let income = 0
+
+let devs = 0
+let marketing = 0
+let studios = 1
+
+function updateUI(){
+document.getElementById("money").innerText = Math.floor(money)
+document.getElementById("income").innerText = income
+}
+
+function clickHamster(){
+money += 1 + devs
+updateUI()
+save()
+}
+
+function createGame(){
+
+if(money >= 50){
+
+money -= 50
+
+let profit = 5 + devs*2 + marketing*3 + studios*5
+
+income += profit
+
+updateUI()
+save()
+
+}else{
+alert("Недостаточно денег")
+}
+
+}
+
+function buyDev(){
+
+if(money >= 200){
+
+money -= 200
+devs++
+
+updateUI()
+save()
+
+}
+
+}
+
+function buyMarketing(){
+
+if(money >= 500){
+
+money -= 500
+marketing++
+
+updateUI()
+save()
+
+}
+
+}
+
+function buyStudio(){
+
+if(money >= 1500){
+
+money -= 1500
+studios++
+income += 10
+
+updateUI()
+save()
+
+}
+
+}
+
+setInterval(()=>{
+
+money += income
+updateUI()
+
+},1000)
+
+function save(){
+
+localStorage.setItem("hamster_money",money)
+localStorage.setItem("hamster_income",income)
+localStorage.setItem("hamster_devs",devs)
+localStorage.setItem("hamster_marketing",marketing)
+localStorage.setItem("hamster_studios",studios)
+
+}
+
+function load(){
+
+money = Number(localStorage.getItem("hamster_money")) || 0
+income = Number(localStorage.getItem("hamster_income")) || 0
+devs = Number(localStorage.getItem("hamster_devs")) || 0
+marketing = Number(localStorage.getItem("hamster_marketing")) || 0
+studios = Number(localStorage.getItem("hamster_studios")) || 1
+
+updateUI()
+
+}
+
+load()
+
+</script>
+
 </body>
 </html>
