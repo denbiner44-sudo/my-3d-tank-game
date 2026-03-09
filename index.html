@@ -2,384 +2,280 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>MEGA Hamster GameDev</title>
+<title>Cyber Security Center</title>
 
 <style>
 
 body{
 margin:0;
-font-family:Arial;
-background:linear-gradient(135deg,#1e1b4b,#020617);
-color:white;
-text-align:center;
+font-family:monospace;
+background:#020617;
+color:#00ff9c;
 }
 
 header{
 background:#020617;
 padding:15px;
-font-size:30px;
+text-align:center;
+font-size:24px;
+border-bottom:1px solid #00ff9c;
 }
 
-.top{
-display:flex;
-justify-content:center;
-gap:25px;
-padding:10px;
-font-size:18px;
+.container{
+display:grid;
+grid-template-columns:250px 1fr;
+height:100vh;
 }
 
-.hamster{
-font-size:120px;
-cursor:pointer;
-transition:0.1s;
-}
-
-.hamster:active{
-transform:scale(0.9);
-}
-
-.menu button{
-padding:10px;
-margin:5px;
-border:none;
-border-radius:8px;
-background:#374151;
-color:white;
-cursor:pointer;
-}
-
-.panel{
-background:#1f2937;
-width:400px;
-margin:15px auto;
+.sidebar{
+background:#010409;
+border-right:1px solid #00ff9c;
 padding:15px;
-border-radius:10px;
 }
 
-.action{
-background:#22c55e;
+.sidebar button{
+width:100%;
+margin-bottom:10px;
 padding:10px;
-border:none;
-border-radius:8px;
+background:#001b14;
+border:1px solid #00ff9c;
+color:#00ff9c;
 cursor:pointer;
-margin:5px;
 }
 
-.hidden{
-display:none;
+.sidebar button:hover{
+background:#003b2c;
 }
 
-.slot{
-font-size:42px;
-letter-spacing:8px;
-margin:10px;
+.main{
+padding:20px;
+overflow:auto;
+}
+
+.card{
+border:1px solid #00ff9c;
+padding:15px;
+margin-bottom:15px;
+background:#010409;
+}
+
+#terminal{
+height:250px;
+overflow:auto;
+background:black;
+padding:10px;
+border:1px solid #00ff9c;
+}
+
+#cmd{
+width:100%;
+padding:10px;
+background:black;
+border:1px solid #00ff9c;
+color:#00ff9c;
+margin-top:10px;
+}
+
+canvas{
+background:black;
+width:100%;
+height:300px;
+border:1px solid #00ff9c;
+}
+
+.stat{
+font-size:18px;
+margin:5px 0;
 }
 
 </style>
-
 </head>
 
 <body>
 
 <header>
-🐹 MEGA Hamster GameDev
+CYBER SECURITY CENTER
 </header>
 
-<div class="top">
+<div class="container">
 
-💰 <span id="money">0</span>
-📈 <span id="income">0</span>/sec
-⭐ LVL <span id="level">1</span>
+<div class="sidebar">
 
-</div>
-
-<div class="hamster" onclick="clickHamster()">🐹</div>
-
-<div class="menu">
-
-<button onclick="tab('games')">🎮 Игры</button>
-<button onclick="tab('staff')">👨‍💻 Сотрудники</button>
-<button onclick="tab('upgrades')">🏢 Апгрейды</button>
-<button onclick="tab('casino')">🎰 Казино</button>
-<button onclick="tab('shop')">🛒 Магазин</button>
-<button onclick="tab('ach')">🏆 Достижения</button>
+<button onclick="scanPorts()">Скан портов</button>
+<button onclick="checkPassword()">Проверить пароль</button>
+<button onclick="simulateAttack()">Симуляция атак</button>
+<button onclick="systemCheck()">Проверка системы</button>
+<button onclick="clearTerminal()">Очистить терминал</button>
 
 </div>
 
-<div id="games" class="panel">
+<div class="main">
 
-<h3>Разработка игр</h3>
+<div class="card">
 
-<button class="action" onclick="makeGame(50,5)">Инди</button>
-<button class="action" onclick="makeGame(200,20)">Mobile</button>
-<button class="action" onclick="makeGame(700,80)">Steam</button>
-<button class="action" onclick="makeGame(2000,250)">AAA</button>
-<button class="action" onclick="makeGame(10000,1200)">MMO</button>
-<button class="action" onclick="makeGame(30000,4000)">Metaverse</button>
-<button class="action" onclick="makeGame(100000,12000)">VR Game</button>
-<button class="action" onclick="makeGame(500000,70000)">AI Game</button>
+<h3>Мониторинг системы</h3>
+
+<div class="stat">Firewall: <span id="fw">ACTIVE</span></div>
+<div class="stat">Threats blocked: <span id="threats">0</span></div>
+<div class="stat">System status: <span id="status">Secure</span></div>
 
 </div>
 
-<div id="staff" class="panel hidden">
+<div class="card">
 
-<h3>Сотрудники</h3>
+<h3>Терминал безопасности</h3>
 
-<button class="action" onclick="buyDev()">👨‍💻 Dev ($300)</button>
-<button class="action" onclick="buyDesigner()">🎨 Designer ($500)</button>
-<button class="action" onclick="buyMarketing()">📢 Marketing ($800)</button>
+<div id="terminal"></div>
 
-<p>
-
-Dev: <span id="devs">0</span><br>
-Designers: <span id="designers">0</span><br>
-Marketing: <span id="marketers">0</span>
-
-</p>
+<input id="cmd" placeholder="Введите команду">
 
 </div>
 
-<div id="upgrades" class="panel hidden">
+<div class="card">
 
-<h3>Апгрейды</h3>
+<h3>Карта атак (симуляция)</h3>
 
-<button class="action" onclick="upgrade(2000,80)">💻 ПК</button>
-<button class="action" onclick="upgrade(10000,500)">🏢 Офис</button>
-<button class="action" onclick="upgrade(50000,2500)">⚙️ Движок</button>
-<button class="action" onclick="upgrade(200000,10000)">🤖 AI Dev</button>
+<canvas id="map"></canvas>
 
 </div>
 
-<div id="casino" class="panel hidden">
-
-<h3>🎰 Казино</h3>
-
-<div class="slot" id="slot">❔❔❔</div>
-
-<button class="action" onclick="spin()">Spin ($500)</button>
-
 </div>
-
-<div id="shop" class="panel hidden">
-
-<h3>Магазин</h3>
-
-<button class="action" onclick="buyBoost()">⚡ Boost x2 ($10000)</button>
-<button class="action" onclick="buyAuto()">🤖 Auto Click ($20000)</button>
-
-</div>
-
-<div id="ach" class="panel hidden">
-
-<h3>Достижения</h3>
-
-<ul id="achievements"></ul>
 
 </div>
 
 <script>
 
-let money=0
-let income=0
-let level=1
+let terminal=document.getElementById("terminal")
 
-let devs=0
-let designers=0
-let marketers=0
+function log(text){
 
-let autoClick=false
-let boost=1
-
-let achievements=[]
-
-function clickHamster(){
-
-money+=boost*(1+devs)
-
-update()
+let div=document.createElement("div")
+div.innerText=text
+terminal.appendChild(div)
+terminal.scrollTop=terminal.scrollHeight
 
 }
 
-function makeGame(cost,profit){
+function scanPorts(){
 
-if(money>=cost){
+log("Scanning ports...")
 
-money-=cost
-
-income+=boost*(profit+devs*3+designers*2+marketers*4)
-
-level++
-
-checkAch()
+setTimeout(()=>log("21 FTP CLOSED"),500)
+setTimeout(()=>log("22 SSH OPEN"),1000)
+setTimeout(()=>log("80 HTTP OPEN"),1500)
+setTimeout(()=>log("443 HTTPS OPEN"),2000)
+setTimeout(()=>log("Scan complete"),2500)
 
 }
 
-update()
+function checkPassword(){
+
+let pass=prompt("Введите пароль")
+
+if(!pass) return
+
+let score=0
+
+if(pass.length>8) score++
+if(/[A-Z]/.test(pass)) score++
+if(/[0-9]/.test(pass)) score++
+if(/[^A-Za-z0-9]/.test(pass)) score++
+
+if(score<=1) log("Weak password ❌")
+else if(score==2) log("Medium password ⚠️")
+else log("Strong password ✅")
 
 }
 
-function buyDev(){
+function systemCheck(){
 
-if(money>=300){
+log("Checking firewall...")
+setTimeout(()=>log("Firewall active"),1000)
 
-money-=300
-devs++
-income+=2
+setTimeout(()=>log("Antivirus active"),1500)
 
-}
-
-update()
+setTimeout(()=>log("No threats detected"),2000)
 
 }
 
-function buyDesigner(){
+function simulateAttack(){
 
-if(money>=500){
+log("Simulating cyber attack...")
 
-money-=500
-designers++
-income+=3
+let threats=document.getElementById("threats")
 
-}
+let count=parseInt(threats.innerText)
 
-update()
+let interval=setInterval(()=>{
 
-}
+count++
+threats.innerText=count
 
-function buyMarketing(){
+log("Attack blocked from IP: 185."+Math.floor(Math.random()*255)+"."+Math.floor(Math.random()*255)+"."+Math.floor(Math.random()*255))
 
-if(money>=800){
+if(count>10) clearInterval(interval)
 
-money-=800
-marketers++
-income+=4
+},700)
 
 }
 
-update()
+function clearTerminal(){
+terminal.innerHTML=""
+}
+
+document.getElementById("cmd").addEventListener("keydown",function(e){
+
+if(e.key==="Enter"){
+
+let cmd=this.value
+
+log("> "+cmd)
+
+if(cmd==="help"){
+
+log("Commands:")
+log("scan - scan ports")
+log("status - system status")
+log("attack - simulate attack")
 
 }
 
-function upgrade(cost,profit){
+else if(cmd==="scan") scanPorts()
 
-if(money>=cost){
+else if(cmd==="status") systemCheck()
 
-money-=cost
-income+=profit
+else if(cmd==="attack") simulateAttack()
 
-}
+else log("Unknown command")
 
-update()
-
-}
-
-function spin(){
-
-if(money<500)return
-
-money-=500
-
-let items=["💰","💎","🐹","⭐","❌"]
-
-let a=items[Math.floor(Math.random()*5)]
-let b=items[Math.floor(Math.random()*5)]
-let c=items[Math.floor(Math.random()*5)]
-
-slot.innerText=a+b+c
-
-if(a==b && b==c){
-
-money+=10000
+this.value=""
 
 }
 
-update()
+})
+
+log("Cyber Security Console started")
+log("Type help")
+
+let canvas=document.getElementById("map")
+let ctx=canvas.getContext("2d")
+
+canvas.width=canvas.offsetWidth
+canvas.height=300
+
+function drawAttack(){
+
+let x=Math.random()*canvas.width
+let y=Math.random()*canvas.height
+
+ctx.fillStyle="red"
+ctx.beginPath()
+ctx.arc(x,y,3,0,Math.PI*2)
+ctx.fill()
 
 }
 
-function buyBoost(){
-
-if(money>=10000){
-
-money-=10000
-boost=2
-
-}
-
-}
-
-function buyAuto(){
-
-if(money>=20000){
-
-money-=20000
-autoClick=true
-
-}
-
-}
-
-function checkAch(){
-
-if(level==10)addAch("⭐ 10 уровень")
-if(level==50)addAch("🏆 50 уровень")
-if(money>=100000)addAch("💰 100k денег")
-
-}
-
-function addAch(text){
-
-if(!achievements.includes(text)){
-
-achievements.push(text)
-
-let li=document.createElement("li")
-li.innerText=text
-document.getElementById("achievements").appendChild(li)
-
-}
-
-}
-
-function update(){
-
-money=Math.floor(money)
-
-moneySpan=document.getElementById("money")
-incomeSpan=document.getElementById("income")
-levelSpan=document.getElementById("level")
-
-moneySpan.innerText=money
-incomeSpan.innerText=income
-levelSpan.innerText=level
-
-document.getElementById("devs").innerText=devs
-document.getElementById("designers").innerText=designers
-document.getElementById("marketers").innerText=marketers
-
-}
-
-setInterval(()=>{
-
-money+=income
-
-if(autoClick){
-
-clickHamster()
-
-}
-
-update()
-
-},1000)
-
-function tab(id){
-
-document.querySelectorAll(".panel").forEach(p=>p.classList.add("hidden"))
-
-document.getElementById(id).classList.remove("hidden")
-
-}
+setInterval(drawAttack,300)
 
 </script>
 
