@@ -15,18 +15,22 @@ text-align:center;
 }
 
 header{
-background:#111827;
+background:#0f172a;
 padding:15px;
-font-size:26px;
+font-size:28px;
 font-weight:bold;
 }
 
-.container{
-padding:20px;
+.stats{
+display:flex;
+justify-content:center;
+gap:20px;
+padding:10px;
+font-size:18px;
 }
 
 .hamster{
-font-size:90px;
+font-size:100px;
 cursor:pointer;
 transition:0.1s;
 }
@@ -35,199 +39,354 @@ transition:0.1s;
 transform:scale(0.9);
 }
 
-.money{
-font-size:28px;
-margin:10px;
-}
-
 .panel{
 background:#1f2937;
+width:350px;
+margin:15px auto;
 padding:15px;
-margin:10px auto;
-width:320px;
 border-radius:10px;
 }
 
 button{
-padding:10px 15px;
+padding:10px;
+margin:5px;
 border:none;
 border-radius:8px;
+cursor:pointer;
 background:#22c55e;
 color:white;
 font-size:16px;
-cursor:pointer;
 }
 
 button:hover{
 background:#16a34a;
 }
 
-.shop button{
-margin-top:10px;
-width:100%;
+.tabs button{
+background:#374151;
+}
+
+.tabs button.active{
+background:#22c55e;
+}
+
+.hidden{
+display:none;
 }
 
 </style>
+
 </head>
 
 <body>
 
 <header>
-🐹 Hamster GameDev
+🐹 Hamster GameDev Studio
 </header>
 
-<div class="container">
-
-<div class="money">
-💰 Деньги: <span id="money">0</span>
+<div class="stats">
+<div>💰 <span id="money">0</span></div>
+<div>📈 <span id="income">0</span>/sec</div>
+<div>⭐ LVL <span id="level">1</span></div>
 </div>
 
 <div class="hamster" onclick="clickHamster()">
 🐹
 </div>
 
-<div>
-Кликай чтобы писать код
+<div class="tabs">
+
+<button onclick="showTab('games')" class="active" id="tab_games">
+🎮 Игры
+</button>
+
+<button onclick="showTab('staff')" id="tab_staff">
+👨‍💻 Сотрудники
+</button>
+
+<button onclick="showTab('shop')" id="tab_shop">
+🏢 Апгрейды
+</button>
+
+<button onclick="showTab('stats')" id="tab_stats">
+📊 Статистика
+</button>
+
 </div>
 
-<div class="panel">
-<h3>🎮 Разработка игр</h3>
+<div id="games" class="panel">
+
+<h3>Создание игр</h3>
 
 <button onclick="createGame()">
 Создать игру ($50)
 </button>
 
-<p>Прибыль: <span id="income">0</span> / сек</p>
+<button onclick="createMobile()">
+Мобильная игра ($200)
+</button>
+
+<button onclick="createAAA()">
+AAA игра ($1000)
+</button>
+
 </div>
 
-<div class="panel shop">
+<div id="staff" class="panel hidden">
 
-<h3>🏢 Апгрейды студии</h3>
+<h3>Найм сотрудников</h3>
 
 <button onclick="buyDev()">
-👨‍💻 Нанять разработчика ($200)
+👨‍💻 Разработчик ($200)
+</button>
+
+<button onclick="buyDesigner()">
+🎨 Дизайнер ($400)
 </button>
 
 <button onclick="buyMarketing()">
-📢 Маркетинг ($500)
-</button>
-
-<button onclick="buyStudio()">
-🏢 Новая студия ($1500)
+📢 Маркетолог ($600)
 </button>
 
 </div>
+
+<div id="shop" class="panel hidden">
+
+<h3>Апгрейды студии</h3>
+
+<button onclick="upgradePC()">
+💻 Новый ПК ($500)
+</button>
+
+<button onclick="upgradeStudio()">
+🏢 Студия ($2000)
+</button>
+
+<button onclick="upgradeEngine()">
+⚙️ Игровой движок ($5000)
+</button>
+
+</div>
+
+<div id="stats" class="panel hidden">
+
+<h3>Статистика</h3>
+
+<p>Создано игр: <span id="gamesMade">0</span></p>
+<p>Разработчики: <span id="devs">0</span></p>
+<p>Дизайнеры: <span id="designers">0</span></p>
+<p>Маркетологи: <span id="marketers">0</span></p>
 
 </div>
 
 <script>
 
-let money = 0
-let income = 0
+let money=0
+let income=0
+let level=1
 
-let devs = 0
-let marketing = 0
-let studios = 1
+let devs=0
+let designers=0
+let marketers=0
 
-function updateUI(){
-document.getElementById("money").innerText = Math.floor(money)
-document.getElementById("income").innerText = income
-}
+let gamesMade=0
 
 function clickHamster(){
-money += 1 + devs
-updateUI()
+money+=1+devs
+update()
 save()
 }
 
 function createGame(){
 
-if(money >= 50){
+if(money>=50){
 
-money -= 50
+money-=50
+income+=5+devs
+gamesMade++
 
-let profit = 5 + devs*2 + marketing*3 + studios*5
+}
 
-income += profit
-
-updateUI()
+update()
 save()
 
-}else{
-alert("Недостаточно денег")
 }
+
+function createMobile(){
+
+if(money>=200){
+
+money-=200
+income+=20+devs*2+designers
+gamesMade++
+
+}
+
+update()
+save()
+
+}
+
+function createAAA(){
+
+if(money>=1000){
+
+money-=1000
+income+=100+devs*5+designers*3+marketers*4
+gamesMade++
+
+}
+
+update()
+save()
 
 }
 
 function buyDev(){
 
-if(money >= 200){
+if(money>=200){
 
-money -= 200
+money-=200
 devs++
 
-updateUI()
+}
+
+update()
 save()
 
 }
+
+function buyDesigner(){
+
+if(money>=400){
+
+money-=400
+designers++
+
+}
+
+update()
+save()
 
 }
 
 function buyMarketing(){
 
-if(money >= 500){
+if(money>=600){
 
-money -= 500
-marketing++
+money-=600
+marketers++
 
-updateUI()
+}
+
+update()
 save()
 
 }
 
+function upgradePC(){
+
+if(money>=500){
+
+money-=500
+income+=10
+
 }
 
-function buyStudio(){
-
-if(money >= 1500){
-
-money -= 1500
-studios++
-income += 10
-
-updateUI()
+update()
 save()
 
 }
+
+function upgradeStudio(){
+
+if(money>=2000){
+
+money-=2000
+income+=50
+level++
+
+}
+
+update()
+save()
+
+}
+
+function upgradeEngine(){
+
+if(money>=5000){
+
+money-=5000
+income+=200
+level+=2
+
+}
+
+update()
+save()
+
+}
+
+function update(){
+
+document.getElementById("money").innerText=Math.floor(money)
+document.getElementById("income").innerText=income
+document.getElementById("level").innerText=level
+
+document.getElementById("gamesMade").innerText=gamesMade
+document.getElementById("devs").innerText=devs
+document.getElementById("designers").innerText=designers
+document.getElementById("marketers").innerText=marketers
 
 }
 
 setInterval(()=>{
 
-money += income
-updateUI()
+money+=income
+update()
 
 },1000)
 
+function showTab(tab){
+
+document.querySelectorAll(".panel").forEach(p=>p.classList.add("hidden"))
+
+document.getElementById(tab).classList.remove("hidden")
+
+document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"))
+
+document.getElementById("tab_"+tab).classList.add("active")
+
+}
+
 function save(){
 
-localStorage.setItem("hamster_money",money)
-localStorage.setItem("hamster_income",income)
-localStorage.setItem("hamster_devs",devs)
-localStorage.setItem("hamster_marketing",marketing)
-localStorage.setItem("hamster_studios",studios)
+localStorage.setItem("money",money)
+localStorage.setItem("income",income)
+localStorage.setItem("level",level)
+
+localStorage.setItem("devs",devs)
+localStorage.setItem("designers",designers)
+localStorage.setItem("marketers",marketers)
+
+localStorage.setItem("gamesMade",gamesMade)
 
 }
 
 function load(){
 
-money = Number(localStorage.getItem("hamster_money")) || 0
-income = Number(localStorage.getItem("hamster_income")) || 0
-devs = Number(localStorage.getItem("hamster_devs")) || 0
-marketing = Number(localStorage.getItem("hamster_marketing")) || 0
-studios = Number(localStorage.getItem("hamster_studios")) || 1
+money=Number(localStorage.getItem("money"))||0
+income=Number(localStorage.getItem("income"))||0
+level=Number(localStorage.getItem("level"))||1
 
-updateUI()
+devs=Number(localStorage.getItem("devs"))||0
+designers=Number(localStorage.getItem("designers"))||0
+marketers=Number(localStorage.getItem("marketers"))||0
+
+gamesMade=Number(localStorage.getItem("gamesMade"))||0
+
+update()
 
 }
 
