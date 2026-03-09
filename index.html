@@ -2,57 +2,67 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Super Hamster GameDev</title>
+<title>MEGA Hamster GameDev</title>
 
 <style>
 
 body{
 margin:0;
 font-family:Arial;
-background:linear-gradient(135deg,#1e1b4b,#312e81);
+background:linear-gradient(135deg,#1e1b4b,#020617);
 color:white;
 text-align:center;
 }
 
 header{
-background:#0f172a;
+background:#020617;
 padding:15px;
-font-size:28px;
+font-size:30px;
 }
 
-.stats{
+.top{
 display:flex;
 justify-content:center;
-gap:20px;
+gap:25px;
 padding:10px;
 font-size:18px;
 }
 
 .hamster{
-font-size:100px;
+font-size:120px;
+cursor:pointer;
+transition:0.1s;
+}
+
+.hamster:active{
+transform:scale(0.9);
+}
+
+.menu button{
+padding:10px;
+margin:5px;
+border:none;
+border-radius:8px;
+background:#374151;
+color:white;
 cursor:pointer;
 }
 
 .panel{
 background:#1f2937;
-width:360px;
-margin:10px auto;
+width:400px;
+margin:15px auto;
 padding:15px;
 border-radius:10px;
 }
 
-button{
+.action{
+background:#22c55e;
 padding:10px;
-margin:5px;
 border:none;
 border-radius:8px;
 cursor:pointer;
-background:#22c55e;
-color:white;
-}
-
-button:hover{
-background:#16a34a;
+margin:5px;
 }
 
 .hidden{
@@ -60,46 +70,54 @@ display:none;
 }
 
 .slot{
-font-size:40px;
-letter-spacing:10px;
+font-size:42px;
+letter-spacing:8px;
 margin:10px;
 }
 
 </style>
+
 </head>
 
 <body>
 
 <header>
-🐹 Super Hamster GameDev
+🐹 MEGA Hamster GameDev
 </header>
 
-<div class="stats">
+<div class="top">
+
 💰 <span id="money">0</span>
 📈 <span id="income">0</span>/sec
 ⭐ LVL <span id="level">1</span>
+
 </div>
 
 <div class="hamster" onclick="clickHamster()">🐹</div>
 
-<div>
+<div class="menu">
 
-<button onclick="show('games')">🎮 Игры</button>
-<button onclick="show('staff')">👨‍💻 Сотрудники</button>
-<button onclick="show('upgrades')">🏢 Апгрейды</button>
-<button onclick="show('slots')">🎰 Слоты</button>
-<button onclick="show('stats')">📊 Статистика</button>
+<button onclick="tab('games')">🎮 Игры</button>
+<button onclick="tab('staff')">👨‍💻 Сотрудники</button>
+<button onclick="tab('upgrades')">🏢 Апгрейды</button>
+<button onclick="tab('casino')">🎰 Казино</button>
+<button onclick="tab('shop')">🛒 Магазин</button>
+<button onclick="tab('ach')">🏆 Достижения</button>
 
 </div>
 
 <div id="games" class="panel">
 
-<h3>Создание игр</h3>
+<h3>Разработка игр</h3>
 
-<button onclick="game(50,5)">Инди игра ($50)</button>
-<button onclick="game(200,20)">Мобильная ($200)</button>
-<button onclick="game(500,60)">Steam игра ($500)</button>
-<button onclick="game(2000,200)">AAA ($2000)</button>
+<button class="action" onclick="makeGame(50,5)">Инди</button>
+<button class="action" onclick="makeGame(200,20)">Mobile</button>
+<button class="action" onclick="makeGame(700,80)">Steam</button>
+<button class="action" onclick="makeGame(2000,250)">AAA</button>
+<button class="action" onclick="makeGame(10000,1200)">MMO</button>
+<button class="action" onclick="makeGame(30000,4000)">Metaverse</button>
+<button class="action" onclick="makeGame(100000,12000)">VR Game</button>
+<button class="action" onclick="makeGame(500000,70000)">AI Game</button>
 
 </div>
 
@@ -107,9 +125,17 @@ margin:10px;
 
 <h3>Сотрудники</h3>
 
-<button onclick="buyDev()">👨‍💻 Разработчик ($300)</button>
-<button onclick="buyDesigner()">🎨 Дизайнер ($500)</button>
-<button onclick="buyMarketing()">📢 Маркетинг ($700)</button>
+<button class="action" onclick="buyDev()">👨‍💻 Dev ($300)</button>
+<button class="action" onclick="buyDesigner()">🎨 Designer ($500)</button>
+<button class="action" onclick="buyMarketing()">📢 Marketing ($800)</button>
+
+<p>
+
+Dev: <span id="devs">0</span><br>
+Designers: <span id="designers">0</span><br>
+Marketing: <span id="marketers">0</span>
+
+</p>
 
 </div>
 
@@ -117,28 +143,37 @@ margin:10px;
 
 <h3>Апгрейды</h3>
 
-<button onclick="upgrade(1000,50)">💻 ПК ($1000)</button>
-<button onclick="upgrade(3000,150)">🏢 Офис ($3000)</button>
-<button onclick="upgrade(10000,500)">⚙️ Движок ($10000)</button>
+<button class="action" onclick="upgrade(2000,80)">💻 ПК</button>
+<button class="action" onclick="upgrade(10000,500)">🏢 Офис</button>
+<button class="action" onclick="upgrade(50000,2500)">⚙️ Движок</button>
+<button class="action" onclick="upgrade(200000,10000)">🤖 AI Dev</button>
 
 </div>
 
-<div id="slots" class="panel hidden">
+<div id="casino" class="panel hidden">
 
-<h3>🎰 Слоты</h3>
+<h3>🎰 Казино</h3>
 
 <div class="slot" id="slot">❔❔❔</div>
 
-<button onclick="spin()">Крутить ($100)</button>
+<button class="action" onclick="spin()">Spin ($500)</button>
 
 </div>
 
-<div id="stats" class="panel hidden">
+<div id="shop" class="panel hidden">
 
-<p>Игры: <span id="gamesMade">0</span></p>
-<p>Разработчики: <span id="devs">0</span></p>
-<p>Дизайнеры: <span id="designers">0</span></p>
-<p>Маркетологи: <span id="marketers">0</span></p>
+<h3>Магазин</h3>
+
+<button class="action" onclick="buyBoost()">⚡ Boost x2 ($10000)</button>
+<button class="action" onclick="buyAuto()">🤖 Auto Click ($20000)</button>
+
+</div>
+
+<div id="ach" class="panel hidden">
+
+<h3>Достижения</h3>
+
+<ul id="achievements"></ul>
 
 </div>
 
@@ -152,22 +187,30 @@ let devs=0
 let designers=0
 let marketers=0
 
-let gamesMade=0
+let autoClick=false
+let boost=1
+
+let achievements=[]
 
 function clickHamster(){
 
-money+=1+devs
+money+=boost*(1+devs)
+
 update()
 
 }
 
-function game(cost,profit){
+function makeGame(cost,profit){
 
 if(money>=cost){
 
 money-=cost
-income+=profit+devs*2+designers
-gamesMade++
+
+income+=boost*(profit+devs*3+designers*2+marketers*4)
+
+level++
+
+checkAch()
 
 }
 
@@ -205,11 +248,11 @@ update()
 
 function buyMarketing(){
 
-if(money>=700){
+if(money>=800){
 
-money-=700
+money-=800
 marketers++
-income+=5
+income+=4
 
 }
 
@@ -223,7 +266,6 @@ if(money>=cost){
 
 money-=cost
 income+=profit
-level++
 
 }
 
@@ -233,21 +275,21 @@ update()
 
 function spin(){
 
-if(money<100) return
+if(money<500)return
 
-money-=100
+money-=500
 
-let items=["💰","💎","🐹","❌"]
+let items=["💰","💎","🐹","⭐","❌"]
 
-let a=items[Math.floor(Math.random()*items.length)]
-let b=items[Math.floor(Math.random()*items.length)]
-let c=items[Math.floor(Math.random()*items.length)]
+let a=items[Math.floor(Math.random()*5)]
+let b=items[Math.floor(Math.random()*5)]
+let c=items[Math.floor(Math.random()*5)]
 
-document.getElementById("slot").innerText=a+b+c
+slot.innerText=a+b+c
 
 if(a==b && b==c){
 
-money+=1000
+money+=10000
 
 }
 
@@ -255,13 +297,62 @@ update()
 
 }
 
+function buyBoost(){
+
+if(money>=10000){
+
+money-=10000
+boost=2
+
+}
+
+}
+
+function buyAuto(){
+
+if(money>=20000){
+
+money-=20000
+autoClick=true
+
+}
+
+}
+
+function checkAch(){
+
+if(level==10)addAch("⭐ 10 уровень")
+if(level==50)addAch("🏆 50 уровень")
+if(money>=100000)addAch("💰 100k денег")
+
+}
+
+function addAch(text){
+
+if(!achievements.includes(text)){
+
+achievements.push(text)
+
+let li=document.createElement("li")
+li.innerText=text
+document.getElementById("achievements").appendChild(li)
+
+}
+
+}
+
 function update(){
 
-document.getElementById("money").innerText=Math.floor(money)
-document.getElementById("income").innerText=income
-document.getElementById("level").innerText=level
+money=Math.floor(money)
 
-document.getElementById("gamesMade").innerText=gamesMade
+moneySpan=document.getElementById("money")
+incomeSpan=document.getElementById("income")
+levelSpan=document.getElementById("level")
+
+moneySpan.innerText=money
+incomeSpan.innerText=income
+levelSpan.innerText=level
+
 document.getElementById("devs").innerText=devs
 document.getElementById("designers").innerText=designers
 document.getElementById("marketers").innerText=marketers
@@ -271,11 +362,18 @@ document.getElementById("marketers").innerText=marketers
 setInterval(()=>{
 
 money+=income
+
+if(autoClick){
+
+clickHamster()
+
+}
+
 update()
 
 },1000)
 
-function show(id){
+function tab(id){
 
 document.querySelectorAll(".panel").forEach(p=>p.classList.add("hidden"))
 
@@ -287,3 +385,4 @@ document.getElementById(id).classList.remove("hidden")
 
 </body>
 </html>
+
