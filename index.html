@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Hamster GameDev</title>
+<title>Super Hamster GameDev</title>
 
 <style>
 
@@ -18,7 +18,6 @@ header{
 background:#0f172a;
 padding:15px;
 font-size:28px;
-font-weight:bold;
 }
 
 .stats{
@@ -32,17 +31,12 @@ font-size:18px;
 .hamster{
 font-size:100px;
 cursor:pointer;
-transition:0.1s;
-}
-
-.hamster:active{
-transform:scale(0.9);
 }
 
 .panel{
 background:#1f2937;
-width:350px;
-margin:15px auto;
+width:360px;
+margin:10px auto;
 padding:15px;
 border-radius:10px;
 }
@@ -55,62 +49,46 @@ border-radius:8px;
 cursor:pointer;
 background:#22c55e;
 color:white;
-font-size:16px;
 }
 
 button:hover{
 background:#16a34a;
 }
 
-.tabs button{
-background:#374151;
-}
-
-.tabs button.active{
-background:#22c55e;
-}
-
 .hidden{
 display:none;
 }
 
-</style>
+.slot{
+font-size:40px;
+letter-spacing:10px;
+margin:10px;
+}
 
+</style>
 </head>
 
 <body>
 
 <header>
-🐹 Hamster GameDev Studio
+🐹 Super Hamster GameDev
 </header>
 
 <div class="stats">
-<div>💰 <span id="money">0</span></div>
-<div>📈 <span id="income">0</span>/sec</div>
-<div>⭐ LVL <span id="level">1</span></div>
+💰 <span id="money">0</span>
+📈 <span id="income">0</span>/sec
+⭐ LVL <span id="level">1</span>
 </div>
 
-<div class="hamster" onclick="clickHamster()">
-🐹
-</div>
+<div class="hamster" onclick="clickHamster()">🐹</div>
 
-<div class="tabs">
+<div>
 
-<button onclick="showTab('games')" class="active" id="tab_games">
-🎮 Игры
-</button>
-
-<button onclick="showTab('staff')" id="tab_staff">
-👨‍💻 Сотрудники
-</button>
-
-<button onclick="showTab('shop')" id="tab_shop">
-🏢 Апгрейды
-</button>
-
-<button onclick="showTab('stats')" id="tab_stats">
-📊 Статистика
-</button>
+<button onclick="show('games')">🎮 Игры</button>
+<button onclick="show('staff')">👨‍💻 Сотрудники</button>
+<button onclick="show('upgrades')">🏢 Апгрейды</button>
+<button onclick="show('slots')">🎰 Слоты</button>
+<button onclick="show('stats')">📊 Статистика</button>
 
 </div>
 
@@ -118,61 +96,46 @@ display:none;
 
 <h3>Создание игр</h3>
 
-<button onclick="createGame()">
-Создать игру ($50)
-</button>
-
-<button onclick="createMobile()">
-Мобильная игра ($200)
-</button>
-
-<button onclick="createAAA()">
-AAA игра ($1000)
-</button>
+<button onclick="game(50,5)">Инди игра ($50)</button>
+<button onclick="game(200,20)">Мобильная ($200)</button>
+<button onclick="game(500,60)">Steam игра ($500)</button>
+<button onclick="game(2000,200)">AAA ($2000)</button>
 
 </div>
 
 <div id="staff" class="panel hidden">
 
-<h3>Найм сотрудников</h3>
+<h3>Сотрудники</h3>
 
-<button onclick="buyDev()">
-👨‍💻 Разработчик ($200)
-</button>
-
-<button onclick="buyDesigner()">
-🎨 Дизайнер ($400)
-</button>
-
-<button onclick="buyMarketing()">
-📢 Маркетолог ($600)
-</button>
+<button onclick="buyDev()">👨‍💻 Разработчик ($300)</button>
+<button onclick="buyDesigner()">🎨 Дизайнер ($500)</button>
+<button onclick="buyMarketing()">📢 Маркетинг ($700)</button>
 
 </div>
 
-<div id="shop" class="panel hidden">
+<div id="upgrades" class="panel hidden">
 
-<h3>Апгрейды студии</h3>
+<h3>Апгрейды</h3>
 
-<button onclick="upgradePC()">
-💻 Новый ПК ($500)
-</button>
+<button onclick="upgrade(1000,50)">💻 ПК ($1000)</button>
+<button onclick="upgrade(3000,150)">🏢 Офис ($3000)</button>
+<button onclick="upgrade(10000,500)">⚙️ Движок ($10000)</button>
 
-<button onclick="upgradeStudio()">
-🏢 Студия ($2000)
-</button>
+</div>
 
-<button onclick="upgradeEngine()">
-⚙️ Игровой движок ($5000)
-</button>
+<div id="slots" class="panel hidden">
+
+<h3>🎰 Слоты</h3>
+
+<div class="slot" id="slot">❔❔❔</div>
+
+<button onclick="spin()">Крутить ($100)</button>
 
 </div>
 
 <div id="stats" class="panel hidden">
 
-<h3>Статистика</h3>
-
-<p>Создано игр: <span id="gamesMade">0</span></p>
+<p>Игры: <span id="gamesMade">0</span></p>
 <p>Разработчики: <span id="devs">0</span></p>
 <p>Дизайнеры: <span id="designers">0</span></p>
 <p>Маркетологи: <span id="marketers">0</span></p>
@@ -192,139 +155,103 @@ let marketers=0
 let gamesMade=0
 
 function clickHamster(){
+
 money+=1+devs
 update()
-save()
+
 }
 
-function createGame(){
+function game(cost,profit){
 
-if(money>=50){
+if(money>=cost){
 
-money-=50
-income+=5+devs
+money-=cost
+income+=profit+devs*2+designers
 gamesMade++
 
 }
 
 update()
-save()
-
-}
-
-function createMobile(){
-
-if(money>=200){
-
-money-=200
-income+=20+devs*2+designers
-gamesMade++
-
-}
-
-update()
-save()
-
-}
-
-function createAAA(){
-
-if(money>=1000){
-
-money-=1000
-income+=100+devs*5+designers*3+marketers*4
-gamesMade++
-
-}
-
-update()
-save()
 
 }
 
 function buyDev(){
 
-if(money>=200){
+if(money>=300){
 
-money-=200
+money-=300
 devs++
+income+=2
 
 }
 
 update()
-save()
 
 }
 
 function buyDesigner(){
 
-if(money>=400){
+if(money>=500){
 
-money-=400
+money-=500
 designers++
+income+=3
 
 }
 
 update()
-save()
 
 }
 
 function buyMarketing(){
 
-if(money>=600){
+if(money>=700){
 
-money-=600
+money-=700
 marketers++
+income+=5
 
 }
 
 update()
-save()
 
 }
 
-function upgradePC(){
+function upgrade(cost,profit){
 
-if(money>=500){
+if(money>=cost){
 
-money-=500
-income+=10
-
-}
-
-update()
-save()
-
-}
-
-function upgradeStudio(){
-
-if(money>=2000){
-
-money-=2000
-income+=50
+money-=cost
+income+=profit
 level++
 
 }
 
 update()
-save()
 
 }
 
-function upgradeEngine(){
+function spin(){
 
-if(money>=5000){
+if(money<100) return
 
-money-=5000
-income+=200
-level+=2
+money-=100
+
+let items=["💰","💎","🐹","❌"]
+
+let a=items[Math.floor(Math.random()*items.length)]
+let b=items[Math.floor(Math.random()*items.length)]
+let c=items[Math.floor(Math.random()*items.length)]
+
+document.getElementById("slot").innerText=a+b+c
+
+if(a==b && b==c){
+
+money+=1000
 
 }
 
 update()
-save()
 
 }
 
@@ -348,49 +275,13 @@ update()
 
 },1000)
 
-function showTab(tab){
+function show(id){
 
 document.querySelectorAll(".panel").forEach(p=>p.classList.add("hidden"))
 
-document.getElementById(tab).classList.remove("hidden")
-
-document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"))
-
-document.getElementById("tab_"+tab).classList.add("active")
+document.getElementById(id).classList.remove("hidden")
 
 }
-
-function save(){
-
-localStorage.setItem("money",money)
-localStorage.setItem("income",income)
-localStorage.setItem("level",level)
-
-localStorage.setItem("devs",devs)
-localStorage.setItem("designers",designers)
-localStorage.setItem("marketers",marketers)
-
-localStorage.setItem("gamesMade",gamesMade)
-
-}
-
-function load(){
-
-money=Number(localStorage.getItem("money"))||0
-income=Number(localStorage.getItem("income"))||0
-level=Number(localStorage.getItem("level"))||1
-
-devs=Number(localStorage.getItem("devs"))||0
-designers=Number(localStorage.getItem("designers"))||0
-marketers=Number(localStorage.getItem("marketers"))||0
-
-gamesMade=Number(localStorage.getItem("gamesMade"))||0
-
-update()
-
-}
-
-load()
 
 </script>
 
