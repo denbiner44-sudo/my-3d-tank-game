@@ -2,114 +2,77 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Crypto Mining Dashboard</title>
+<title>Бомж Магнат WEB</title>
 
 <style>
 
 body{
-margin:0;
 font-family:Arial;
-background:#0b0f1a;
-color:#00ff9c;
+margin:0;
+background:#d8d8d8;
 }
 
-header{
+.topbar{
 display:flex;
 justify-content:space-between;
-padding:20px;
-background:#050814;
-border-bottom:1px solid #00ff9c;
+padding:10px;
+background:linear-gradient(90deg,#ff8a8a,#9be59b);
+font-weight:bold;
 }
 
 .container{
-display:grid;
-grid-template-columns:250px 1fr 300px;
-height:calc(100vh - 70px);
-}
-
-.sidebar{
-background:#050814;
-border-right:1px solid #00ff9c;
+width:420px;
+margin:auto;
+background:#efefef;
 padding:20px;
+min-height:600px;
+box-shadow:0 0 15px rgba(0,0,0,0.4);
 }
 
-.sidebar button{
+h2{
+text-align:center;
+margin-top:20px;
+}
+
+.btn{
 width:100%;
 padding:12px;
-margin-bottom:10px;
-background:#001b14;
-border:1px solid #00ff9c;
-color:#00ff9c;
+margin:6px 0;
+border:none;
+border-radius:8px;
+font-size:15px;
+background:linear-gradient(90deg,#8ad0e6,#9be59b);
 cursor:pointer;
 }
 
-.main{
-padding:20px;
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-}
-
-.mineButton{
-width:200px;
-height:200px;
-border-radius:50%;
-font-size:26px;
-background:#001b14;
-border:3px solid #00ff9c;
-color:#00ff9c;
-cursor:pointer;
-transition:0.2s;
-}
-
-.mineButton:active{
-transform:scale(0.9);
+.btn:hover{
+opacity:0.9;
 }
 
 .stats{
+margin-top:10px;
+font-size:14px;
+}
+
+.modal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
 display:flex;
-gap:20px;
-margin-bottom:40px;
+justify-content:center;
+align-items:center;
 }
 
-.stat{
-background:#050814;
-border:1px solid #00ff9c;
-padding:20px;
-min-width:150px;
-text-align:center;
-}
-
-.terminal{
+.modal-box{
 background:black;
-color:#00ff9c;
-padding:15px;
-height:200px;
-overflow:auto;
-border:1px solid #00ff9c;
-width:100%;
-}
-
-.upgrades{
-background:#050814;
-border-left:1px solid #00ff9c;
+color:white;
 padding:20px;
-}
-
-.upgrades button{
-width:100%;
-margin-bottom:10px;
-padding:10px;
-background:#001b14;
-border:1px solid #00ff9c;
-color:#00ff9c;
-cursor:pointer;
-}
-
-.price{
-color:#ffcc00;
-font-weight:bold;
+width:300px;
+border-radius:10px;
+text-align:center;
 }
 
 </style>
@@ -117,233 +80,332 @@ font-weight:bold;
 
 <body>
 
-<header>
-
-<h1>CRYPTO MINING DASHBOARD</h1>
-
-<div>
-Coins: <span id="coins">0</span> |
-Price: $<span id="price">1</span>
+<div class="topbar">
+<div>Рубли: <span id="money"></span></div>
+<div>Здоровье: <span id="health"></span></div>
+<div>Валюта: <span id="currency"></span></div>
 </div>
-
-</header>
 
 <div class="container">
 
-<div class="sidebar">
-
-<button onclick="log('Opening miner panel')">Miner</button>
-<button onclick="log('Viewing statistics')">Statistics</button>
-<button onclick="log('Server monitoring')">Servers</button>
-<button onclick="log('Security check')">Security</button>
-
-</div>
-
-<div class="main">
-
 <div class="stats">
-
-<div class="stat">
-<h3>Coins</h3>
-<span id="coinStat">0</span>
+Возраст: <span id="age"></span><br>
+Сытость: <span id="food"></span><br>
+Настроение: <span id="mood"></span><br>
+Рейтинг: <span id="rating"></span><br>
+Бутылки: <span id="bottles"></span><br>
+Транспорт: <span id="transport"></span><br>
+Недвижимость: <span id="home"></span>
 </div>
 
-<div class="stat">
-<h3>Coins/sec</h3>
-<span id="cps">0</span>
+
+<h2>Работа</h2>
+
+<button class="btn" onclick="work(50)">Мести двор (+50)</button>
+<button class="btn" onclick="work(120)">Мыть машины (+120)</button>
+<button class="btn" onclick="work(400)">Сантехник (+400)</button>
+<button class="btn" onclick="work(800)">Завод (+800)</button>
+
+
+<h2>Еда</h2>
+
+<button class="btn" onclick="eat(0,5)">Пожрать на помойке</button>
+<button class="btn" onclick="eat(100,10)">ХотДог</button>
+<button class="btn" onclick="eat(500,25)">Кафе</button>
+<button class="btn" onclick="eat(3000,60)">Закупиться</button>
+
+
+<h2>Настроение</h2>
+
+<button class="btn" onclick="drink(50,5)">Пиво</button>
+<button class="btn" onclick="drink(100,10)">Отвертка</button>
+<button class="btn" onclick="drink(200,20)">Водка</button>
+<button class="btn" onclick="drink(500,40)">Виски</button>
+<button class="btn" onclick="drink(1500,80)">Коньяк</button>
+
+
+<h2>Бутылки</h2>
+
+<button class="btn" onclick="findBottle()">Найти бутылку</button>
+<button class="btn" onclick="sellBottle()">Сдать бутылки (8р)</button>
+
+
+<h2>Обмен валют</h2>
+
+<button class="btn" onclick="buyCurrency()">Купить валюту</button>
+<button class="btn" onclick="sellCurrency()">Продать валюту</button>
+
+
+<h2>Транспорт</h2>
+
+<button class="btn" onclick="buyTransport('Велик',5000)">Купить велик</button>
+<button class="btn" onclick="buyTransport('Машина',50000)">Купить машину</button>
+
+
+<h2>Недвижимость</h2>
+
+<button class="btn" onclick="buyHome('Комната',20000)">Комната</button>
+<button class="btn" onclick="buyHome('Квартира',200000)">Квартира</button>
+
+
+<h2>Казино</h2>
+
+<button class="btn" onclick="casino()">Играть 1000р</button>
+
 </div>
 
-<div class="stat">
-<h3>Level</h3>
-<span id="level">1</span>
-</div>
 
-</div>
+<div class="modal" id="birthday">
 
-<button class="mineButton" id="mineButton">
-MINE
-</button>
+<div class="modal-box">
 
-<br><br>
+<h3>🎂 День Рождения!</h3>
 
-<div class="terminal" id="terminal"></div>
+<p>
+Рубли +2000<br>
+Валюта +10<br>
+Рейтинг +3000<br>
+Здоровье +50<br>
+Сытость +50<br>
+Настроение +50
+</p>
 
-</div>
-
-<div class="upgrades">
-
-<h3>UPGRADES</h3>
-
-<button onclick="upgradeClick()">
-CPU Upgrade (+1 click) — 50
-</button>
-
-<button onclick="upgradeGPU()">
-GPU Boost (+1/sec) — 100
-</button>
-
-<button onclick="upgradeQuantum()">
-Quantum Miner (+5/sec) — 500
-</button>
-
-<button onclick="upgradeFarm()">
-Mining Farm (+20/sec) — 2000
-</button>
-
-<button onclick="buyServer()">
-Buy Server (+50/sec) — 10000
-</button>
+<button class="btn" onclick="closeBirthday()">OK</button>
 
 </div>
 
 </div>
+
 
 <script>
 
-let coins=0
-let clickPower=1
-let coinsPerSec=0
-let level=1
-let price=1
+let game = JSON.parse(localStorage.getItem("bomjgame")) || {
 
-let terminal=document.getElementById("terminal")
-
-function log(t){
-
-let div=document.createElement("div")
-div.innerText="> "+t
-terminal.appendChild(div)
-terminal.scrollTop=terminal.scrollHeight
-
-}
-
-document.getElementById("mineButton").onclick=function(){
-
-coins+=clickPower
-
-update()
-
-log("Mined "+clickPower+" coins")
+money:20000,
+health:100,
+currency:0,
+food:50,
+mood:50,
+rating:0,
+bottles:0,
+age:18,
+days:0,
+transport:"Нет",
+home:"Нет",
+rate:40
 
 }
 
-function upgradeClick(){
-
-if(coins>=50){
-
-coins-=50
-clickPower++
-
-log("CPU upgraded")
-
-update()
-
-}
-
-}
-
-function upgradeGPU(){
-
-if(coins>=100){
-
-coins-=100
-coinsPerSec++
-
-log("GPU installed")
-
-update()
-
-}
-
-}
-
-function upgradeQuantum(){
-
-if(coins>=500){
-
-coins-=500
-coinsPerSec+=5
-
-log("Quantum miner activated")
-
-update()
-
-}
-
-}
-
-function upgradeFarm(){
-
-if(coins>=2000){
-
-coins-=2000
-coinsPerSec+=20
-
-log("Mining farm started")
-
-update()
-
-}
-
-}
-
-function buyServer(){
-
-if(coins>=10000){
-
-coins-=10000
-coinsPerSec+=50
-
-log("New server purchased")
-
-update()
-
-}
-
-}
 
 function update(){
 
-document.getElementById("coins").innerText=coins
-document.getElementById("coinStat").innerText=coins
-document.getElementById("cps").innerText=coinsPerSec
-document.getElementById("level").innerText=level
-document.getElementById("price").innerText=price
+money.innerText = game.money
+health.innerText = game.health
+currency.innerText = game.currency
+food.innerText = game.food
+mood.innerText = game.mood
+rating.innerText = game.rating
+bottles.innerText = game.bottles
+age.innerText = game.age + " лет"
+transport.innerText = game.transport
+home.innerText = game.home
 
-localStorage.setItem("cryptoSave",JSON.stringify({
-coins,clickPower,coinsPerSec,level
-}))
+localStorage.setItem("bomjgame",JSON.stringify(game))
 
 }
 
-setInterval(function(){
 
-coins+=coinsPerSec
-update()
+function nextDay(){
 
-},1000)
+game.days++
 
-setInterval(function(){
+game.food -= 2
+game.mood -= 1
+game.health -= 0.5
 
-price=(Math.random()*10+1).toFixed(2)
-document.getElementById("price").innerText=price
+if(game.days % 365 == 0){
 
-},5000)
+game.age++
+birthday.style.display="flex"
 
-let save=localStorage.getItem("cryptoSave")
+}
 
-if(save){
-
-let data=JSON.parse(save)
-
-coins=data.coins
-clickPower=data.clickPower
-coinsPerSec=data.coinsPerSec
-level=data.level
+randomEvent()
 
 update()
 
 }
+
+
+function work(pay){
+
+game.money += pay
+game.rating += 2
+game.food -= 1
+game.mood -= 1
+
+nextDay()
+
+}
+
+
+function eat(price,food){
+
+if(game.money >= price){
+
+game.money -= price
+game.food += food
+game.health += 2
+
+}
+
+update()
+
+}
+
+
+function drink(price,mood){
+
+if(game.money >= price){
+
+game.money -= price
+game.mood += mood
+game.health -= 2
+
+}
+
+update()
+
+}
+
+
+function findBottle(){
+
+if(Math.random()<0.6){
+
+game.bottles++
+
+}
+
+nextDay()
+
+}
+
+
+function sellBottle(){
+
+game.money += game.bottles * 8
+game.bottles = 0
+
+update()
+
+}
+
+
+function buyCurrency(){
+
+if(game.money >= game.rate){
+
+game.money -= game.rate
+game.currency++
+
+}
+
+update()
+
+}
+
+
+function sellCurrency(){
+
+if(game.currency>0){
+
+game.money += game.rate
+game.currency--
+
+}
+
+update()
+
+}
+
+
+function buyTransport(name,price){
+
+if(game.money >= price){
+
+game.money -= price
+game.transport = name
+
+}
+
+update()
+
+}
+
+
+function buyHome(name,price){
+
+if(game.money >= price){
+
+game.money -= price
+game.home = name
+
+}
+
+update()
+
+}
+
+
+function casino(){
+
+if(game.money >= 1000){
+
+game.money -= 1000
+
+if(Math.random()<0.45){
+
+game.money += 3000
+
+}
+
+}
+
+update()
+
+}
+
+
+function randomEvent(){
+
+let r = Math.random()
+
+if(r<0.05){
+
+game.money += 500
+alert("Вы нашли 500 рублей!")
+
+}
+
+if(r>0.95){
+
+game.health -= 10
+alert("Вы заболели")
+
+}
+
+}
+
+
+function closeBirthday(){
+
+birthday.style.display="none"
+
+}
+
+
+update()
 
 </script>
 
