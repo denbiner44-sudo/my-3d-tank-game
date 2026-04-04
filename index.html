@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Работа с карьерным ростом</title>
+<title>Удалённая работа с карьерным ростом</title>
 
 <style>
 body {
@@ -15,13 +15,13 @@ body {
 
 header {
     background: linear-gradient(135deg, #1e3a8a, #2563eb);
-    padding: 60px 20px;
+    padding: 80px 20px;
     text-align: center;
 }
 
 header h1 {
-    font-size: 40px;
-    margin-bottom: 10px;
+    font-size: 42px;
+    margin-bottom: 15px;
 }
 
 header p {
@@ -32,31 +32,36 @@ header p {
 .container {
     max-width: 1100px;
     margin: auto;
-    padding: 40px 20px;
+    padding: 50px 20px;
 }
 
 .card {
     background: #1e293b;
-    border-radius: 12px;
-    padding: 25px;
-    margin-bottom: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    border-radius: 14px;
+    padding: 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.4);
 }
 
 h2 {
     color: #60a5fa;
+    margin-bottom: 15px;
 }
 
 ul {
     padding-left: 20px;
 }
 
+li {
+    margin-bottom: 10px;
+}
+
 .btn {
     display: inline-block;
     background: #22c55e;
     color: #fff;
-    padding: 15px 25px;
-    border-radius: 8px;
+    padding: 16px 28px;
+    border-radius: 10px;
     text-decoration: none;
     font-size: 18px;
     margin-top: 20px;
@@ -65,6 +70,29 @@ ul {
 
 .btn:hover {
     background: #16a34a;
+    transform: scale(1.05);
+}
+
+.stats {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.stat {
+    flex: 1;
+    min-width: 200px;
+    background: #020617;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.stat h3 {
+    font-size: 28px;
+    margin: 0;
+    color: #22c55e;
 }
 
 footer {
@@ -80,34 +108,58 @@ footer {
 
 <header>
     <h1>Начни зарабатывать уже сегодня</h1>
-    <p>Удалённая работа • Свободный график • Карьерный рост</p>
+    <p>Удалённая работа • Свободный график • Реальный карьерный рост</p>
 </header>
 
 <div class="container">
 
     <div class="card">
         <h2>О вакансии</h2>
-        <p>Мы ищем амбициозных людей, готовых начать зарабатывать и развиваться. Опыт не обязателен — всему обучим.</p>
+        <p>
+        Мы набираем сотрудников для удалённой работы. Подходит новичкам — обучение с нуля.
+        Работа не требует специальных навыков, всё покажем и доведём до результата.
+        </p>
     </div>
 
     <div class="card">
-        <h2>Что мы предлагаем</h2>
+        <h2>Что вы получите</h2>
         <ul>
-            <li>Доход от 1000$+ в месяц</li>
-            <li>Удалённая работа из любой точки</li>
-            <li>Обучение с нуля</li>
-            <li>Поддержка 24/7</li>
+            <li>Доход от 1000$+ (зависит от вашей активности)</li>
+            <li>Полностью удалённая работа</li>
+            <li>Пошаговое обучение</li>
+            <li>Поддержка наставника 24/7</li>
+            <li>Быстрый рост дохода</li>
         </ul>
     </div>
 
     <div class="card">
         <h2>Требования</h2>
         <ul>
-             <li>Доход от 1000$+ в месяц</li>
-            <li>Быстрый карьерный рост</li>
-            <li>Обучение с нуля</li>
-            <li>Поддержка 24/7</li>
+            <li>Телефон или ПК с интернетом</li>
+            <li>Готовность работать и обучаться</li>
+            <li>Ответственность</li>
         </ul>
+    </div>
+
+    <div class="card">
+        <h2>Результаты наших сотрудников</h2>
+
+        <div class="stats">
+            <div class="stat">
+                <h3>150+</h3>
+                <p>человек уже работают</p>
+            </div>
+
+            <div class="stat">
+                <h3>$1000+</h3>
+                <p>средний доход</p>
+            </div>
+
+            <div class="stat">
+                <h3>7 дней</h3>
+                <p>до первого результата</p>
+            </div>
+        </div>
     </div>
 
     <div class="card" style="text-align:center;">
