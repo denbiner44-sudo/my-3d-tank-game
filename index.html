@@ -2,412 +2,129 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Бомж Магнат WEB</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Работа с карьерным ростом</title>
 
 <style>
-
-body{
-font-family:Arial;
-margin:0;
-background:#d8d8d8;
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #0f172a;
+    color: #fff;
 }
 
-.topbar{
-display:flex;
-justify-content:space-between;
-padding:10px;
-background:linear-gradient(90deg,#ff8a8a,#9be59b);
-font-weight:bold;
+header {
+    background: linear-gradient(135deg, #1e3a8a, #2563eb);
+    padding: 60px 20px;
+    text-align: center;
 }
 
-.container{
-width:420px;
-margin:auto;
-background:#efefef;
-padding:20px;
-min-height:600px;
-box-shadow:0 0 15px rgba(0,0,0,0.4);
+header h1 {
+    font-size: 40px;
+    margin-bottom: 10px;
 }
 
-h2{
-text-align:center;
-margin-top:20px;
+header p {
+    font-size: 18px;
+    opacity: 0.9;
 }
 
-.btn{
-width:100%;
-padding:12px;
-margin:6px 0;
-border:none;
-border-radius:8px;
-font-size:15px;
-background:linear-gradient(90deg,#8ad0e6,#9be59b);
-cursor:pointer;
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 40px 20px;
 }
 
-.btn:hover{
-opacity:0.9;
+.card {
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 }
 
-.stats{
-margin-top:10px;
-font-size:14px;
+h2 {
+    color: #60a5fa;
 }
 
-.modal{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.7);
-display:flex;
-justify-content:center;
-align-items:center;
+ul {
+    padding-left: 20px;
 }
 
-.modal-box{
-background:black;
-color:white;
-padding:20px;
-width:300px;
-border-radius:10px;
-text-align:center;
+.btn {
+    display: inline-block;
+    background: #22c55e;
+    color: #fff;
+    padding: 15px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 18px;
+    margin-top: 20px;
+    transition: 0.3s;
 }
 
+.btn:hover {
+    background: #16a34a;
+}
+
+footer {
+    text-align: center;
+    padding: 30px;
+    opacity: 0.6;
+    font-size: 14px;
+}
 </style>
-</head>
 
+</head>
 <body>
 
-<div class="topbar">
-<div>Рубли: <span id="money"></span></div>
-<div>Здоровье: <span id="health"></span></div>
-<div>Валюта: <span id="currency"></span></div>
-</div>
+<header>
+    <h1>Начни зарабатывать уже сегодня</h1>
+    <p>Удалённая работа • Свободный график • Карьерный рост</p>
+</header>
 
 <div class="container">
 
-<div class="stats">
-Возраст: <span id="age"></span><br>
-Сытость: <span id="food"></span><br>
-Настроение: <span id="mood"></span><br>
-Рейтинг: <span id="rating"></span><br>
-Бутылки: <span id="bottles"></span><br>
-Транспорт: <span id="transport"></span><br>
-Недвижимость: <span id="home"></span>
-</div>
+    <div class="card">
+        <h2>О вакансии</h2>
+        <p>Мы ищем амбициозных людей, готовых начать зарабатывать и развиваться. Опыт не обязателен — всему обучим.</p>
+    </div>
 
+    <div class="card">
+        <h2>Что мы предлагаем</h2>
+        <ul>
+            <li>Доход от 1000$+ в месяц</li>
+            <li>Удалённая работа из любой точки</li>
+            <li>Обучение с нуля</li>
+            <li>Поддержка 24/7</li>
+        </ul>
+    </div>
 
-<h2>Работа</h2>
+    <div class="card">
+        <h2>Требования</h2>
+        <ul>
+            <li>Наличие телефона или ПК</li>
+            <li>Желание зарабатывать</li>
+            <li>Ответственность</li>
+        </ul>
+    </div>
 
-<button class="btn" onclick="work(50)">Мести двор (+50)</button>
-<button class="btn" onclick="work(120)">Мыть машины (+120)</button>
-<button class="btn" onclick="work(400)">Сантехник (+400)</button>
-<button class="btn" onclick="work(800)">Завод (+800)</button>
+    <div class="card" style="text-align:center;">
+        <h2>Готов начать?</h2>
+        <p>Напиши прямо сейчас и получи подробности</p>
 
+        <a href="https://t.me/olya_0317" class="btn">
+            Написать в Telegram
+        </a>
 
-<h2>Еда</h2>
-
-<button class="btn" onclick="eat(0,5)">Пожрать на помойке</button>
-<button class="btn" onclick="eat(100,10)">ХотДог</button>
-<button class="btn" onclick="eat(500,25)">Кафе</button>
-<button class="btn" onclick="eat(3000,60)">Закупиться</button>
-
-
-<h2>Настроение</h2>
-
-<button class="btn" onclick="drink(50,5)">Пиво</button>
-<button class="btn" onclick="drink(100,10)">Отвертка</button>
-<button class="btn" onclick="drink(200,20)">Водка</button>
-<button class="btn" onclick="drink(500,40)">Виски</button>
-<button class="btn" onclick="drink(1500,80)">Коньяк</button>
-
-
-<h2>Бутылки</h2>
-
-<button class="btn" onclick="findBottle()">Найти бутылку</button>
-<button class="btn" onclick="sellBottle()">Сдать бутылки (8р)</button>
-
-
-<h2>Обмен валют</h2>
-
-<button class="btn" onclick="buyCurrency()">Купить валюту</button>
-<button class="btn" onclick="sellCurrency()">Продать валюту</button>
-
-
-<h2>Транспорт</h2>
-
-<button class="btn" onclick="buyTransport('Велик',5000)">Купить велик</button>
-<button class="btn" onclick="buyTransport('Машина',50000)">Купить машину</button>
-
-
-<h2>Недвижимость</h2>
-
-<button class="btn" onclick="buyHome('Комната',20000)">Комната</button>
-<button class="btn" onclick="buyHome('Квартира',200000)">Квартира</button>
-
-
-<h2>Казино</h2>
-
-<button class="btn" onclick="casino()">Играть 1000р</button>
+        <p style="margin-top:15px; opacity:0.7;">@olya_0317</p>
+    </div>
 
 </div>
 
-
-<div class="modal" id="birthday">
-
-<div class="modal-box">
-
-<h3>🎂 День Рождения!</h3>
-
-<p>
-Рубли +2000<br>
-Валюта +10<br>
-Рейтинг +3000<br>
-Здоровье +50<br>
-Сытость +50<br>
-Настроение +50
-</p>
-
-<button class="btn" onclick="closeBirthday()">OK</button>
-
-</div>
-
-</div>
-
-
-<script>
-
-let game = JSON.parse(localStorage.getItem("bomjgame")) || {
-
-money:20000,
-health:100,
-currency:0,
-food:50,
-mood:50,
-rating:0,
-bottles:0,
-age:18,
-days:0,
-transport:"Нет",
-home:"Нет",
-rate:40
-
-}
-
-
-function update(){
-
-money.innerText = game.money
-health.innerText = game.health
-currency.innerText = game.currency
-food.innerText = game.food
-mood.innerText = game.mood
-rating.innerText = game.rating
-bottles.innerText = game.bottles
-age.innerText = game.age + " лет"
-transport.innerText = game.transport
-home.innerText = game.home
-
-localStorage.setItem("bomjgame",JSON.stringify(game))
-
-}
-
-
-function nextDay(){
-
-game.days++
-
-game.food -= 2
-game.mood -= 1
-game.health -= 0.5
-
-if(game.days % 365 == 0){
-
-game.age++
-birthday.style.display="flex"
-
-}
-
-randomEvent()
-
-update()
-
-}
-
-
-function work(pay){
-
-game.money += pay
-game.rating += 2
-game.food -= 1
-game.mood -= 1
-
-nextDay()
-
-}
-
-
-function eat(price,food){
-
-if(game.money >= price){
-
-game.money -= price
-game.food += food
-game.health += 2
-
-}
-
-update()
-
-}
-
-
-function drink(price,mood){
-
-if(game.money >= price){
-
-game.money -= price
-game.mood += mood
-game.health -= 2
-
-}
-
-update()
-
-}
-
-
-function findBottle(){
-
-if(Math.random()<0.6){
-
-game.bottles++
-
-}
-
-nextDay()
-
-}
-
-
-function sellBottle(){
-
-game.money += game.bottles * 8
-game.bottles = 0
-
-update()
-
-}
-
-
-function buyCurrency(){
-
-if(game.money >= game.rate){
-
-game.money -= game.rate
-game.currency++
-
-}
-
-update()
-
-}
-
-
-function sellCurrency(){
-
-if(game.currency>0){
-
-game.money += game.rate
-game.currency--
-
-}
-
-update()
-
-}
-
-
-function buyTransport(name,price){
-
-if(game.money >= price){
-
-game.money -= price
-game.transport = name
-
-}
-
-update()
-
-}
-
-
-function buyHome(name,price){
-
-if(game.money >= price){
-
-game.money -= price
-game.home = name
-
-}
-
-update()
-
-}
-
-
-function casino(){
-
-if(game.money >= 1000){
-
-game.money -= 1000
-
-if(Math.random()<0.45){
-
-game.money += 3000
-
-}
-
-}
-
-update()
-
-}
-
-
-function randomEvent(){
-
-let r = Math.random()
-
-if(r<0.05){
-
-game.money += 500
-alert("Вы нашли 500 рублей!")
-
-}
-
-if(r>0.95){
-
-game.health -= 10
-alert("Вы заболели")
-
-}
-
-}
-
-
-function closeBirthday(){
-
-birthday.style.display="none"
-
-}
-
-
-update()
-
-</script>
+<footer>
+    © 2026 Работа онлайн | Все права защищены
+</footer>
 
 </body>
 </html>
