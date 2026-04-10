@@ -3,208 +3,119 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Работа в офисе | Доход от 900$</title>
+<title>Вопрос 😄</title>
 
 <style>
 body {
     margin: 0;
-    font-family: "Segoe UI", Arial, sans-serif;
-    background: #0f172a;
+    font-family: Arial, sans-serif;
+    background: #111;
     color: #fff;
-}
-
-header {
-    background: linear-gradient(135deg, #1e3a8a, #2563eb);
-    padding: 80px 20px;
-    text-align: center;
-}
-
-header h1 {
-    font-size: 42px;
-    margin-bottom: 15px;
-}
-
-header p {
-    font-size: 18px;
-    opacity: 0.9;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .container {
-    max-width: 1100px;
-    margin: auto;
-    padding: 50px 20px;
+    text-align: center;
+    background: #1f1f1f;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
-.card {
-    background: #1e293b;
-    border-radius: 14px;
-    padding: 30px;
-    margin-bottom: 25px;
-    box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+h1 {
+    margin-bottom: 30px;
 }
 
-h2 {
-    color: #60a5fa;
-    margin-bottom: 15px;
+.buttons {
+    position: relative;
+    height: 150px;
 }
 
-ul {
-    padding-left: 20px;
-}
-
-li {
-    margin-bottom: 10px;
-}
-
-.btn {
-    display: inline-block;
-    background: #22c55e;
-    color: #fff;
-    padding: 16px 28px;
-    border-radius: 10px;
-    text-decoration: none;
+button {
+    padding: 15px 30px;
     font-size: 18px;
-    margin-top: 20px;
-    transition: 0.3s;
-}
-
-.btn:hover {
-    background: #16a34a;
-    transform: scale(1.05);
-}
-
-.stats {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-.stat {
-    flex: 1;
-    min-width: 200px;
-    background: #020617;
-    padding: 20px;
+    border: none;
     border-radius: 10px;
-    text-align: center;
+    cursor: pointer;
+    transition: 0.2s;
 }
 
-.stat h3 {
-    font-size: 28px;
-    margin: 0;
+#yes {
+    background: #22c55e;
+    color: white;
+    margin-right: 20px;
+}
+
+#yes:hover {
+    background: #16a34a;
+}
+
+#no {
+    background: #ef4444;
+    color: white;
+    position: absolute;
+    left: 60%;
+    top: 50%;
+}
+
+#result {
+    margin-top: 25px;
+    font-size: 20px;
     color: #22c55e;
-}
-
-footer {
-    text-align: center;
-    padding: 30px;
-    opacity: 0.6;
-    font-size: 14px;
 }
 </style>
 
 </head>
 <body>
 
-<header>
-    <h1>ЗАРАБОТОК, ГДЕ РЕШАЕТ НЕ ДИПЛОМ, А ТЫ</h1>
-    <p>Работа в офисе • Стабильный доход • Карьерный рост</p>
-</header>
-
 <div class="container">
+    <h1>Сосал?</h1>
 
-    <div class="card">
-        <h2>О вакансии</h2>
-        <p>
-        Мы ищем амбициозных людей, готовых начать зарабатывать и развиваться.
-        Опыт не обязателен — всему обучим с нуля.
-        </p>
-        <p>
-        Работа в офисе в стабильной команде с возможностью быстрого роста.
-        Наставник помогает на каждом этапе, поддержка доступна 24/7.
-        </p>
+    <div class="buttons">
+        <button id="yes">Да</button>
+        <button id="no">Нет</button>
     </div>
 
-    <div class="card">
-        <h2>Что мы предлагаем</h2>
-        <ul>
-            <li>Доход от <b>900$+</b> (еженедельные выплаты)</li>
-            <li>Современный комфортный офис</li>
-            <li>Бесплатные обеды за счёт компании</li>
-            <li>Жильё для иногородних</li>
-            <li>Зона отдыха</li>
-            <li>Быстрый карьерный рост</li>
-            <li>Дружный коллектив</li>
-        </ul>
-    </div>
-
-    <div class="card">
-        <h2>Условия работы</h2>
-        <ul>
-            <li>Работа в офисе</li>
-            <li>График: 5/2 или 6/1</li>
-            <li>Обучение 2–3 дня</li>
-            <li>Выплаты каждую неделю</li>
-        </ul>
-    </div>
-
-    <div class="card">
-        <h2>Требования</h2>
-        <ul>
-            <li>Ответственность</li>
-            <li>Желание зарабатывать</li>
-            <li>Умение работать в команде</li>
-            <li>Базовое общение</li>
-        </ul>
-    </div>
-
-    <div class="card">
-        <h2>Почему выбирают нас</h2>
-        <ul>
-            <li>Выплаты без задержек</li>
-            <li>Реальный доход, а не обещания</li>
-            <li>Результат уже в первую неделю</li>
-        </ul>
-    </div>
-
-    <div class="card">
-        <h2>Результаты сотрудников</h2>
-
-        <div class="stats">
-            <div class="stat">
-                <h3>120+</h3>
-                <p>сотрудников в команде</p>
-            </div>
-
-            <div class="stat">
-                <h3>$900+</h3>
-                <p>средний доход</p>
-            </div>
-
-            <div class="stat">
-                <h3>7 дней</h3>
-                <p>до первых выплат</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="card" style="text-align:center;">
-        <h2>Готов начать?</h2>
-        <p>Количество мест ограничено</p>
-        <p style="opacity:0.8;">Сейчас идёт активный набор — отвечаем быстро</p>
-
-        <a href="https://t.me/olya_0317" class="btn">
-            Написать в Telegram
-        </a>
-
-        <p style="margin-top:15px; opacity:0.7;">@olya_0317</p>
-    </div>
-
+    <div id="result"></div>
 </div>
 
-<footer>
-    © 2026 Работа в офисе | Все права защищены
-</footer>
+<script>
+const yesBtn = document.getElementById("yes");
+const noBtn = document.getElementById("no");
+const result = document.getElementById("result");
+
+// Ответ при нажатии "Да"
+yesBtn.addEventListener("click", () => {
+    result.textContent = "Ну ты приколист 😄";
+});
+
+// Убегающая кнопка "Нет"
+function moveButton() {
+    const btnWidth = noBtn.offsetWidth;
+    const btnHeight = noBtn.offsetHeight;
+
+    const maxX = window.innerWidth - btnWidth;
+    const maxY = window.innerHeight - btnHeight;
+
+    const randomX = Math.random() * maxX;
+    const randomY = Math.random() * maxY;
+
+    noBtn.style.left = randomX + "px";
+    noBtn.style.top = randomY + "px";
+}
+
+// Срабатывает при попытке навести
+noBtn.addEventListener("mouseover", moveButton);
+
+// Для телефонов (тап)
+noBtn.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    moveButton();
+});
+</script>
 
 </body>
 </html>
