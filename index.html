@@ -1,70 +1,74 @@
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Вопрос 😄</title>
+<title>Мирный договор</title>
 
 <style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #111;
-    color: #fff;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+body{
+    margin:0;
+    background:#1c1c1c;
+    font-family:Arial, sans-serif;
+    color:#fff;
 }
 
-.container {
-    text-align: center;
-    background: #1f1f1f;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+.container{
+    max-width:900px;
+    margin:40px auto;
+    background:#2b2b2b;
+    padding:40px;
+    border-radius:12px;
+    box-shadow:0 0 20px rgba(0,0,0,.5);
 }
 
-h1 {
-    margin-bottom: 30px;
+h1{
+    text-align:center;
+    color:#f5b041;
+    margin-bottom:30px;
 }
 
-.buttons {
-    position: relative;
-    height: 150px;
+h2{
+    color:#f5b041;
+    border-bottom:1px solid #444;
+    padding-bottom:5px;
 }
 
-button {
-    padding: 15px 30px;
-    font-size: 18px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.2s;
+input, textarea{
+    width:100%;
+    padding:10px;
+    margin-top:8px;
+    margin-bottom:15px;
+    border:none;
+    border-radius:6px;
+    background:#3a3a3a;
+    color:white;
 }
 
-#yes {
-    background: #22c55e;
-    color: white;
-    margin-right: 20px;
+.checkbox{
+    margin:10px 0;
 }
 
-#yes:hover {
-    background: #16a34a;
+button{
+    background:#f5b041;
+    color:#000;
+    border:none;
+    padding:15px 25px;
+    border-radius:8px;
+    font-size:16px;
+    cursor:pointer;
+    font-weight:bold;
 }
 
-#no {
-    background: #ef4444;
-    color: white;
-    position: absolute;
-    left: 60%;
-    top: 50%;
+button:hover{
+    background:#ffca6a;
 }
 
-#result {
-    margin-top: 25px;
-    font-size: 20px;
-    color: #22c55e;
+.footer{
+    text-align:center;
+    margin-top:30px;
+    color:#888;
 }
 </style>
 
@@ -72,51 +76,92 @@ button {
 <body>
 
 <div class="container">
-    <h1>Сосал?</h1>
 
-    <div class="buttons">
-        <button id="yes">Да</button>
-        <button id="no">Нет</button>
-    </div>
+<h1>ДОГОВОР О МИРЕ И НЕНАПАДЕНИИ</h1>
 
-    <div id="result"></div>
+<label>Дата заключения</label>
+<input type="date">
+
+<label>Сторона 1 (Клан / Игрок)</label>
+<input type="text">
+
+<label>Сторона 2 (Клан / Игрок)</label>
+<input type="text">
+
+<h2>1. Предмет договора</h2>
+
+<p>
+Настоящим договором стороны подтверждают прекращение любых
+военных действий, рейдов, провокаций и иных враждебных действий
+друг против друга на территории игрового сервера.
+</p>
+
+<h2>2. Обязательства сторон</h2>
+
+<div class="checkbox">
+<input type="checkbox"> Не совершать рейды на базы друг друга
 </div>
 
-<script>
-const yesBtn = document.getElementById("yes");
-const noBtn = document.getElementById("no");
-const result = document.getElementById("result");
+<div class="checkbox">
+<input type="checkbox"> Не убивать игроков противоположной стороны
+</div>
 
-// Ответ при нажатии "Да"
-yesBtn.addEventListener("click", () => {
-    result.textContent = "Ну ты приколист 😄";
-});
+<div class="checkbox">
+<input type="checkbox"> Не уничтожать имущество и транспорт
+</div>
 
-// Убегающая кнопка "Нет"
-function moveButton() {
-    const btnWidth = noBtn.offsetWidth;
-    const btnHeight = noBtn.offsetHeight;
+<div class="checkbox">
+<input type="checkbox"> Не помогать третьим лицам в нападении
+</div>
 
-    const maxX = window.innerWidth - btnWidth;
-    const maxY = window.innerHeight - btnHeight;
+<div class="checkbox">
+<input type="checkbox"> Соблюдать уважительное общение
+</div>
 
-    const randomX = Math.random() * maxX;
-    const randomY = Math.random() * maxY;
+<h2>3. Территориальные соглашения</h2>
 
-    noBtn.style.left = randomX + "px";
-    noBtn.style.top = randomY + "px";
-}
+<label>Территория стороны 1</label>
+<textarea rows="3"></textarea>
 
-// Срабатывает при попытке навести
-noBtn.addEventListener("mouseover", moveButton);
+<label>Территория стороны 2</label>
+<textarea rows="3"></textarea>
 
-// Для телефонов (тап)
-noBtn.addEventListener("touchstart", (e) => {
-    e.preventDefault();
-    moveButton();
-});
-</script>
+<h2>4. Торговля и сотрудничество</h2>
+
+<textarea rows="4" placeholder="Дополнительные условия..."></textarea>
+
+<h2>5. Нарушение договора</h2>
+
+<p>
+При нарушении условий пострадавшая сторона получает право
+расторгнуть договор и требовать компенсацию.
+</p>
+
+<h2>6. Срок действия</h2>
+
+<label>Договор действует до:</label>
+<input type="date">
+
+<h2>7. Подписи сторон</h2>
+
+<label>Подпись стороны 1</label>
+<input type="text">
+
+<label>Подпись стороны 2</label>
+<input type="text">
+
+<br><br>
+
+<button onclick="window.print()">
+Распечатать договор
+</button>
+
+<div class="footer">
+Oxide Peace Agreement © 2026
+</div>
+
+</div>
 
 </body>
 </html>
-
+```
