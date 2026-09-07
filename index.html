@@ -1,592 +1,517 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Сертификат Юрия</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Сертификат Долбоёба — Юрий</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
+  * {
+    box-sizing: border-box;
+  }
 
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-    }
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
 
-    body {
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at top, #2b2b2b 0%, #151515 55%, #090909 100%);
-      font-family: Georgia, "Times New Roman", serif;
-      padding: 40px 20px;
-      color: #211b12;
-    }
+  body {
+    background: #bdbb95;
+    font-family: Georgia, "Times New Roman", serif;
+    padding: 28px 10px;
+    color: #332f22;
+  }
 
-    .screen-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 24px;
-    }
+  .page-wrap {
+    width: 210mm;
+    margin: 0 auto;
+  }
 
-    .a4 {
+  .certificate {
+    width: 210mm;
+    height: 297mm;
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 20% 15%, rgba(255,255,255,.45), transparent 35%),
+      repeating-linear-gradient(
+        7deg,
+        rgba(120,110,70,.035) 0px,
+        rgba(120,110,70,.035) 1px,
+        transparent 1px,
+        transparent 4px
+      ),
+      #eee8c7;
+
+    box-shadow:
+      0 10px 30px rgba(0,0,0,.22),
+      inset 0 0 20mm rgba(110,100,55,.08);
+  }
+
+  .outer-frame {
+    position: absolute;
+    inset: 8mm;
+    border: 1.2mm solid #7f7a48;
+  }
+
+  .ornament-frame {
+    position: absolute;
+    inset: 11mm;
+    border: 5mm double #8f8b57;
+  }
+
+  .inner-frame {
+    position: absolute;
+    inset: 17mm;
+    border: .5mm solid #7c774c;
+  }
+
+  .corner {
+    position: absolute;
+    width: 20mm;
+    height: 20mm;
+    color: #8d8958;
+    font-size: 11mm;
+    text-align: center;
+    line-height: 20mm;
+    z-index: 2;
+  }
+
+  .tl { top: 9mm; left: 9mm; }
+  .tr { top: 9mm; right: 9mm; transform: rotate(90deg); }
+  .bl { bottom: 9mm; left: 9mm; transform: rotate(-90deg); }
+  .br { bottom: 9mm; right: 9mm; transform: rotate(180deg); }
+
+  .content {
+    position: absolute;
+    inset: 20mm 24mm 18mm;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .portrait {
+    width: 28mm;
+    height: 28mm;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1mm solid #6d6844;
+    box-shadow: 0 0 0 2mm rgba(120,115,70,.18);
+    margin-bottom: 4mm;
+    background: #d4ceb0;
+  }
+
+  .portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .title {
+    margin-top: 2mm;
+    font-size: 15mm;
+    font-weight: 400;
+    letter-spacing: 1.2mm;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 1.03;
+  }
+
+  .subtitle {
+    margin-top: 1mm;
+    font-size: 13mm;
+    font-weight: 400;
+    letter-spacing: .6mm;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 1.05;
+  }
+
+  .name {
+    margin-top: 4mm;
+    font-size: 6mm;
+    font-style: italic;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .intro {
+    margin-top: 4mm;
+    width: 145mm;
+    font-size: 4.3mm;
+    line-height: 1.45;
+    text-align: center;
+    font-style: italic;
+  }
+
+  .divider {
+    width: 120mm;
+    margin: 6mm 0 5mm;
+    border-top: .3mm solid #8b8556;
+  }
+
+  .merits-title {
+    font-size: 4.3mm;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 2mm;
+  }
+
+  .merits {
+    width: 145mm;
+    font-size: 3.75mm;
+    line-height: 1.38;
+  }
+
+  .merits ul {
+    margin: 0;
+    padding-left: 6mm;
+  }
+
+  .merits li {
+    margin-bottom: 1.2mm;
+  }
+
+  .award {
+    width: 135mm;
+    margin-top: 5mm;
+    padding: 3mm 5mm;
+    border-top: .3mm solid #8c8556;
+    border-bottom: .3mm solid #8c8556;
+    text-align: center;
+  }
+
+  .award-label {
+    font-size: 3mm;
+    font-style: italic;
+    color: #5d5940;
+    margin-bottom: 1.5mm;
+  }
+
+  .award-name {
+    font-size: 5.8mm;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .legal {
+    width: 140mm;
+    margin-top: 4mm;
+    font-size: 3.2mm;
+    line-height: 1.4;
+    text-align: center;
+    font-style: italic;
+  }
+
+  .bottom {
+    width: 100%;
+    margin-top: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12mm;
+    align-items: end;
+  }
+
+  .meta {
+    font-size: 3mm;
+    line-height: 1.75;
+  }
+
+  .signature-area {
+    position: relative;
+    min-height: 34mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  .signature {
+    font-family: "Segoe Script", "Brush Script MT", cursive;
+    font-size: 8mm;
+    color: #334e7b;
+    transform: rotate(-7deg);
+    text-align: center;
+    margin-bottom: -1mm;
+  }
+
+  .signature-line {
+    border-top: .3mm solid #666;
+    padding-top: 1.5mm;
+    text-align: center;
+    font-size: 2.8mm;
+    font-style: italic;
+  }
+
+  .seal {
+    position: absolute;
+    width: 38mm;
+    height: 38mm;
+    right: 27mm;
+    bottom: 30mm;
+    border: 1mm solid rgba(63,78,130,.85);
+    border-radius: 50%;
+    color: rgba(63,78,130,.9);
+    transform: rotate(-10deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-weight: 700;
+    background: rgba(255,255,255,.08);
+  }
+
+  .seal::before {
+    content: "";
+    position: absolute;
+    inset: 2.4mm;
+    border: .4mm solid rgba(63,78,130,.85);
+    border-radius: 50%;
+  }
+
+  .seal-inner {
+    width: 28mm;
+    font-size: 2.4mm;
+    line-height: 1.22;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 2;
+  }
+
+  .seal-star {
+    display: block;
+    font-size: 5mm;
+    margin: 1mm 0;
+  }
+
+  .seal-big {
+    display: block;
+    font-size: 3.4mm;
+    margin: 1mm 0;
+  }
+
+  .controls {
+    width: 210mm;
+    margin: 16px auto 0;
+    text-align: center;
+  }
+
+  button {
+    border: 0;
+    border-radius: 6px;
+    padding: 12px 20px;
+    background: #252525;
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  @media print {
+    html, body {
       width: 210mm;
       height: 297mm;
-      position: relative;
-      background:
-        linear-gradient(rgba(255, 252, 240, 0.96), rgba(255, 252, 240, 0.96)),
-        repeating-linear-gradient(
-          45deg,
-          #ead9aa 0,
-          #ead9aa 8px,
-          #f8efd5 8px,
-          #f8efd5 16px
-        );
-      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+      margin: 0;
+      padding: 0;
+      background: white;
+    }
+
+    .page-wrap {
+      width: 210mm;
+    }
+
+    .certificate {
+      width: 210mm;
+      height: 297mm;
+      box-shadow: none;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .controls {
+      display: none;
+    }
+  }
+
+  @media (max-width: 850px) {
+    body {
+      padding: 8px 0;
+    }
+
+    .page-wrap {
+      width: 100vw;
       overflow: hidden;
+      height: calc(100vw * 1.4142);
     }
 
-    .outer-border {
-      position: absolute;
-      inset: 8mm;
-      border: 2.5mm solid #a9822c;
-      pointer-events: none;
+    .certificate {
+      transform-origin: top left;
+      transform: scale(calc(100vw / 793.7));
     }
 
-    .inner-border {
-      position: absolute;
-      inset: 12mm;
-      border: 0.7mm solid #6c521c;
-      pointer-events: none;
-    }
-
-    .inner-border::before {
-      content: "";
-      position: absolute;
-      inset: 3mm;
-      border: 0.35mm solid rgba(169, 130, 44, 0.65);
-    }
-
-    .corner {
-      position: absolute;
-      width: 30mm;
-      height: 30mm;
-      color: rgba(139, 104, 30, 0.18);
-      font-size: 28mm;
-      line-height: 30mm;
-      text-align: center;
-    }
-
-    .corner.tl {
-      top: 14mm;
-      left: 14mm;
-    }
-
-    .corner.tr {
-      top: 14mm;
-      right: 14mm;
-    }
-
-    .corner.bl {
-      bottom: 14mm;
-      left: 14mm;
-    }
-
-    .corner.br {
-      bottom: 14mm;
-      right: 14mm;
-    }
-
-    .content {
-      position: relative;
-      z-index: 2;
-      height: 100%;
-      padding: 25mm 25mm 20mm;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .top-emblem {
-      width: 23mm;
-      height: 23mm;
-      border: 1mm solid #9b7727;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 10mm;
-      color: #8b1212;
-      margin-bottom: 5mm;
-      background: rgba(255, 255, 255, 0.45);
-    }
-
-    .authority {
-      text-align: center;
-      text-transform: uppercase;
-      letter-spacing: 1.2mm;
-      font-size: 3.4mm;
-      color: #675427;
-      margin-bottom: 4mm;
-    }
-
-    .ornament {
-      color: #9c782d;
-      letter-spacing: 2mm;
-      font-size: 5mm;
-      margin-bottom: 3mm;
-    }
-
-    h1 {
-      margin: 0;
-      text-align: center;
-      font-size: 19mm;
-      line-height: 1;
-      letter-spacing: 1.5mm;
-      text-transform: uppercase;
-      color: #8c1515;
-      text-shadow: 0.3mm 0.3mm 0 #d4b75a;
-    }
-
-    .subtitle {
-      margin-top: 4mm;
-      font-size: 5mm;
-      font-style: italic;
-      color: #504329;
-      text-align: center;
-    }
-
-    .divider {
-      width: 125mm;
-      height: 0.5mm;
-      margin: 8mm auto 8mm;
-      background: linear-gradient(
-        to right,
-        transparent,
-        #a47d27,
-        transparent
-      );
-    }
-
-    .intro {
-      text-align: center;
-      font-size: 5mm;
-      line-height: 1.6;
-    }
-
-    .name {
-      margin: 5mm 0 5mm;
-      font-size: 18mm;
-      line-height: 1;
-      letter-spacing: 2mm;
-      font-weight: 700;
-      text-transform: uppercase;
-      text-align: center;
-    }
-
-    .text {
-      max-width: 145mm;
-      text-align: center;
-      font-size: 5.1mm;
-      line-height: 1.55;
-    }
-
-    .award-title {
-      margin-top: 8mm;
-      padding: 4mm 7mm;
-      border-top: 0.5mm solid #9f7a2f;
-      border-bottom: 0.5mm solid #9f7a2f;
-      text-align: center;
-      font-size: 7mm;
-      line-height: 1.35;
-      font-weight: 700;
-      color: #8d1616;
-      text-transform: uppercase;
-      letter-spacing: 0.4mm;
-    }
-
-    .note {
-      max-width: 140mm;
-      margin-top: 8mm;
-      text-align: center;
-      font-size: 4.3mm;
-      line-height: 1.55;
-      color: #4b4231;
-    }
-
-    .bottom-area {
+    .controls {
       width: 100%;
-      margin-top: auto;
-      display: grid;
-      grid-template-columns: 1fr 46mm 1fr;
-      align-items: end;
-      gap: 6mm;
     }
-
-    .meta {
-      font-family: Arial, sans-serif;
-      font-size: 3.5mm;
-      line-height: 1.7;
-      color: #4d4433;
-    }
-
-    .meta strong {
-      color: #282117;
-    }
-
-    .seal-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .seal {
-      width: 43mm;
-      height: 43mm;
-      position: relative;
-      border: 1.4mm solid #a11f1f;
-      border-radius: 50%;
-      color: #a11f1f;
-      transform: rotate(-10deg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      font-family: Arial, sans-serif;
-      font-weight: 800;
-      background: rgba(255, 255, 255, 0.15);
-    }
-
-    .seal::before {
-      content: "";
-      position: absolute;
-      inset: 2mm;
-      border: 0.5mm solid #a11f1f;
-      border-radius: 50%;
-    }
-
-    .seal::after {
-      content: "★";
-      position: absolute;
-      top: 4mm;
-      font-size: 5mm;
-    }
-
-    .seal-text {
-      position: relative;
-      z-index: 2;
-      width: 30mm;
-      font-size: 3mm;
-      line-height: 1.2;
-      text-transform: uppercase;
-    }
-
-    .seal-text b {
-      display: block;
-      font-size: 4.2mm;
-      margin: 1mm 0;
-    }
-
-    .signature-block {
-      text-align: center;
-    }
-
-    .signature {
-      font-family: "Brush Script MT", "Segoe Script", cursive;
-      font-size: 10mm;
-      line-height: 1;
-      color: #183665;
-      transform: rotate(-6deg);
-      margin-bottom: 2mm;
-    }
-
-    .signature-line {
-      border-top: 0.35mm solid #575757;
-      padding-top: 2mm;
-      font-family: Arial, sans-serif;
-      font-size: 3mm;
-      line-height: 1.35;
-      color: #555;
-    }
-
-    .serial-bottom {
-      position: absolute;
-      bottom: 7mm;
-      left: 0;
-      width: 100%;
-      text-align: center;
-      font-family: Arial, sans-serif;
-      font-size: 2.8mm;
-      letter-spacing: 0.6mm;
-      color: #817354;
-    }
-
-    .buttons {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    button {
-      border: 0;
-      border-radius: 12px;
-      padding: 14px 22px;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: 0.2s ease;
-    }
-
-    button:hover {
-      transform: translateY(-2px);
-      filter: brightness(1.08);
-    }
-
-    .btn-award {
-      background: #8c1515;
-      color: white;
-    }
-
-    .btn-print {
-      background: #ad852e;
-      color: white;
-    }
-
-    .confetti {
-      position: fixed;
-      top: -25px;
-      z-index: 9999;
-      width: 10px;
-      height: 18px;
-      pointer-events: none;
-      animation: fall linear forwards;
-    }
-
-    @keyframes fall {
-      from {
-        transform: translateY(-30px) rotate(0deg);
-      }
-
-      to {
-        transform: translateY(110vh) rotate(900deg);
-      }
-    }
-
-    @media (max-width: 900px) {
-      body {
-        padding: 20px 8px;
-      }
-
-      .a4 {
-        width: min(100%, 210mm);
-        height: auto;
-        aspect-ratio: 210 / 297;
-      }
-
-      .content {
-        padding: 10% 12% 8%;
-      }
-
-      .outer-border {
-        inset: 3.8%;
-      }
-
-      .inner-border {
-        inset: 5.7%;
-      }
-    }
-
-    @page {
-      size: A4 portrait;
-      margin: 0;
-    }
-
-    @media print {
-      html,
-      body {
-        width: 210mm;
-        height: 297mm;
-        background: white;
-        padding: 0;
-        margin: 0;
-      }
-
-      .screen-wrapper {
-        display: block;
-      }
-
-      .a4 {
-        width: 210mm;
-        height: 297mm;
-        box-shadow: none;
-        margin: 0;
-        page-break-after: avoid;
-        break-after: avoid-page;
-      }
-
-      .buttons {
-        display: none !important;
-      }
-    }
-  </style>
+  }
+</style>
 </head>
 
 <body>
 
-  <div class="screen-wrapper">
+<div class="page-wrap">
 
-    <div class="a4">
+  <main class="certificate">
 
-      <div class="outer-border"></div>
-      <div class="inner-border"></div>
+    <div class="outer-frame"></div>
+    <div class="ornament-frame"></div>
+    <div class="inner-frame"></div>
 
-      <div class="corner tl">❖</div>
-      <div class="corner tr">❖</div>
-      <div class="corner bl">❖</div>
-      <div class="corner br">❖</div>
+    <div class="corner tl">❦</div>
+    <div class="corner tr">❦</div>
+    <div class="corner bl">❦</div>
+    <div class="corner br">❦</div>
 
-      <div class="content">
+    <div class="content">
 
-        <div class="top-emblem">★</div>
+      <div class="portrait">
+        <img src="https://via.placeholder.com/300x300.png?text=Юрий" alt="Юрий">
+      </div>
 
-        <div class="authority">
-          Единая независимая чрезвычайно серьёзная комиссия
+      <div class="title">
+        Сертификат
+      </div>
+
+      <div class="subtitle">
+        Долбоёба
+      </div>
+
+      <div class="name">
+        Юрий
+      </div>
+
+      <div class="intro">
+        Настоящим подтверждается, что вышеуказанный гражданин
+        безоговорочно и с выдающейся стабильностью соответствует
+        всем необходимым критериям для получения настоящего сертификата.
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="merits-title">
+        Сертификат выдан за следующие выдающиеся заслуги:
+      </div>
+
+      <div class="merits">
+        <ul>
+          <li>
+            за уникальную способность создавать проблемы там,
+            где ещё минуту назад всё прекрасно работало;
+          </li>
+
+          <li>
+            за регулярное применение легендарной стратегии
+            «сначала сделаю, потом подумаю»;
+          </li>
+
+          <li>
+            за абсурдные проделки,
+            совершённые с абсолютно серьёзным выражением лица;
+          </li>
+
+          <li>
+            за уверенное принятие решений,
+            когда никто вообще не просил ничего решать;
+          </li>
+
+          <li>
+            за талант превращать обычный вечер
+            в историю, которую друзья будут вспоминать годами;
+          </li>
+
+          <li>
+            за выдающийся вклад в развитие фразы:
+            «Юра, ну ты и долбоёб»;
+          </li>
+
+          <li>
+            за стабильное игнорирование здравого смысла
+            в самых неожиданных жизненных ситуациях;
+          </li>
+
+          <li>
+            за то, что без тебя было бы значительно спокойнее,
+            но совершенно точно намного скучнее.
+          </li>
+        </ul>
+      </div>
+
+      <div class="award">
+        <div class="award-label">
+          Решением независимой комиссии присвоено звание
         </div>
 
-        <div class="ornament">◆ ◆ ◆</div>
+        <div class="award-name">
+          Долбоёб высшей категории
+        </div>
+      </div>
 
-        <h1>Сертификат</h1>
+      <div class="legal">
+        Сертификат действует бессрочно.
+        Повторная аттестация не требуется,
+        поскольку комиссия располагает достаточным количеством доказательств.
+        Решение окончательное и здравому смыслу не подлежит.
+      </div>
 
-        <div class="subtitle">
-          о присвоении особо почётного звания
+      <div class="bottom">
+
+        <div class="meta">
+          <b>Дата выдачи:</b> 07.09.2026<br>
+          <b>Регистрационный №:</b> ДБ-000001<br>
+          <b>Категория:</b> Высшая<br>
+          <b>Срок действия:</b> Бессрочно
         </div>
 
-        <div class="divider"></div>
-
-        <div class="intro">
-          Настоящим документом официально подтверждается, что
-        </div>
-
-        <div class="name">
-          ЮРИЙ
-        </div>
-
-        <div class="text">
-          успешно прошёл полный комплекс независимых проверок,
-          удивил комиссию своими выдающимися результатами
-          и по итогам единогласного решения удостоен особого звания
-        </div>
-
-        <div class="award-title">
-          «Сертифицированный<br>
-          Долбоёб»
-        </div>
-
-        <div class="note">
-          Сертификат выдан бессрочно и считается действительным
-          в компаниях друзей, групповых чатах, гаражах,
-          праздничных застольях и иных учреждениях повышенной важности.
-          Решение комиссии является окончательным и обжалованию не подлежит.
-        </div>
-
-        <div class="bottom-area">
-
-          <div class="meta">
-            <strong>№ документа:</strong> ДБ-000001<br>
-            <strong>Дата выдачи:</strong> 07.09.2026<br>
-            <strong>Категория:</strong> высшая<br>
-            <strong>Статус:</strong> подтверждено
+        <div class="signature-area">
+          <div class="signature">
+            А. Б. Суровый
           </div>
 
-          <div class="seal-container">
-            <div class="seal">
-              <div class="seal-text">
-                официальная
-                <b>ПЕЧАТЬ</b>
-                подтверждено
-              </div>
-            </div>
+          <div class="signature-line">
+            Подпись председателя комиссии
           </div>
-
-          <div class="signature-block">
-            <div class="signature">
-              А. Комиссия
-            </div>
-
-            <div class="signature-line">
-              Председатель<br>
-              чрезвычайно серьёзной комиссии
-            </div>
-          </div>
-
         </div>
 
       </div>
 
-      <div class="serial-bottom">
-        МОМЕНТ-СЕРТИФИКАТ • СЕРИЯ ДБ • ДОКУМЕНТ № 000001
+    </div>
+
+    <div class="seal">
+      <div class="seal-inner">
+        комиссия по
+        <span class="seal-big">особо очевидным</span>
+        случаям
+
+        <span class="seal-star">★</span>
+
+        одобрено
       </div>
-
     </div>
 
-    <div class="buttons">
-      <button class="btn-award" onclick="celebrate()">
-        🎉 Вручить сертификат
-      </button>
+  </main>
 
-      <button class="btn-print" onclick="window.print()">
-        🖨 Печать / Сохранить PDF
-      </button>
-    </div>
+</div>
 
-  </div>
-
-  <script>
-    function celebrate() {
-      const colors = [
-        "#ffcc00",
-        "#d62828",
-        "#ffffff",
-        "#3a86ff",
-        "#06d6a0",
-        "#ff70a6"
-      ];
-
-      for (let i = 0; i < 140; i++) {
-        const piece = document.createElement("div");
-        piece.className = "confetti";
-
-        piece.style.left = Math.random() * 100 + "vw";
-        piece.style.background =
-          colors[Math.floor(Math.random() * colors.length)];
-
-        piece.style.animationDuration =
-          2 + Math.random() * 3 + "s";
-
-        piece.style.animationDelay =
-          Math.random() * 0.5 + "s";
-
-        piece.style.opacity =
-          0.6 + Math.random() * 0.4;
-
-        piece.style.width =
-          6 + Math.random() * 8 + "px";
-
-        piece.style.height =
-          8 + Math.random() * 16 + "px";
-
-        document.body.appendChild(piece);
-
-        setTimeout(() => {
-          piece.remove();
-        }, 6000);
-      }
-    }
-  </script>
+<div class="controls">
+  <button onclick="window.print()">
+    Печать / сохранить PDF
+  </button>
+</div>
 
 </body>
 </html>
