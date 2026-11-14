@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ElliVeta — Центр розвитку та навчання</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
 * {
@@ -31,6 +31,26 @@ body {
     --light: #ffe1f2;
 }
 
+/* РАЗНОЦВЕТНЫЙ ЛОГОТИП */
+
+.logo {
+    font-family: 'Nunito', sans-serif;
+    font-size: 34px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    white-space: nowrap;
+}
+
+.logo .e1 { color: #ff4f9a; }
+.logo .l1 { color: #ff963d; }
+.logo .l2 { color: #f3c52e; }
+.logo .i1 { color: #39b879; }
+.logo .v1 { color: #36a5ed; }
+.logo .e2 { color: #9564df; }
+.logo .t1 { color: #ed65b4; }
+.logo .a1 { color: #ff4f9a; }
+.logo .heart-logo { color: #ff78bc; }
+
 header {
     position: sticky;
     top: 0;
@@ -43,14 +63,6 @@ header {
     justify-content: space-between;
     box-shadow: 0 4px 25px #d98bc522;
 }
-
-.logo {
-    font-family: 'Pacifico', cursive;
-    font-size: 34px;
-    color: var(--purple);
-}
-
-.logo span { color: var(--pink); }
 
 nav {
     display: flex;
@@ -342,8 +354,6 @@ section { padding: 85px 7%; }
 
 .adv-card p { color: #987ca2; }
 
-/* НОВИЙ БЛОК: ФОРМАТ ЗАНЯТЬ */
-
 .info-section {
     background: linear-gradient(135deg,#ffe5f4,#eee0ff);
 }
@@ -434,11 +444,10 @@ footer {
 }
 
 footer .logo {
-    color: white;
     margin-bottom: 10px;
 }
 
-footer p { opacity: .8; }
+footer p { opacity: .8; margin-top: 5px; }
 
 .heart {
     position: fixed;
@@ -460,6 +469,8 @@ footer p { opacity: .8; }
     header { padding: 12px 5%; }
 
     nav { display: none; }
+
+    .logo { font-size: 27px; }
 
     .hero {
         padding: 70px 6%;
@@ -492,13 +503,20 @@ footer p { opacity: .8; }
 
     .contact h2 { font-size: 30px; }
 }
+
+@media(max-width:380px) {
+    .logo { font-size: 23px; }
+    header .telegram { padding: 10px 13px; font-size: 13px; }
+}
 </style>
 </head>
 
 <body>
 
 <header>
-    <div class="logo">ElliVeta<span>♡</span></div>
+    <div class="logo">
+        <span class="e1">E</span><span class="l1">l</span><span class="l2">l</span><span class="i1">i</span><span class="v1">V</span><span class="e2">e</span><span class="t1">t</span><span class="a1">a</span><span class="heart-logo">♡</span>
+    </div>
 
     <nav>
         <a href="#home">Головна</a>
@@ -512,15 +530,9 @@ footer p { opacity: .8; }
     </a>
 </header>
 
-<!-- ГОЛОВНИЙ ЕКРАН -->
-
 <div class="hero" id="home">
-
     <div class="hero-text">
-
-        <div class="label">
-            ✨ Центр розвитку та навчання
-        </div>
+        <div class="label">✨ Центр розвитку та навчання</div>
 
         <h1>
             Навчання з любов'ю у
@@ -534,38 +546,25 @@ footer p { opacity: .8; }
         </p>
 
         <div class="hero-buttons">
-            <a href="#courses" class="main-btn">
-                Наші курси ♡
-            </a>
-
-            <a href="https://t.me/Veta08052002"
-               class="second-btn">
-                Записатися
-            </a>
+            <a href="#courses" class="main-btn">Наші курси ♡</a>
+            <a href="https://t.me/Veta08052002" class="second-btn">Записатися</a>
         </div>
-
     </div>
 
     <div class="hero-art">🎓</div>
-
 </div>
 
-<!-- КУРСИ -->
-
 <section class="courses" id="courses">
-
     <div class="section-title">
         <h2>♡ Наші курси ♡</h2>
         <p>Обирайте напрямок, який підходить саме вашій дитині</p>
     </div>
 
     <div class="course-grid">
-
         <div class="course-card">
             <div class="number">01</div>
             <div class="course-icon">🧸</div>
             <h3>Дошкільний репетитор</h3>
-
             <ul>
                 <li>Ранній розвиток: 2–3 роки</li>
                 <li>Комплексний розвиток: 3–4 роки</li>
@@ -578,7 +577,6 @@ footer p { opacity: .8; }
             <div class="number">02</div>
             <div class="course-icon">📚</div>
             <h3>Початкова школа</h3>
-
             <ul>
                 <li>Навчання для 1–4 класів</li>
                 <li>Допомога з домашніми завданнями</li>
@@ -591,7 +589,6 @@ footer p { opacity: .8; }
             <div class="number">03</div>
             <div class="course-icon">🎨</div>
             <h3>Арт-студія ElliVeta</h3>
-
             <ul>
                 <li>Для дітей від 3 до 18 років</li>
                 <li>Малювання</li>
@@ -599,100 +596,66 @@ footer p { opacity: .8; }
                 <li>Розвиток творчих здібностей</li>
             </ul>
         </div>
-
     </div>
-
 </section>
 
-<!-- АРТ-СТУДІЯ -->
-
 <section class="art-section">
-
     <div class="art-box">
-
         <div>
             <h3>🎨 Арт-студія ElliVeta</h3>
-
             <p>
                 Тут народжуються маленькі шедеври!
                 Ми створюємо простір, де кожна дитина
                 може проявити свою індивідуальність,
                 фантазію та творчий потенціал.
-
                 <br><br>
-
                 Від перших малюнків до справжніх
                 творчих робіт!
             </p>
-
             <br>
-
-            <a href="https://t.me/Veta08052002"
-               class="main-btn">
+            <a href="https://t.me/Veta08052002" class="main-btn">
                 Дізнатися більше ♡
             </a>
         </div>
-
         <div class="art-emoji">🖌️🎨</div>
-
     </div>
-
 </section>
 
-<!-- ПРО МЕНЕ -->
-
 <section class="about" id="about">
-
     <div class="section-title">
         <h2>♡ Знайомство ♡</h2>
         <p>Людина, яка допоможе відкрити талант вашої дитини</p>
     </div>
 
     <div class="about-container">
-
         <div class="about-photo">👩🏻‍🏫</div>
 
         <div class="about-text">
-
             <h3>Шпуряка Єлизавета Сергіївна</h3>
-
             <p>
                 Вітаю! Я рада бачити вас у ElliVeta!
-
                 <br><br>
-
                 Моя мета — створити комфортний простір,
                 де діти зможуть навчатися, розвиватися,
                 творити та відкривати свої здібності.
-
                 <br><br>
-
                 Для мене важливо, щоб кожна дитина
                 відчувала підтримку, увагу та радість
                 від власних досягнень.
-
                 <br><br>
-
                 <b>Разом до маленьких і великих перемог! ♡</b>
             </p>
-
         </div>
-
     </div>
-
 </section>
 
-<!-- ПЕРЕВАГИ -->
-
 <section class="advantages">
-
     <div class="section-title">
         <h2>Чому ElliVeta? 💗</h2>
         <p>Навчання, розвиток та творчість в одному місці</p>
     </div>
 
     <div class="adv-grid">
-
         <div class="adv-card">
             <div>💗</div>
             <h3>Турбота</h3>
@@ -716,22 +679,16 @@ footer p { opacity: .8; }
             <h3>Результат</h3>
             <p>Крок за кроком до успіху</p>
         </div>
-
     </div>
-
 </section>
 
-<!-- ФОРМАТ ЗАНЯТЬ ТА ВАРТІСТЬ -->
-
 <section class="info-section">
-
     <div class="section-title">
         <h2>♡ Формат занять ♡</h2>
         <p>Усе необхідне для комфортного навчання!</p>
     </div>
 
     <div class="info-grid">
-
         <div class="info-card">
             <div class="icon">👩‍👧‍👦</div>
             <h3>Групові заняття</h3>
@@ -766,40 +723,28 @@ footer p { opacity: .8; }
                 у центрі ElliVeta!
             </p>
         </div>
-
     </div>
-
 </section>
 
-<!-- КОНТАКТИ -->
-
 <section class="contact" id="contacts">
-
     <h2>♡ Чекаємо на вас в ElliVeta! ♡</h2>
 
     <p>
         Подаруйте дитині можливість навчатися,
         розвиватися та творити!
-
         <br>
-
         Напишіть нам, щоб дізнатися подробиці
         та записатися на заняття.
     </p>
 
-    <a href="https://t.me/Veta08052002"
-       class="telegram">
-
+    <a href="https://t.me/Veta08052002" class="telegram">
         ✈ Написати в Telegram
         <br>
         @Veta08052002
-
     </a>
 
     <div class="address">
-
         <h3>📍 Наша адреса</h3>
-
         <p>
             пр. Свободи, 73
             <br>
@@ -807,31 +752,21 @@ footer p { opacity: .8; }
             <br>
             м. Кам'янське
         </p>
-
     </div>
-
 </section>
 
-<!-- ПІДВАЛ -->
-
 <footer>
-
-    <div class="logo">ElliVeta ♡</div>
+    <div class="logo">
+        <span class="e1">E</span><span class="l1">l</span><span class="l2">l</span><span class="i1">i</span><span class="v1">V</span><span class="e2">e</span><span class="t1">t</span><span class="a1">a</span><span class="heart-logo">♡</span>
+    </div>
 
     <p>Центр розвитку та навчання</p>
-
     <p>© 2026 ElliVeta. Всі права захищені.</p>
-
     <p>Навчання. Розвиток. Творчість.</p>
-
 </footer>
 
 <script>
-
-// ЛІТАЮЧІ СЕРДЕЧКА
-
 function createHeart() {
-
     const heart = document.createElement("div");
 
     heart.className = "heart";
@@ -853,11 +788,9 @@ function createHeart() {
     setTimeout(() => {
         heart.remove();
     }, 11000);
-
 }
 
 setInterval(createHeart, 700);
-
 </script>
 
 </body>
