@@ -10,6 +10,8 @@
             --primary: #FF8C42;      /* Теплий помаранчевий */
             --primary-hover: #e07630;
             --secondary: #4A90E2;    /* Спокійний блакитний */
+            --tg-color: #24A1DE;     /* Фірмовий колір Telegram */
+            --tg-hover: #1d88bc;
             --bg-light: #FFFDF9;     /* М'який кремовий фон */
             --bg-card: #FFFFFF;
             --text-dark: #2D3748;
@@ -62,16 +64,29 @@
             color: var(--primary);
         }
 
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
         .nav-links a {
             text-decoration: none;
             color: var(--text-dark);
             font-weight: 600;
-            margin-left: 25px;
             transition: color 0.3s;
         }
 
         .nav-links a:hover {
             color: var(--primary);
+        }
+
+        .nav-tg {
+            background: #E6F6FD;
+            color: var(--tg-color) !important;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700 !important;
         }
 
         /* Головний екран (Hero) */
@@ -112,15 +127,24 @@
             margin-bottom: 30px;
         }
 
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
         .btn {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             background: var(--primary);
             color: white;
-            padding: 15px 32px;
+            padding: 15px 28px;
             border-radius: 30px;
             text-decoration: none;
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             border: none;
             cursor: pointer;
             transition: background 0.3s, transform 0.2s;
@@ -130,6 +154,15 @@
         .btn:hover {
             background: var(--primary-hover);
             transform: translateY(-2px);
+        }
+
+        .btn-tg {
+            background: var(--tg-color);
+            box-shadow: 0 4px 15px rgba(36, 161, 222, 0.3);
+        }
+
+        .btn-tg:hover {
+            background: var(--tg-hover);
         }
 
         .hero-image {
@@ -256,6 +289,41 @@
             border-color: var(--secondary);
         }
 
+        .direct-tg-box {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #CBD5E0;
+        }
+
+        .direct-tg-box a {
+            color: var(--tg-color);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        /* Плаваюча кнопка Telegram */
+        .floating-tg {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 60px;
+            height: 60px;
+            background: var(--tg-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px rgba(36, 161, 222, 0.45);
+            z-index: 999;
+            transition: transform 0.3s;
+            text-decoration: none;
+        }
+
+        .floating-tg:hover {
+            transform: scale(1.1);
+        }
+
         footer {
             text-align: center;
             padding: 30px 0;
@@ -263,8 +331,14 @@
             font-size: 0.95rem;
         }
 
+        footer a {
+            color: var(--tg-color);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
         @media (max-width: 768px) {
-            .nav-links { display: none; }
+            .nav-links a:not(.nav-tg) { display: none; }
             .hero h1 { font-size: 2rem; }
         }
     </style>
@@ -279,6 +353,7 @@
                 <a href="#services">Напрямки</a>
                 <a href="#about">Про мене</a>
                 <a href="#contact">Записатися</a>
+                <a href="https://t.me" target="_blank" class="nav-tg">Telegram</a>
             </nav>
         </div>
     </header>
@@ -290,45 +365,7 @@
                 <span class="badge">1–4 класи та підготовка до школи</span>
                 <h1>Репетитор початкових класів Єлизавета Сергіївна</h1>
                 <p>Допоможу вашій дитині полюбити навчання, легко виконувати домашні завдання та впевнено почуватися біля дошки без сліз і стресу.</p>
-                <a href="#contact" class="btn">Записатися на пробний урок</a>
-            </div>
-            <div class="hero-image">
-                <!-- Замініть цей блок на тег <img src="photo.jpg" alt="Єлизавета Сергіївна"> -->
-                <div class="photo-placeholder">
-                    <span style="font-size: 3rem;">👩‍🏫</span>
-                    <p style="margin-top: 10px; font-weight: 600;">Місце для фото<br>Єлизавети Сергіївни</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Послуги -->
-        <section id="services">
-            <h2 class="section-title">Чим я можу допомогти?</h2>
-            <div class="grid-3">
-                <div class="card">
-                    <div class="card-icon">🎒</div>
-                    <h3>Підготовка до 1 класу</h3>
-                    <p>Вчимося читати по складах, рахувати, розвиваємо логіку, пам'ять та дрібну моторику в ігровій формі.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">📚</div>
-                    <h3>Шкільна програма (1–4 клас)</h3>
-                    <p>Математика, українська мова та читання. Наздоженемо пропущені теми та закріпимо новий матеріал.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">✍️</div>
-                    <h3>Домашні завдання без нервів</h3>
-                    <p>Навчу дитину самостійно розуміти умови задач, охайно писати та організовувати свій час.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Про репетитора -->
-        <section id="about">
-            <div class="about-box">
-                <div style="flex: 1; min-width: 280px;">
-                    <h2 style="margin-bottom: 15px;">Чому батьки обирають мої заняття?</h2>
-                    <p>Привіт! Мене звати <strong>Єлизавета Сергіївна</strong>. Я знаю, як важливо в початковій школі не відбити у дитини бажання вчитися, а навпаки — зацікавити її.</p>
-                    <ul class="about-list">
-                        <li><strong>Індивідуальний підхід:</strong> підбираю темп та методики під характер кожної дитини.</li>
-                        <li><strong>Інтерактивний формат:</strong> використовуємо яскраві презентації, ігри та картки.</li>
+                <div class="hero-buttons">
+                    <a href="#contact" class="btn">Записатися на урок</a>
+                    <a href="https://t.me" target="_blank" class="btn btn-tg">
+                        
