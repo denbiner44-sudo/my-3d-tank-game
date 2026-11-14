@@ -1,265 +1,334 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Репетитор початкових класів — Єлизавета Сергіївна</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF8C42;      /* Теплий помаранчевий */
+            --primary-hover: #e07630;
+            --secondary: #4A90E2;    /* Спокійний блакитний */
+            --bg-light: #FFFDF9;     /* М'який кремовий фон */
+            --bg-card: #FFFFFF;
+            --text-dark: #2D3748;
+            --text-muted: #718096;
+            --accent-green: #48BB78;
+        }
 
-  <title>Для Ярославы ♥</title>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-  <!-- Рукописный шрифт -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet">
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
 
-    html, body {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-    }
+        /* Навігація */
+        header {
+            background: var(--bg-card);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-    body {
-      background:
-        radial-gradient(circle at top, #ff9fb8 0%, #d94369 45%, #731d3b 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: "Marck Script", cursive;
-      color: white;
-      position: relative;
-    }
+        .nav-wrap {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
 
-    /* Лёгкое затемнение, чтобы текст было хорошо видно */
-    body::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(40, 0, 15, 0.17);
-      pointer-events: none;
-      z-index: 1;
-    }
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--secondary);
+        }
 
-    .letter {
-      position: relative;
-      z-index: 5;
+        .logo span {
+            color: var(--primary);
+        }
 
-      width: 94vw;
-      height: 96dvh;
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            margin-left: 25px;
+            transition: color 0.3s;
+        }
 
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+        .nav-links a:hover {
+            color: var(--primary);
+        }
 
-      padding: 12px 14px;
+        /* Головний екран (Hero) */
+        .hero {
+            padding: 60px 0;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
 
-      text-align: center;
+        .hero-text {
+            flex: 1;
+            min-width: 300px;
+        }
 
-      background: rgba(255, 255, 255, 0.10);
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      border-radius: 24px;
+        .badge {
+            display: inline-block;
+            background: #EBF8FF;
+            color: var(--secondary);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
 
-      backdrop-filter: blur(5px);
-      -webkit-backdrop-filter: blur(5px);
+        .hero h1 {
+            font-size: 2.6rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
 
-      box-shadow:
-        0 15px 40px rgba(0, 0, 0, 0.25),
-        inset 0 0 30px rgba(255, 255, 255, 0.05);
-    }
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
 
-    h1 {
-      font-size: clamp(26px, 7vw, 40px);
-      line-height: 1;
-      margin-bottom: 7px;
-      text-shadow: 0 2px 10px rgba(0,0,0,.25);
-    }
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 15px 32px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 4px 15px rgba(255, 140, 66, 0.3);
+        }
 
-    .text {
-      font-size: clamp(13px, 3.55vw, 21px);
-      line-height: 1.02;
-      text-shadow: 0 2px 6px rgba(0,0,0,.35);
-    }
+        .btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+        }
 
-    .final {
-      margin-top: 6px;
-      font-size: clamp(18px, 5vw, 27px);
-      line-height: 1;
-    }
+        .hero-image {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+        }
 
-    .big-heart {
-      display: inline-block;
-      animation: beat 1.2s infinite;
-    }
+        .photo-placeholder {
+            width: 320px;
+            height: 320px;
+            background: linear-gradient(135deg, #FFE8D6, #D6E8FF);
+            border-radius: 50%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 8px solid white;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            color: var(--text-muted);
+            padding: 20px;
+        }
 
-    /* Сердечки */
-    .heart {
-      position: absolute;
-      bottom: -60px;
-      color: rgba(255, 220, 230, 0.8);
-      z-index: 0;
-      pointer-events: none;
+        /* Секції */
+        section {
+            padding: 60px 0;
+        }
 
-      animation:
-        fly linear infinite,
-        sway ease-in-out infinite alternate;
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            color: var(--text-dark);
+        }
 
-      filter: drop-shadow(0 0 5px rgba(255,255,255,.3));
-    }
+        /* Картки послуг */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
 
-    @keyframes fly {
-      from {
-        transform: translateY(0) rotate(0deg);
-        opacity: 0;
-      }
+        .card {
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.04);
+            transition: transform 0.3s;
+        }
 
-      10% {
-        opacity: 0.8;
-      }
+        .card:hover {
+            transform: translateY(-5px);
+        }
 
-      90% {
-        opacity: 0.8;
-      }
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
 
-      to {
-        transform: translateY(-120vh) rotate(360deg);
-        opacity: 0;
-      }
-    }
+        .card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
 
-    @keyframes sway {
-      from {
-        margin-left: -15px;
-      }
+        /* Про репетитора */
+        .about-box {
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.04);
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
 
-      to {
-        margin-left: 15px;
-      }
-    }
+        .about-list {
+            list-style: none;
+            margin-top: 15px;
+        }
 
-    @keyframes beat {
-      0%, 100% {
-        transform: scale(1);
-      }
+        .about-list li {
+            margin-bottom: 10px;
+            padding-left: 28px;
+            position: relative;
+        }
 
-      50% {
-        transform: scale(1.25);
-      }
-    }
+        .about-list li::before {
+            content: "✔";
+            color: var(--accent-green);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
 
-    /* Для совсем маленьких телефонов */
-    @media (max-height: 700px) {
-      .letter {
-        padding: 8px 11px;
-      }
+        /* Форма запису */
+        .contact-section {
+            background: #EBF8FF;
+            border-radius: 30px;
+            padding: 50px 30px;
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+        }
 
-      h1 {
-        font-size: 25px;
-        margin-bottom: 4px;
-      }
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
 
-      .text {
-        font-size: clamp(11.5px, 3.1vw, 15px);
-        line-height: 0.98;
-      }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #CBD5E0;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 1rem;
+            outline: none;
+        }
 
-      .final {
-        font-size: 17px;
-        margin-top: 3px;
-      }
-    }
-  </style>
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--secondary);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero h1 { font-size: 2rem; }
+        }
+    </style>
 </head>
-
 <body>
 
-  <div class="letter">
-    <h1>
-      Ярослава, моя киця
-      <span class="big-heart">♥</span>
-    </h1>
+    <!-- Шапка сайту -->
+    <header>
+        <div class="container nav-wrap">
+            <div class="logo">Вчимося <span>Легко</span></div>
+            <nav class="nav-links">
+                <a href="#services">Напрямки</a>
+                <a href="#about">Про мене</a>
+                <a href="#contact">Записатися</a>
+            </nav>
+        </div>
+    </header>
 
-    <div class="text">
-      Я даже не знаю, смогу ли когда-нибудь нормально объяснить словами,
-      насколько сильно я тебя люблю. Потому что «люблю» — будто слишком
-      маленькое слово для всего того, что я чувствую к тебе.
-      <br><br>
+    <!-- Головний екран -->
+    <div class="container">
+        <section class="hero">
+            <div class="hero-text">
+                <span class="badge">1–4 класи та підготовка до школи</span>
+                <h1>Репетитор початкових класів Єлизавета Сергіївна</h1>
+                <p>Допоможу вашій дитині полюбити навчання, легко виконувати домашні завдання та впевнено почуватися біля дошки без сліз і стресу.</p>
+                <a href="#contact" class="btn">Записатися на пробний урок</a>
+            </div>
+            <div class="hero-image">
+                <!-- Замініть цей блок на тег <img src="photo.jpg" alt="Єлизавета Сергіївна"> -->
+                <div class="photo-placeholder">
+                    <span style="font-size: 3rem;">👩‍🏫</span>
+                    <p style="margin-top: 10px; font-weight: 600;">Місце для фото<br>Єлизавети Сергіївни</p>
+                </div>
+            </div>
+        </section>
 
-      Ты стала для меня намного больше, чем просто любимым человеком.
-      Ты — моя радость. Ты — тот человек, о котором я думаю, когда просыпаюсь,
-      и тот, с кем мне хочется делить всё, что будет дальше.
-      <br><br>
+        <!-- Послуги -->
+        <section id="services">
+            <h2 class="section-title">Чим я можу допомогти?</h2>
+            <div class="grid-3">
+                <div class="card">
+                    <div class="card-icon">🎒</div>
+                    <h3>Підготовка до 1 класу</h3>
+                    <p>Вчимося читати по складах, рахувати, розвиваємо логіку, пам'ять та дрібну моторику в ігровій формі.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">📚</div>
+                    <h3>Шкільна програма (1–4 клас)</h3>
+                    <p>Математика, українська мова та читання. Наздоженемо пропущені теми та закріпимо новий матеріал.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">✍️</div>
+                    <h3>Домашні завдання без нервів</h3>
+                    <p>Навчу дитину самостійно розуміти умови задач, охайно писати та організовувати свій час.</p>
+                </div>
+            </div>
+        </section>
 
-      До тебя я будто просто жил день за днём, а ты разбудила во мне
-      что-то очень важное. Рядом с тобой у меня появилось желание
-      становиться лучше. Мне хочется быть человеком, рядом с которым
-      ты будешь чувствовать себя счастливой, любимой и защищённой.
-      <br><br>
-
-      Мне хочется видеть твою улыбку и знать, что хотя бы часть этой
-      улыбки появилась благодаря мне. Поддерживать тебя, когда тебе тяжело,
-      радоваться вместе с тобой и обнимать, когда никакие слова уже не нужны.
-      <br><br>
-
-      Ты дала мне желание жить дальше, мечтать, строить планы и чего-то
-      добиваться. Потому что теперь во всём этом есть ты.
-      <br><br>
-
-      Я не обещаю быть идеальным. Я могу ошибаться и иногда не сразу
-      понимать тебя. Но в одном я уверен точно — мои чувства к тебе настоящие.
-      <br><br>
-
-      И спустя много времени я хочу всё так же посмотреть на тебя и сказать:
-      «Это моя Ярослава. Моя киця. Моя любимая девочка. И я безумно счастлив,
-      что именно она однажды появилась в моей жизни».
-    </div>
-
-    <div class="final">
-      Спасибо тебе за то, что ты есть.<br>
-      Я тебя очень-очень люблю ♥
-    </div>
-  </div>
-
-
-  <script>
-    // Создание летающих сердечек
-    function createHeart() {
-      const heart = document.createElement("div");
-
-      heart.className = "heart";
-      heart.innerHTML = "♥";
-
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.fontSize = (12 + Math.random() * 25) + "px";
-
-      const duration = 6 + Math.random() * 8;
-
-      heart.style.animationDuration =
-        duration + "s, " +
-        (1.5 + Math.random() * 2) + "s";
-
-      heart.style.opacity = 0.3 + Math.random() * 0.6;
-
-      document.body.appendChild(heart);
-
-      setTimeout(() => {
-        heart.remove();
-      }, duration * 1000);
-    }
-
-    // Постоянно добавляем сердечки
-    setInterval(createHeart, 350);
-
-    // Несколько сердечек сразу при открытии
-    for (let i = 0; i < 15; i++) {
-      setTimeout(createHeart, i * 150);
-    }
-  </script>
-
-</body>
-</html>
+        <!-- Про репетитора -->
+        <section id="about">
+            <div class="about-box">
+                <div style="flex: 1; min-width: 280px;">
+                    <h2 style="margin-bottom: 15px;">Чому батьки обирають мої заняття?</h2>
+                    <p>Привіт! Мене звати <strong>Єлизавета Сергіївна</strong>. Я знаю, як важливо в початковій школі не відбити у дитини бажання вчитися, а навпаки — зацікавити її.</p>
+                    <ul class="about-list">
+                        <li><strong>Індивідуальний підхід:</strong> підбираю темп та методики під характер кожної дитини.</li>
+                        <li><strong>Інтерактивний формат:</strong> використовуємо яскраві презентації, ігри та картки.</li>
