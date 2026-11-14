@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="uk">
 <head>
@@ -14,9 +15,7 @@
     box-sizing: border-box;
 }
 
-html {
-    scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
     font-family: 'Nunito', sans-serif;
@@ -51,9 +50,7 @@ header {
     color: var(--purple);
 }
 
-.logo span {
-    color: var(--pink);
-}
+.logo span { color: var(--pink); }
 
 nav {
     display: flex;
@@ -68,9 +65,7 @@ nav a {
     transition: .3s;
 }
 
-nav a:hover {
-    color: var(--pink);
-}
+nav a:hover { color: var(--pink); }
 
 .telegram {
     background: linear-gradient(135deg,#a44ad1,#6730a0);
@@ -125,9 +120,7 @@ nav a:hover {
     margin-bottom: 25px;
 }
 
-.hero h1 span {
-    color: #df63ac;
-}
+.hero h1 span { color: #df63ac; }
 
 .hero p {
     font-size: 20px;
@@ -153,9 +146,7 @@ nav a:hover {
     transition: .3s;
 }
 
-.main-btn:hover {
-    transform: scale(1.06);
-}
+.main-btn:hover { transform: scale(1.06); }
 
 .second-btn {
     border: 2px solid #bd79cf;
@@ -185,9 +176,7 @@ nav a:hover {
     50% {transform: translateY(-20px) rotate(3deg);}
 }
 
-section {
-    padding: 85px 7%;
-}
+section { padding: 85px 7%; }
 
 .section-title {
     text-align: center;
@@ -205,9 +194,7 @@ section {
     margin-top: 12px;
 }
 
-.courses {
-    background: white;
-}
+.courses { background: white; }
 
 .course-grid {
     display: grid;
@@ -241,9 +228,7 @@ section {
     color: #682b91;
 }
 
-.course-card ul {
-    list-style: none;
-}
+.course-card ul { list-style: none; }
 
 .course-card li {
     padding: 10px 0;
@@ -297,13 +282,9 @@ section {
     line-height: 1.8;
 }
 
-.art-emoji {
-    font-size: 140px;
-}
+.art-emoji { font-size: 140px; }
 
-.about {
-    background: white;
-}
+.about { background: white; }
 
 .about-container {
     display: flex;
@@ -333,9 +314,7 @@ section {
     color: #80658c;
 }
 
-.advantages {
-    background: #fff3fb;
-}
+.advantages { background: #fff3fb; }
 
 .adv-grid {
     display: grid;
@@ -361,8 +340,58 @@ section {
     margin-bottom: 10px;
 }
 
-.adv-card p {
-    color: #987ca2;
+.adv-card p { color: #987ca2; }
+
+/* НОВИЙ БЛОК: ФОРМАТ ЗАНЯТЬ */
+
+.info-section {
+    background: linear-gradient(135deg,#ffe5f4,#eee0ff);
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+    gap: 25px;
+    max-width: 1000px;
+    margin: auto;
+}
+
+.info-card {
+    background: white;
+    padding: 35px 25px;
+    border-radius: 30px;
+    text-align: center;
+    border: 2px solid #f5c9eb;
+    box-shadow: 0 10px 30px #a65bc222;
+    transition: .3s;
+}
+
+.info-card:hover {
+    transform: translateY(-8px);
+}
+
+.info-card .icon {
+    font-size: 55px;
+    margin-bottom: 15px;
+}
+
+.info-card h3 {
+    color: #843bb5;
+    font-size: 23px;
+    margin-bottom: 12px;
+}
+
+.info-card p {
+    color: #886493;
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+.info-card .price {
+    color: #ed65b4;
+    font-size: 35px;
+    font-weight: 900;
+    margin-bottom: 5px;
 }
 
 .contact {
@@ -409,9 +438,7 @@ footer .logo {
     margin-bottom: 10px;
 }
 
-footer p {
-    opacity: .8;
-}
+footer p { opacity: .8; }
 
 .heart {
     position: fixed;
@@ -430,13 +457,9 @@ footer p {
 }
 
 @media(max-width:800px) {
-    header {
-        padding: 12px 5%;
-    }
+    header { padding: 12px 5%; }
 
-    nav {
-        display: none;
-    }
+    nav { display: none; }
 
     .hero {
         padding: 70px 6%;
@@ -450,9 +473,7 @@ footer p {
         font-size: 120px;
     }
 
-    .hero-buttons {
-        justify-content: center;
-    }
+    .hero-buttons { justify-content: center; }
 
     .art-box {
         flex-direction: column;
@@ -465,13 +486,11 @@ footer p {
         text-align: center;
     }
 
-    .about-photo {
-        width: 100%;
-    }
+    .about-photo { width: 100%; }
 
-    section {
-        padding: 65px 5%;
-    }
+    section { padding: 65px 5%; }
+
+    .contact h2 { font-size: 30px; }
 }
 </style>
 </head>
@@ -527,9 +546,7 @@ footer p {
 
     </div>
 
-    <div class="hero-art">
-        🎓
-    </div>
+    <div class="hero-art">🎓</div>
 
 </div>
 
@@ -545,11 +562,8 @@ footer p {
     <div class="course-grid">
 
         <div class="course-card">
-
             <div class="number">01</div>
-
             <div class="course-icon">🧸</div>
-
             <h3>Дошкільний репетитор</h3>
 
             <ul>
@@ -558,15 +572,11 @@ footer p {
                 <li>2 роки до школи: 4–5 років</li>
                 <li>1 рік до школи: 5–7 років</li>
             </ul>
-
         </div>
 
         <div class="course-card">
-
             <div class="number">02</div>
-
             <div class="course-icon">📚</div>
-
             <h3>Початкова школа</h3>
 
             <ul>
@@ -575,15 +585,11 @@ footer p {
                 <li>Закріплення знань</li>
                 <li>Розвиток навчальних навичок</li>
             </ul>
-
         </div>
 
         <div class="course-card">
-
             <div class="number">03</div>
-
             <div class="course-icon">🎨</div>
-
             <h3>Арт-студія ElliVeta</h3>
 
             <ul>
@@ -592,14 +598,13 @@ footer p {
                 <li>Творчість та фантазія</li>
                 <li>Розвиток творчих здібностей</li>
             </ul>
-
         </div>
 
     </div>
 
 </section>
 
-<!-- АРТ СТУДІЯ -->
+<!-- АРТ-СТУДІЯ -->
 
 <section class="art-section">
 
@@ -628,9 +633,7 @@ footer p {
             </a>
         </div>
 
-        <div class="art-emoji">
-            🖌️🎨
-        </div>
+        <div class="art-emoji">🖌️🎨</div>
 
     </div>
 
@@ -647,9 +650,7 @@ footer p {
 
     <div class="about-container">
 
-        <div class="about-photo">
-            👩🏻‍🏫
-        </div>
+        <div class="about-photo">👩🏻‍🏫</div>
 
         <div class="about-text">
 
@@ -720,6 +721,56 @@ footer p {
 
 </section>
 
+<!-- ФОРМАТ ЗАНЯТЬ ТА ВАРТІСТЬ -->
+
+<section class="info-section">
+
+    <div class="section-title">
+        <h2>♡ Формат занять ♡</h2>
+        <p>Усе необхідне для комфортного навчання!</p>
+    </div>
+
+    <div class="info-grid">
+
+        <div class="info-card">
+            <div class="icon">👩‍👧‍👦</div>
+            <h3>Групові заняття</h3>
+            <p>
+                Навчання у дружній атмосфері,
+                спілкування та розвиток разом
+                з іншими дітьми.
+            </p>
+        </div>
+
+        <div class="info-card">
+            <div class="icon">💰</div>
+            <h3>Вартість заняття</h3>
+            <p class="price">200 грн</p>
+            <p>За одне заняття</p>
+        </div>
+
+        <div class="info-card">
+            <div class="icon">🏫</div>
+            <h3>Офлайн-навчання</h3>
+            <p>
+                Заняття проходять безпосередньо
+                у нашому навчальному центрі.
+            </p>
+        </div>
+
+        <div class="info-card">
+            <div class="icon">📍</div>
+            <h3>Місто Кам'янське</h3>
+            <p>
+                Чекаємо на маленьких учнів
+                у центрі ElliVeta!
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
 <!-- КОНТАКТИ -->
 
 <section class="contact" id="contacts">
@@ -729,16 +780,20 @@ footer p {
     <p>
         Подаруйте дитині можливість навчатися,
         розвиватися та творити!
+
         <br>
+
         Напишіть нам, щоб дізнатися подробиці
         та записатися на заняття.
     </p>
 
     <a href="https://t.me/Veta08052002"
        class="telegram">
+
         ✈ Написати в Telegram
         <br>
         @Veta08052002
+
     </a>
 
     <div class="address">
@@ -749,33 +804,31 @@ footer p {
             пр. Свободи, 73
             <br>
             магазин «Єтуаль»
+            <br>
+            м. Кам'янське
         </p>
 
     </div>
 
 </section>
 
+<!-- ПІДВАЛ -->
+
 <footer>
 
     <div class="logo">ElliVeta ♡</div>
 
-    <p>
-        Центр розвитку та навчання
-    </p>
+    <p>Центр розвитку та навчання</p>
 
-    <p>
-        © 2026 ElliVeta. Всі права захищені.
-    </p>
+    <p>© 2026 ElliVeta. Всі права захищені.</p>
 
-    <p>
-        Навчання. Розвиток. Творчість.
-    </p>
+    <p>Навчання. Розвиток. Творчість.</p>
 
 </footer>
 
 <script>
 
-// Літаючі сердечка
+// ЛІТАЮЧІ СЕРДЕЧКА
 
 function createHeart() {
 
@@ -800,6 +853,7 @@ function createHeart() {
     setTimeout(() => {
         heart.remove();
     }, 11000);
+
 }
 
 setInterval(createHeart, 700);
@@ -807,4 +861,5 @@ setInterval(createHeart, 700);
 </script>
 
 </body>
-    </html>
+</html>
+```
